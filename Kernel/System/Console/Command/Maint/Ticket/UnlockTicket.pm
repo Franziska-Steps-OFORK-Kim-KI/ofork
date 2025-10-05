@@ -1,0 +1,71 @@
+# --
+# Kernel/System/Console/Command/Maint/Ticket/UnlockTicket.pm
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: UnlockTicket.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+package Kernel::System::Console::Command::Maint::Ticket::UnlockTicket;
+
+use strict;
+use warnings;
+
+use parent qw(Kernel::System::Console::BaseCommand);
+
+our @ObjectDependencies = (
+    'Kernel::System::Ticket',
+);
+
+sub Configure {
+    my ( $Self, %Param ) = @_;
+
+    $Self->Description('Unlock a single ticket by force.');
+    $Self->AddArgument(
+        Name        => 'ticket-id',
+        Description => "Ticket to be unlocked by force.",
+        Required    => 1,
+        ValueRegex  => qr/\d+/smx,
+    );
+
+    return;
+}
+
+sub Run {
+    my ( $Self, %Param ) = @_;
+
+    my $TicketID = $Self->GetArgument('ticket-id');
+
+    $Self->Print("<yellow>Unlocking ticket $TicketID...</yellow>\n");
+
+    my %Ticket = $Kernel::OM->Get('Kernel::System::Ticket')->TicketGet(
+        TicketID => $TicketID,
+        Silent   => 1,
+    );
+
+    if ( !%Ticket ) {
+        $Self->PrintError("Could not find ticket $TicketID.");
+        return $Self->ExitCodeError();
+    }
+
+    my $Unlock = $Kernel::OM->Get('Kernel::System::Ticket')->LockSet(
+        TicketID => $TicketID,
+        Lock     => 'unlock',
+        UserID   => 1,
+    );
+    if ( !$Unlock ) {
+        $Self->PrintError('Failed.');
+        return $Self->ExitCodeError();
+    }
+
+    $Self->Print("<green>Done.</green>\n");
+    return $Self->ExitCodeOk();
+}
+
+1;

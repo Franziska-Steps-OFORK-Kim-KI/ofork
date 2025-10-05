@@ -1,0 +1,102 @@
+# --
+# AgentProcessFieldsReady.tt - provides HTML form for customer message
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# --
+# $Id: AgentProcessFieldsReady.tt,v 1.2 2016/11/20 19:31:54 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+    <div class="LayoutPopup ARIARoleMain">
+        <div class="Header">
+            <h1>[% Data.Name | html %]</h1>
+            [% Data.Description %]
+        </div>
+        <div class="Content">
+
+    	<fieldset class="TableLike">
+
+            <label style="margin-top: 10px;margin-left: 1%;">[% Translate("Report") | html %]:</label>
+            <div class="Field" style="background-color:#eeeeee;border-radius: 3px;margin-left: 17%;margin-top: 10px;">
+                [% Data.Report %]
+            </div>
+            <div class="Clear"></div>
+
+[% RenderBlockStart("FieldApproval") %]
+             <label style="margin-top: 10px;margin-left: 1%;">[% Translate("Approval") | html %]:</label>
+             <div class="Field" style="background-color:#eeeeee;border-radius: 3px;margin-left: 17%;margin-top: 10px;">
+                [% Data.Approval | html %]
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("FieldApproval") %]                        
+
+[% RenderBlockStart("SetFieldListsResult") %]
+
+[% RenderBlockStart("ConditionFieldTitle") %]
+             <label style="margin-top: 10px;margin-left: 1%;">[% Translate("Title") | html %]:</label>
+             <div class="Field" style="background-color:#eeeeee;border-radius: 3px;margin-left: 17%;margin-top: 10px;">
+                [% Data.Title | html %]
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("ConditionFieldTitle") %]                        
+
+[% RenderBlockStart("ConditionFieldType") %]
+            <label style="margin-top: 10px;margin-left: 1%;">[% Translate("Type") | html %]:</label>
+            <div class="Field" style="background-color:#eeeeee;border-radius: 3px;margin-left: 17%;margin-top: 10px;">
+                [% Data.Type %]
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("ConditionFieldType") %]  
+
+[% RenderBlockStart("ConditionFieldQueue") %]
+            <label style="margin-top: 10px;margin-left: 1%;">[% Translate("Queue") | html %]:</label>
+            <div class="Field" style="background-color:#eeeeee;border-radius: 3px;margin-left: 17%;margin-top: 10px;">
+                [% Data.Queue %]
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("ConditionFieldQueue") %]  
+
+[% RenderBlockStart("ConditionFieldState") %]
+            <label style="margin-top: 10px;margin-left: 1%;">[% Translate("State") | html %]:</label>
+            <div class="Field" style="background-color:#eeeeee;border-radius: 3px;margin-left: 17%;margin-top: 10px;">
+                [% Data.State %]
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("ConditionFieldState") %]  
+
+[% RenderBlockStart("ConditionFieldFromCustomer") %]
+             <label style="margin-top: 10px;margin-left: 1%;">[% Translate("Customer User") | html %]:</label>
+             <div class="Field" style="background-color:#eeeeee;border-radius: 3px;margin-left: 17%;margin-top: 10px;">
+                [% Data.FromCustomer | html %]
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("ConditionFieldFromCustomer") %]                        
+
+[% RenderBlockStart("ConditionFieldOwner") %]
+            <label style="margin-top: 10px;margin-left: 1%;">[% Translate("Owner") | html %]:</label>
+            <div class="Field" style="background-color:#eeeeee;border-radius: 3px;margin-left: 17%;margin-top: 10px;">
+                [% Data.User %]
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("ConditionFieldOwner") %]  
+
+[% RenderBlockEnd("SetFieldListsResult") %]
+
+
+[% RenderBlockStart("DynamicSetFieldListsResult") %]
+
+[% RenderBlockStart("DynamicFieldIsSetStep") %]
+            <label style="margin-top: 10px;margin-left: 1%;">[% Data.Name | html %]:</label>
+            <div class="Field" style="background-color:#eeeeee;border-radius: 3px;margin-left: 17%;margin-top: 10px;">
+                [% Data.FieldValue %]
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("DynamicFieldIsSetStep") %]                         
+
+[% RenderBlockEnd("DynamicSetFieldListsResult") %]
+
+        </fieldset>
+        </div>
+    </div>

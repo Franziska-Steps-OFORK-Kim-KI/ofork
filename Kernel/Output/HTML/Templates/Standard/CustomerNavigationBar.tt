@@ -1,0 +1,65 @@
+# --
+# Kernel/Output/HTML/Templates/Standard/CustomerNavigationBar.tt
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: CustomerNavigationBar.tt,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<!-- start Notifications -->
+[% Data.Notification %]
+<!-- end Notifications -->
+<!-- start NavigationBar -->
+
+<style type="text/css">
+.navi-item {
+   background-color: #fffff;
+}
+.navi-item:hover {
+   background-color: #d9f8ea;
+   border-radius: 5px;
+}
+</style>
+
+<div id="Navigation">
+
+[% RenderBlockStart("Item") %]
+        <div class="OFORKnavi-item">
+            <a href="[% Env("Baselink") %][% Data.Link %]" accesskey="[% Data.AccessKey | html %]" title="[% Translate(Data.Description || Data.Name) | html %] ([% Data.AccessKey | html %])" [% Data.LinkOption %]>
+            <img src="[% Config("Frontend::WebPath") %]skins/Customer/default/img/[% Data.Image %]" border="0" width="40px" height="40px"/><br>
+            <p class="OFORKCustomerNavigation">[% Translate(Data.Name) | html %]</p>
+            </a>
+        </div>
+[% RenderBlockStart("ItemAreaSub") %]
+[% RenderBlockStart("ItemAreaSubItem") %]
+                <a class="[% Data.Class | html %]" href="[% Env("Baselink") %][% Data.Link %]" accesskey="[% Data.AccessKey | html %]" title="[% Translate(Data.Description || Data.Name) | html %] ([% Data.AccessKey | html %])"  [% Data.LinkOption %]>[% Translate(Data.Name) | html %]</a>
+[% RenderBlockEnd("ItemAreaSubItem") %]
+[% RenderBlockEnd("ItemAreaSub") %]
+[% RenderBlockEnd("Item") %]
+
+[% RenderBlockStart("Logout") %]
+        <div class="OFORKnavi-itemlogout">
+        <a id="LogoutButton" href="[% Env("Baselink") %]Action=Logout">
+        <img src="[% Config("Frontend::WebPath") %]skins/Customer/default/img/off.png" border="0" width="25px" height="25px"/><br>
+        </a>
+        </div>
+[% RenderBlockEnd("Logout") %]
+
+[% RenderBlockStart("Preferences") %]
+        <div class="OFORKnavi-itempreferences">
+        <a href="[% Env("Baselink") %]Action=CustomerPreferences" title="[% Translate("Edit personal preferences") | html %]">
+        <img src="[% Config("Frontend::WebPath") %]skins/Customer/default/img/gears.png" border="0" width="25px" height="25px"/><br>
+        </a>
+        </div>
+[% RenderBlockEnd("Preferences") %]
+        <div class="Clear"></div>
+
+</div>
+<div class="OFORKLinie"></div>
+<!-- end NavigationBar -->

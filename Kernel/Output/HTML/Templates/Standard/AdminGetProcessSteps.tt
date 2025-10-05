@@ -1,0 +1,93 @@
+# --
+# AdminGetProcessSteps.tt - provides HTML form for customer message
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# --
+# $Id: AdminGetProcessSteps.tt,v 1.2 2016/11/20 19:31:54 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+[% RenderBlockStart("SetFieldListsResult") %]
+
+<div id="SetFieldListsResult">
+
+    <fieldset class="TableLike">
+
+        <div id="FieldIsSet" style="margin-left:3%;margin-right:5px;padding:5px;margin-bottom:10px;">
+[% RenderBlockStart("FieldIsSetStep") %]
+            <div style="border: 1px solid #d9f8ea;border-radius: 3px;padding:5px;margin:3px;float:left;width:250px;background-color: #eeeeee;">[% Data.FieldIsSetStep | html %]</div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("FieldIsSetStep") %]                        
+
+[% RenderBlockStart("FieldIsSetStepRequired") %]
+            <div style="border: 1px solid #d9f8ea;border-radius: 3px;padding:5px;margin:3px;float:left;width:250px;background-color: #eeeeee;">[% Data.FieldIsSetStep | html %]</div>
+            <div style="float: left;margin-top: 1px;margin-left: -12px;color: black;position: relative;font-size: 11px;">
+                <i class="fa fa-star"></i>
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("FieldIsSetStepRequired") %]  
+        </div>
+
+    </fieldset>
+</div>
+[% RenderBlockEnd("SetFieldListsResult") %]
+
+
+[% RenderBlockStart("DynamicSetFieldListsResult") %]
+
+<div id="DynamicSetFieldListsResult">
+
+    <fieldset class="TableLike">
+
+        <div id="DynamicFieldIsSet" style="margin-left:3%;margin-right:5px;padding:5px;margin-bottom:10px;">
+[% RenderBlockStart("DynamicFieldIsSetStep") %]
+            <div style="border: 1px solid #d9f8ea;border-radius: 3px;padding:5px;margin:3px;float:left;width:250px;background-color: #eeeeee;">[% Data.DynamicFieldIsSetStep | html %]</div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("DynamicFieldIsSetStep") %]                        
+
+[% RenderBlockStart("DynamicFieldIsSetStepRequired") %]
+            <div style="border: 1px solid #d9f8ea;border-radius: 3px;padding:5px;margin:3px;float:left;width:250px;background-color: #eeeeee;">[% Data.DynamicFieldIsSetStep | html %]</div>
+            <div style="float: left;margin-top: 1px;margin-left: -12px;color: black;position: relative;font-size: 11px;">
+                <i class="fa fa-star"></i>
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("DynamicFieldIsSetStepRequired") %]    
+        </div>
+
+    </fieldset>
+</div>
+[% RenderBlockEnd("DynamicSetFieldListsResult") %]
+
+[% RenderBlockStart("ProcessTransition") %]
+    <fieldset class="TableLike">
+
+        <label style="margin-top: 10px;margin-left: 1%;">[% Data.Name | html %]:</label>
+        <div class="Field" style="background-color:#eeeeee;border-radius: 3px;margin-left: 17%;margin-top: 10px;">
+            [% Data.Value %]
+        </div>
+        <div class="Clear"></div>
+
+    </fieldset>
+[% RenderBlockEnd("ProcessTransition") %]   
+
+
+[% RenderBlockStart("ProcessStep") %]
+    <fieldset class="TableLike">
+
+        <label style="margin-top: 10px;margin-left: 1%;">[% Translate("Name") | html %]:</label>
+        <div class="Field" style="background-color:#eeeeee;border-radius: 3px;margin-left: 17%;margin-top: 10px;">
+            [% Data.Name %]
+        </div>
+        <div class="Clear"></div>
+
+        <label style="margin-top: 10px;margin-left: 1%;">[% Translate("Description") | html %]:</label>
+        <div class="Field" style="background-color:#eeeeee;border-radius: 3px;margin-left: 17%;margin-top: 10px;">
+            [% Data.Description %]
+        </div>
+        <div class="Clear"></div>
+
+    </fieldset>
+[% RenderBlockEnd("ProcessStep") %]   
+

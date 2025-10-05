@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ofork_config version="2.0" init="Framework">
+<Setting Name="Frontend::Module###AgentAppointmentResourceOverview" Required="0" Valid="1">
+    <Description Translatable="1">Frontend module registration for the agent interface.</Description>
+    <Navigation>Frontend::Agent::ModuleRegistration</Navigation>
+    <Value>
+        <Item ValueType="FrontendRegistration">
+            <Hash>
+                <Item Key="Group">
+                    <Array>
+                    </Array>
+                </Item>
+                <Item Key="GroupRo">
+                    <Array>
+                    </Array>
+                </Item>
+                <Item Key="Description" Translatable="1">Resource overview screen.</Item>
+                <Item Key="Title" Translatable="1">Resource Overview</Item>
+                <Item Key="NavBarName">Calendar</Item>
+            </Hash>
+        </Item>
+    </Value>
+</Setting>
+<Setting Name="Loader::Module::AgentAppointmentResourceOverview###004-CalendarResourcePlanning" Required="0" Valid="1">
+    <Description Translatable="1">Loader module registration for the agent interface.</Description>
+    <Navigation>Frontend::Agent::ModuleRegistration::Loader</Navigation>
+    <Value>
+        <Hash>
+            <Item Key="CSS">
+                <Array>
+                    <Item>thirdparty/fullcalendar-3.10.2/fullcalendar.min.css</Item>
+                    <Item>thirdparty/fullcalendar-scheduler-1.10.1/scheduler.min.css</Item>
+                    <Item>Core.AppointmentCalendar.css</Item>
+                    <Item>Core.AllocationList.css</Item>
+                </Array>
+            </Item>
+            <Item Key="JavaScript">
+                <Array>
+                    <Item>thirdparty/momentjs-2.29.4/moment.min.js</Item>
+                    <Item>thirdparty/fullcalendar-3.10.2/fullcalendar.min.js</Item>
+                    <Item>thirdparty/fullcalendar-scheduler-1.10.1/scheduler.min.js</Item>
+                    <Item>Core.Agent.AppointmentCalendar.js</Item>
+                    <Item>Core.UI.AllocationList.js</Item>
+                    <Item>Core.Agent.TableFilters.js</Item>
+                    <Item>thirdparty/clipboardjs-1.7.1/clipboard.min.js</Item>
+                </Array>
+            </Item>
+        </Hash>
+    </Value>
+</Setting>
+<Setting Name="Frontend::Navigation###AgentAppointmentResourceOverview###004-CalendarResourcePlanning" Required="0" Valid="1">
+    <Description Translatable="1">Main menu item registration.</Description>
+    <Navigation>Frontend::Agent::ModuleRegistration::MainMenu</Navigation>
+    <Value>
+        <Array>
+            <DefaultItem ValueType="FrontendNavigation">
+                <Hash>
+                </Hash>
+            </DefaultItem>
+            <Item>
+                <Hash>
+                    <Item Key="Group">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Description" Translatable="1">Resource overview page.</Item>
+                    <Item Key="Name" Translatable="1">Resource Overview</Item>
+                    <Item Key="Link">Action=AgentAppointmentResourceOverview</Item>
+                    <Item Key="LinkOption"></Item>
+                    <Item Key="NavBar">Calendar</Item>
+                    <Item Key="Type"></Item>
+                    <Item Key="Block">ItemArea</Item>
+                    <Item Key="AccessKey"></Item>
+                    <Item Key="Prio">7000</Item>
+                </Hash>
+            </Item>
+        </Array>
+    </Value>
+</Setting>
+<Setting Name="Frontend::Module###AgentAppointmentTeamList" Required="0" Valid="1">
+    <Description Translatable="1">Frontend module registration for the agent interface.</Description>
+    <Navigation>Frontend::Agent::ModuleRegistration</Navigation>
+    <Value>
+        <Item ValueType="FrontendRegistration">
+            <Hash>
+                <Item Key="Group">
+                    <Array>
+                    </Array>
+                </Item>
+                <Item Key="GroupRo">
+                    <Array>
+                    </Array>
+                </Item>
+                <Item Key="Description" Translatable="1">Resources list.</Item>
+                <Item Key="Title" Translatable="1">Team list</Item>
+                <Item Key="NavBarName"></Item>
+            </Hash>
+        </Item>
+    </Value>
+</Setting>
+<Setting Name="Frontend::Navigation###AgentAppointmentTeamList###004-CalendarResourcePlanning" Required="0" Valid="0">
+    <Description Translatable="1">Main menu item registration.</Description>
+    <Navigation>Frontend::Agent::ModuleRegistration::MainMenu</Navigation>
+    <Value>
+        <Array>
+            <DefaultItem ValueType="FrontendNavigation">
+                <Hash>
+                </Hash>
+            </DefaultItem>
+        </Array>
+    </Value>
+</Setting>
+<Setting Name="Frontend::Module###AgentAppointmentTeam" Required="0" Valid="1">
+    <Description Translatable="1">Frontend module registration for the agent interface.</Description>
+    <Navigation>Frontend::Agent::ModuleRegistration</Navigation>
+    <Value>
+        <Item ValueType="FrontendRegistration">
+            <Hash>
+                <Item Key="GroupRo">
+                    <Array>
+                    </Array>
+                </Item>
+                <Item Key="Group">
+                    <Array>
+                        <Item>admin</Item>
+                    </Array>
+                </Item>
+                <Item Key="Description" Translatable="1">Team management screen.</Item>
+                <Item Key="Title" Translatable="1">Manage Teams</Item>
+                <Item Key="NavBarName">Calendar</Item>
+            </Hash>
+        </Item>
+    </Value>
+</Setting>
+<Setting Name="Loader::Module::AgentAppointmentTeam###004-CalendarResourcePlanning" Required="0" Valid="1">
+    <Description Translatable="1">Loader module registration for the agent interface.</Description>
+    <Navigation>Frontend::Agent::ModuleRegistration::Loader</Navigation>
+    <Value>
+        <Hash>
+            <Item Key="JavaScript">
+                <Array>
+                    <Item>Core.Agent.AppointmentTeam.js</Item>
+                </Array>
+            </Item>
+        </Hash>
+    </Value>
+</Setting>
+<Setting Name="Frontend::Navigation###AgentAppointmentTeam###004-CalendarResourcePlanning" Required="0" Valid="1">
+    <Description Translatable="1">Main menu item registration.</Description>
+    <Navigation>Frontend::Agent::ModuleRegistration::MainMenu</Navigation>
+    <Value>
+        <Array>
+            <DefaultItem ValueType="FrontendNavigation">
+                <Hash>
+                </Hash>
+            </DefaultItem>
+            <Item>
+                <Hash>
+                    <Item Key="Group">
+                        <Array>
+                            <Item>admin</Item>
+                        </Array>
+                    </Item>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Description" Translatable="1">Team management.</Item>
+                    <Item Key="Name" Translatable="1">Manage Teams</Item>
+                    <Item Key="Link">Action=AgentAppointmentTeam</Item>
+                    <Item Key="LinkOption"></Item>
+                    <Item Key="NavBar">Calendar</Item>
+                    <Item Key="Type"></Item>
+                    <Item Key="Block">ItemArea</Item>
+                    <Item Key="AccessKey"></Item>
+                    <Item Key="Prio">11000</Item>
+                </Hash>
+            </Item>
+        </Array>
+    </Value>
+</Setting>
+<Setting Name="Frontend::Module###AgentAppointmentTeamUser" Required="0" Valid="1">
+    <Description Translatable="1">Frontend module registration for the agent interface.</Description>
+    <Navigation>Frontend::Agent::ModuleRegistration</Navigation>
+    <Value>
+        <Item ValueType="FrontendRegistration">
+            <Hash>
+                <Item Key="GroupRo">
+                    <Array>
+                    </Array>
+                </Item>
+                <Item Key="Group">
+                    <Array>
+                        <Item>admin</Item>
+                    </Array>
+                </Item>
+                <Item Key="Description" Translatable="1">Team agents management screen.</Item>
+                <Item Key="Title" Translatable="1">Manage Team Agents</Item>
+                <Item Key="NavBarName">Calendar</Item>
+            </Hash>
+        </Item>
+    </Value>
+</Setting>
+<Setting Name="Loader::Module::AgentAppointmentTeamUser###004-CalendarResourcePlanning" Required="0" Valid="1">
+    <Description Translatable="1">Loader module registration for the agent interface.</Description>
+    <Navigation>Frontend::Agent::ModuleRegistration::Loader</Navigation>
+    <Value>
+        <Hash>
+            <Item Key="JavaScript">
+                <Array>
+                    <Item>Core.Agent.AppointmentTeam.js</Item>
+                </Array>
+            </Item>
+        </Hash>
+    </Value>
+</Setting>
+<Setting Name="Frontend::Navigation###AgentAppointmentTeamUser###004-CalendarResourcePlanning" Required="0" Valid="1">
+    <Description Translatable="1">Main menu item registration.</Description>
+    <Navigation>Frontend::Agent::ModuleRegistration::MainMenu</Navigation>
+    <Value>
+        <Array>
+            <DefaultItem ValueType="FrontendNavigation">
+                <Hash>
+                </Hash>
+            </DefaultItem>
+            <Item>
+                <Hash>
+                    <Item Key="Group">
+                        <Array>
+                            <Item>admin</Item>
+                        </Array>
+                    </Item>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Description" Translatable="1">Manage team agents.</Item>
+                    <Item Key="Name" Translatable="1">Manage Team Agents</Item>
+                    <Item Key="Link">Action=AgentAppointmentTeamUser</Item>
+                    <Item Key="LinkOption"></Item>
+                    <Item Key="NavBar">Calendar</Item>
+                    <Item Key="Type"></Item>
+                    <Item Key="Block">ItemArea</Item>
+                    <Item Key="AccessKey"></Item>
+                    <Item Key="Prio">13000</Item>
+                </Hash>
+            </Item>
+        </Array>
+    </Value>
+</Setting>
+
+<Setting Name="Frontend::Module###AgentAppointmentDateCheck" Required="0" Valid="1">
+    <Description Translatable="1">Frontend module registration for the customer interface.</Description>
+    <Navigation>Frontend::Customer::ModuleRegistration</Navigation>
+    <Value>
+        <Item ValueType="FrontendRegistration">
+            <Hash>
+                <Item Key="Group">
+                    <Array>
+                    </Array>
+                </Item>
+                <Item Key="GroupRo">
+                    <Array>
+                    </Array>
+                </Item>
+                <Item Key="Description" Translatable="1">Appointment Date Check.</Item>
+                <Item Key="NavBarName">Calendar</Item>
+                <Item Key="Title" Translatable="1">Appointment Date Check</Item>
+            </Hash>
+        </Item>
+    </Value>
+</Setting>
+<Setting Name="Loader::Module::AgentAppointmentDateCheck###002-DateCheck" Required="0" Valid="1">
+    <Description Translatable="1">Loader module registration for the agent interface.</Description>
+    <Navigation>Frontend::Customer::ModuleRegistration::Loader</Navigation>
+    <Value>
+        <Hash>
+            <Item Key="JavaScript">
+                <Array>
+                    <Item>Core.Agent.AppointmentTeam.js</Item>
+                </Array>
+            </Item>
+        </Hash>
+    </Value>
+</Setting>
+
+</ofork_config>

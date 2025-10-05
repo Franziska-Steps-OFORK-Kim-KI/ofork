@@ -1,0 +1,103 @@
+# --
+# AgentTicketTimeTrackingUnterschrift.tt - html for configurtion item overview table
+# Copyright (C) 2010-2018 einraumwerk, http://einraumwerk.de/
+# --
+# $Id: AgentTicketTimeTrackingUnterschrift.tt,v 1.1 2018/12/02 08:07:36 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+    <style type="text/css">
+        .m-signature-pad--body canvas {
+            position: relative;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 250px;
+            border: 1px solid #CCCCCC;
+        }    
+    </style>
+
+    <div class="LayoutPopup ARIARoleMain">
+        <div class="Header">
+            <h1>
+                [% Translate("Time tracking") | html %]
+            </h1>
+            <p class="AsteriskExplanation">[% Translate("All fields marked with an asterisk (*) are mandatory.") | html %]</p>
+
+            <p>
+                <a class="CancelClosePopup" href="#">[% Translate("Finish & close") | html %]</a>
+            </p>
+        </div>
+        <div class="Content">
+            <div class="WidgetSimple Expanded">
+                <div class="Header">
+                    <h2>[% Translate("Unterschrift erfassen") | html %]</h2>
+                </div>
+                <div class="Content">
+
+                    <form class="Validate PreventMultipleSubmits" action="[% Env("CGIHandle") %]" method="POST" name="DAFORM" enctype="multipart/form-data" target="_self">
+                        <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                        <input type="hidden" name="Subaction" value="UnterschriftSave"/>
+                        <input type="hidden" name="TicketID" value="[% Data.TicketID | html %]"/>
+                        <input type="hidden" name="ID" value="[% Data.ID | html %]"/>
+
+                        [% Translate("Name") | html %] <input type="text" name="Filename" id="Filename" value="[% Data.Filename | html %]"/>
+
+                        <div id="signature-pad" class="m-signature-pad">
+                            <div class="m-signature-pad--body">
+                                <canvas id="CanvasID"></canvas>
+                                <input type="hidden" name="FileUpload" id="FileUpload" value="">
+                            </div>
+                        </div>        
+                        <button type="submit" class="w3-btn w3-blue-grey" id="signaturePadSend">[% Translate("Send") | html %]</button>
+                        <button type="button" class="w3-btn w3-black" id="signaturePadClear">[% Translate("Delete") | html %]</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+
+var wrapper = document.getElementById("signature-pad"),
+   canvas = wrapper.querySelector("canvas"),
+   signaturePad;
+
+    function resizeCanvas() {
+        var oldContent = signaturePad.toData();
+        var ratio =  Math.max(window.devicePixelRatio || 1, 1);
+        canvas.width = canvas.offsetWidth * ratio;
+        canvas.height = canvas.offsetHeight * ratio;
+        canvas.getContext("2d").scale(ratio, ratio);
+        signaturePad.clear();
+        signaturePad.fromData(oldContent);
+    }
+
+    $('#signaturePadClear').bind('click', function () {
+        signaturePad.clear();
+    });
+
+    $('#signaturePadSend').bind('click', function () {
+
+      var canvas = document.getElementById("CanvasID");
+      var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+      document.getElementById('FileUpload').value = image;
+
+   });
+
+var signaturePad = new SignaturePad(canvas);
+signaturePad.minWidth = 1; //minimale Breite des Stiftes
+signaturePad.maxWidth = 5; //maximale Breite des Stiftes
+signaturePad.penColor = "#000000"; //Stiftfarbe
+signaturePad.backgroundColor = "#FFFFFF"; //Hintergrundfarbe
+
+window.onresize = resizeCanvas;
+resizeCanvas();
+
+//]]></script>
+[% END %]

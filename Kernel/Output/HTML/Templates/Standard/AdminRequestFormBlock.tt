@@ -1,0 +1,191 @@
+# --
+# AdminRequestFormBlock.tt - provides HTML form for AdminSLA
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# --
+# $Id: AdminRequestFormBlock.tt,v 1.2 2017/02/02 10:05:58 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+[% RenderBlockStart("OverviewFelderList") %]
+<div class="WidgetSimple" style="background-color:#F9E2E2">
+    <div class="Content" style="background-color:#F9E2E2">
+
+        <fieldset class="TableLike AdminRequestInternalListFieldAddOFORK">
+
+[% RenderBlockStart("OverviewListFieldsRow") %]
+
+[% RenderBlockStart("OverviewListFieldsMultiselectRequired") %]
+            <label class="Mandatory" for="[% Data.FieldName | html %]"><span style="color:red">[% Data.ungueltig | html %]</span> <span class="Marker">*</span> <span title="[% Translate(Data.ToolTip) | html %]">[% Translate(Data.FieldLabeling) | html %]:</span></label>
+            <div class="Field">
+                [% Data.FieldNameStrg %]<a class="fa fa-refresh" title="[% Translate("edit") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestEdit;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];RequestFormBlockID=[% Data.FeldAktuellBlockID | html %];RequestFormValueID=[% Data.RequestFormValue | html %]">&nbsp;&nbsp;</a>
+                <input type="text" name="OrderBlock[% Data.FeldAktuellBlockID | html %]" id="OrderBlock[% Data.FeldAktuellBlockID | html %]" value="[% Data.Order | html %]" size="1"/>
+                <a class="IconNotReady" title="[% Translate("Delete") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestFieldBlockDelete;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];RequestFormBlockID=[% Data.FeldAktuellBlockID | html %];RequestFormValueID=[% Data.RequestFormValue | html %]">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                <div id="[% Data.FieldName | html %]Error" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                <div id="[% Data.FieldName | html %]ServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFieldsMultiselectRequired") %]
+[% RenderBlockStart("OverviewListFieldsMultiselect") %]
+            <label for="[% Data.FieldName | html %]"><span style="color:red">[% Data.ungueltig | html %]</span> <span title="[% Translate(Data.ToolTip) | html %]">[% Translate(Data.FieldLabeling) | html %]:</span></label>
+            <div class="Field">
+                [% Data.FieldNameStrg %]<a class="fa fa-refresh" title="[% Translate("edit") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestEdit;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];RequestFormBlockID=[% Data.FeldAktuellBlockID | html %];RequestFormValueID=[% Data.RequestFormValue | html %]">&nbsp;&nbsp;</a>
+                <input type="text" name="OrderBlock[% Data.FeldAktuellBlockID | html %]" id="OrderBlock[% Data.FeldAktuellBlockID | html %]" value="[% Data.Order | html %]" size="1"/>
+                <a class="IconNotReady" title="[% Translate("Delete") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestFieldBlockDelete;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];RequestFormBlockID=[% Data.FeldAktuellBlockID | html %];RequestFormValueID=[% Data.RequestFormValue | html %]">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFieldsMultiselect") %]
+
+[% RenderBlockStart("OverviewListFieldsDropdownRequired") %]
+            <label class="Mandatory" for="[% Data.FieldName | html %]"><span style="color:red">[% Data.ungueltig | html %]</span> <span class="Marker">*</span> <span title="[% Translate(Data.ToolTip) | html %]">[% Translate(Data.FieldLabeling) | html %]:</span></label>
+            <div class="Field">
+                [% Data.FieldNameStrg %]<a class="fa fa-refresh" title="[% Translate("edit") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestEdit;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];RequestFormBlockID=[% Data.FeldAktuellBlockID | html %];RequestFormValueID=[% Data.RequestFormValue | html %]">&nbsp;&nbsp;</a>
+                <input type="text" name="OrderBlock[% Data.FeldAktuellBlockID | html %]" id="OrderBlock[% Data.FeldAktuellBlockID | html %]" value="[% Data.Order | html %]" size="1"/>
+                <a class="IconNotReady" title="[% Translate("Delete") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestFieldBlockDelete;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];RequestFormBlockID=[% Data.FeldAktuellBlockID | html %];RequestFormValueID=[% Data.RequestFormValue | html %]">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                <div id="[% Data.FieldName | html %]Error" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                <div id="[% Data.FieldName | html %]ServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFieldsDropdownRequired") %]
+[% RenderBlockStart("OverviewListFieldsDropdown") %]
+            <label for="[% Data.FieldName | html %]"><span style="color:red">[% Data.ungueltig | html %]</span> <span title="[% Translate(Data.ToolTip) | html %]">[% Translate(Data.FieldLabeling) | html %]:</span></label>
+            <div class="Field">
+                [% Data.FieldNameStrg %]<a class="fa fa-refresh" title="[% Translate("edit") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestEdit;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];RequestFormBlockID=[% Data.FeldAktuellBlockID | html %];RequestFormValueID=[% Data.RequestFormValue | html %]">&nbsp;&nbsp;</a>
+                <input type="text" name="OrderBlock[% Data.FeldAktuellBlockID | html %]" id="OrderBlock[% Data.FeldAktuellBlockID | html %]" value="[% Data.Order | html %]" size="1"/>
+                <a class="IconNotReady" title="[% Translate("Delete") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestFieldBlockDelete;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];RequestFormBlockID=[% Data.FeldAktuellBlockID | html %];RequestFormValueID=[% Data.RequestFormValue | html %]">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFieldsDropdown") %]
+
+[% RenderBlockStart("OverviewListFieldsTextRequired") %]
+            <label class="Mandatory" for="[% Data.FieldName | html %]"><span style="color:red">[% Data.ungueltig | html %]</span> <span class="Marker">*</span> <span title="[% Translate(Data.ToolTip) | html %]">[% Translate(Data.FieldLabeling) | html %]:</span></label>
+            <div class="Field">
+                <input type="text" name="[% Data.FieldName | html %]" id="[% Data.FieldName | html %]" value="[% Data.FeldStandardwert | html %]"><a class="fa fa-refresh" title="[% Translate("edit") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestEdit;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];RequestFormBlockID=[% Data.FeldAktuellBlockID | html %];RequestFormValueID=[% Data.RequestFormValue | html %]">&nbsp;&nbsp;</a>
+                <input type="text" name="OrderBlock[% Data.FeldAktuellBlockID | html %]" id="OrderBlock[% Data.FeldAktuellBlockID | html %]" value="[% Data.Order | html %]" size="1"/>
+                <a class="IconNotReady" title="[% Translate("Delete") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestFieldBlockDelete;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];RequestFormBlockID=[% Data.FeldAktuellBlockID | html %];RequestFormValueID=[% Data.RequestFormValue | html %]">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                <div id="[% Data.FieldName | html %]Error" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                <div id="[% Data.FieldName | html %]ServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFieldsTextRequired") %]
+[% RenderBlockStart("OverviewListFieldsText") %]
+            <label for="[% Data.FieldName | html %]"><span style="color:red">[% Data.ungueltig | html %]</span> <span title="[% Translate(Data.ToolTip) | html %]">[% Translate(Data.FieldLabeling) | html %]:</span></label>
+            <div class="Field">
+                <input type="text" name="[% Data.FieldName | html %]" id="[% Data.FieldName | html %]" value="[% Data.FeldStandardwert | html %]"/><a class="fa fa-refresh" title="[% Translate("edit") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestEdit;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];RequestFormBlockID=[% Data.FeldAktuellBlockID | html %];RequestFormValueID=[% Data.RequestFormValue | html %]">&nbsp;&nbsp;</a>
+                <input type="text" name="OrderBlock[% Data.FeldAktuellBlockID | html %]" id="OrderBlock[% Data.FeldAktuellBlockID | html %]" value="[% Data.Order | html %]" size="1"/>
+                <a class="IconNotReady" title="[% Translate("Delete") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestFieldBlockDelete;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];RequestFormBlockID=[% Data.FeldAktuellBlockID | html %];RequestFormValueID=[% Data.RequestFormValue | html %]">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFieldsText") %]
+
+[% RenderBlockStart("OverviewListFieldsTextAreaRequired") %]
+            <label class="Mandatory" for="[% Data.FieldName | html %]"><span style="color:red">[% Data.ungueltig | html %]</span> <span class="Marker">*</span> <span title="[% Translate(Data.ToolTip) | html %]">[% Translate(Data.FieldLabeling) | html %]:</span></label>
+            <div class="Field">
+                <textarea id="[% Data.FieldName | html %]" rows="[% Data.FeldRows | html %]" cols="[% Data.FeldCols | html %]" name="[% Data.FieldName | html %]">[% Data.FeldStandardwert | html %]</textarea><a class="fa fa-refresh" title="[% Translate("edit") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestEdit;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];RequestFormBlockID=[% Data.FeldAktuellBlockID | html %];RequestFormValueID=[% Data.RequestFormValue | html %]">&nbsp;&nbsp;</a>
+                <input type="text" name="OrderBlock[% Data.FeldAktuellBlockID | html %]" id="OrderBlock[% Data.FeldAktuellBlockID | html %]" value="[% Data.Order | html %]" size="1"/>
+                <a class="IconNotReady" title="[% Translate("Delete") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestFieldBlockDelete;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];RequestFormBlockID=[% Data.FeldAktuellBlockID | html %];RequestFormValueID=[% Data.RequestFormValue | html %]">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                <div id="[% Data.FieldName | html %]Error" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                <div id="[% Data.FieldName | html %]ServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFieldsTextAreaRequired") %]
+[% RenderBlockStart("OverviewListFieldsTextArea") %]
+            <label for="[% Data.FieldName | html %]"><span style="color:red">[% Data.ungueltig | html %]</span> <span title="[% Translate(Data.ToolTip) | html %]">[% Translate(Data.FieldLabeling) | html %]:</span></label>
+            <div class="Field">
+                <textarea id="[% Data.FieldName | html %]" rows="[% Data.FeldRows | html %]" cols="[% Data.FeldCols | html %]" name="[% Data.FieldName | html %]">[% Data.FeldStandardwert | html %]</textarea><a class="fa fa-refresh" title="[% Translate("edit") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestEdit;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];RequestFormBlockID=[% Data.FeldAktuellBlockID | html %];RequestFormValueID=[% Data.RequestFormValue | html %]">&nbsp;&nbsp;</a>
+                <input type="text" name="OrderBlock[% Data.FeldAktuellBlockID | html %]" id="OrderBlock[% Data.FeldAktuellBlockID | html %]" value="[% Data.Order | html %]" size="1"/>
+                <a class="IconNotReady" title="[% Translate("Delete") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestFieldBlockDelete;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];RequestFormBlockID=[% Data.FeldAktuellBlockID | html %];RequestFormValueID=[% Data.RequestFormValue | html %]">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFieldsTextArea") %]
+
+[% RenderBlockStart("OverviewListFieldsCheckboxRequired") %]
+            <label class="Mandatory" for="[% Data.FieldName | html %]"><span style="color:red">[% Data.ungueltig | html %]</span> <span class="Marker">*</span> <span title="[% Translate(Data.ToolTip) | html %]">[% Translate(Data.FieldLabeling) | html %]:</span></label>
+            <div class="Field">
+                <input type="checkbox" name="[% Data.FieldName | html %]" id="[% Data.FieldName | html %]" value="[% Data.FeldStandardwert | html %]" [% Data.FeldChecked | html %]/><a class="fa fa-refresh" title="[% Translate("edit") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestEdit;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];RequestFormBlockID=[% Data.FeldAktuellBlockID | html %];RequestFormValueID=[% Data.RequestFormValue | html %]">&nbsp;&nbsp;</a>
+                <input type="text" name="OrderBlock[% Data.FeldAktuellBlockID | html %]" id="OrderBlock[% Data.FeldAktuellBlockID | html %]" value="[% Data.Order | html %]" size="1"/>
+                <a class="IconNotReady" title="[% Translate("Delete") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestFieldBlockDelete;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];RequestFormBlockID=[% Data.FeldAktuellBlockID | html %];RequestFormValueID=[% Data.RequestFormValue | html %]">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                <div id="[% Data.FieldName | html %]Error" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                <div id="[% Data.FieldName | html %]ServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFieldsCheckboxRequired") %]
+[% RenderBlockStart("OverviewListFieldsCheckbox") %]
+            <label for="[% Data.FieldName | html %]"><span style="color:red">[% Data.ungueltig | html %]</span> <span title="[% Translate(Data.ToolTip) | html %]">[% Translate(Data.FieldLabeling) | html %]:</span></label>
+            <div class="Field">
+                <input type="checkbox" name="[% Data.FieldName | html %]" id="[% Data.FieldName | html %]" value="[% Data.FeldStandardwert | html %]" [% Data.FeldChecked | html %]/><a class="fa fa-refresh" title="[% Translate("edit") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestEdit;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];RequestFormBlockID=[% Data.FeldAktuellBlockID | html %];RequestFormValueID=[% Data.RequestFormValue | html %]">&nbsp;&nbsp;</a>
+                <input type="text" name="OrderBlock[% Data.FeldAktuellBlockID | html %]" id="OrderBlock[% Data.FeldAktuellBlockID | html %]" value="[% Data.Order | html %]" size="1"/>
+                <a class="IconNotReady" title="[% Translate("Delete") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestFieldBlockDelete;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];RequestFormBlockID=[% Data.FeldAktuellBlockID | html %];RequestFormValueID=[% Data.RequestFormValue | html %]">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFieldsCheckbox") %]
+
+[% RenderBlockStart("OverviewListFieldsDateRequired") %]
+            <label class="Mandatory" for="[% Data.FieldName | html %]"><span style="color:red">[% Data.ungueltig | html %]</span> <span class="Marker">*</span> <span title="[% Translate(Data.ToolTip) | html %]">[% Translate(Data.FieldLabeling) | html %]:</span></label>
+            <div class="Field">
+                [% Data.FieldNameString %]<a class="fa fa-refresh" title="[% Translate("edit") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestEdit;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];RequestFormBlockID=[% Data.FeldAktuellBlockID | html %];RequestFormValueID=[% Data.RequestFormValue | html %]">&nbsp;&nbsp;</a>
+                <input type="text" name="OrderBlock[% Data.FeldAktuellBlockID | html %]" id="OrderBlock[% Data.FeldAktuellBlockID | html %]" value="[% Data.Order | html %]" size="1"/>
+                <a class="IconNotReady" title="[% Translate("Delete") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestFieldBlockDelete;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];RequestFormBlockID=[% Data.FeldAktuellBlockID | html %];RequestFormValueID=[% Data.RequestFormValue | html %]">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> [% Data.StartDatumChecked | html %][% Data.WvlDatumChecked | html %][% Data.OneYearChecked | html %]
+                <div id="[% Data.FieldName | html %]Error" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                <div id="[% Data.FieldName | html %]ServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFieldsDateRequired") %]
+[% RenderBlockStart("OverviewListFieldsDate") %]
+            <label for="[% Data.FieldName | html %]"><span style="color:red">[% Data.ungueltig | html %]</span> <span title="[% Translate(Data.ToolTip) | html %]">[% Translate(Data.FieldLabeling) | html %]:</span></label>
+            <div class="Field">
+                [% Data.FieldNameString %]<a class="fa fa-refresh" title="[% Translate("edit") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestEdit;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];RequestFormBlockID=[% Data.FeldAktuellBlockID | html %];RequestFormValueID=[% Data.RequestFormValue | html %]">&nbsp;&nbsp;</a>
+                <input type="text" name="OrderBlock[% Data.FeldAktuellBlockID | html %]" id="OrderBlock[% Data.FeldAktuellBlockID | html %]" value="[% Data.Order | html %]" size="1"/>
+                <a class="IconNotReady" title="[% Translate("Delete") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestFieldBlockDelete;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];RequestFormBlockID=[% Data.FeldAktuellBlockID | html %];RequestFormValueID=[% Data.RequestFormValue | html %]">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> [% Data.StartDatumChecked | html %][% Data.WvlDatumChecked | html %][% Data.OneYearChecked | html %]
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFieldsDate") %]
+
+[% RenderBlockStart("OverviewListFieldsDateShortRequired") %]
+                                    <label class="Mandatory" for="[% Data.FieldName | html %]"><span style="color:red">[% Data.ungueltig | html %]</span> <span class="Marker">*</span> <span title="[% Translate(Data.ToolTip) | html %]">[% Translate(Data.FieldLabeling) | html %]:</span></label>
+                                    <div class="Field">
+                                        [% Data.FieldNameString %]<a class="fa fa-refresh" title="[% Translate("edit") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestEdit;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];">&nbsp;&nbsp;</a>
+                                        <input type="text" name="Order[% Data.FeldAktuellID | html %]" id="Order[% Data.FeldAktuellID | html %]" value="[% Data.Order | html %]" size="1"/>
+                                        <a class="IconNotReady" title="[% Translate("Delete") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestFieldDelete;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> [% Data.StartDatumChecked | html %][% Data.WvlDatumChecked | html %][% Data.OneYearChecked | html %]
+                                        <div id="[% Data.FieldName | html %]Error" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                                        <div id="[% Data.FieldName | html %]ServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                                    </div>
+                                    <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFieldsDateShortRequired") %]
+[% RenderBlockStart("OverviewListFieldsDateShort") %]
+                                    <label for="[% Data.FieldName | html %]"><span style="color:red">[% Data.ungueltig | html %]</span> <span title="[% Translate(Data.ToolTip) | html %]">[% Translate(Data.FieldLabeling) | html %]:</span></label>
+                                    <div class="Field">
+                                        [% Data.FieldNameString %]<a class="fa fa-refresh" title="[% Translate("edit") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestEdit;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];">&nbsp;&nbsp;</a>
+                                        <input type="text" name="Order[% Data.FeldAktuellID | html %]" id="Order[% Data.FeldAktuellID | html %]" value="[% Data.Order | html %]" size="1"/>
+                                        <a class="IconNotReady" title="[% Translate("Delete") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestFieldDelete;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> [% Data.StartDatumChecked | html %][% Data.WvlDatumChecked | html %][% Data.OneYearChecked | html %]
+                                    </div>
+                                    <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFieldsDateShort") %]
+
+[% RenderBlockStart("OverviewListFieldsHeadline") %]
+            <div class="LightRowHeadlineRequestOFORK Header">
+                [% Data.Headline %]
+                [% Data.Description %]
+            </div>
+            <a class="fa fa-refresh"  style="margin-left:210px;margin-bottom:12px;" title="[% Translate("edit") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestEdit;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];RequestFormBlockID=[% Data.FeldAktuellBlockID | html %];RequestFormValueID=[% Data.RequestFormValue | html %]">&nbsp;&nbsp;</a>
+            <input type="text" name="OrderBlock[% Data.FeldAktuellBlockID | html %]" id="OrderBlock[% Data.FeldAktuellBlockID | html %]" value="[% Data.Order | html %]" size="1"/>
+            <a class="IconNotReady" title="[% Translate("Delete") | html %]" href="[% Env("Baselink") %]Action=AdminRequestForm;Subaction=RequestFieldBlockDelete;RequestID=[% Data.RequestID | html %];RequestFormID=[% Data.FeldAktuellID | html %];RequestFormBlockID=[% Data.FeldAktuellBlockID | html %];RequestFormValueID=[% Data.RequestFormValue | html %]">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+            <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFieldsHeadline") %]
+
+[% RenderBlockEnd("OverviewListFieldsRow") %]
+
+            <div class="Field SpacingTop">
+[% RenderBlockStart("OverviewListFieldsRequestFormIDs") %]
+                <input type="hidden" name="RequestFormIDsBlock" id="RequestFormIDsBlock" value="[% Data.RequestFormIDs | html %]"/>
+[% RenderBlockEnd("OverviewListFieldsRequestFormIDs") %]
+            </div>
+            <div class="Clear"></div>
+
+        </fieldset>
+    </div>
+</div>
+<div class="Clear"></div>
+[% RenderBlockEnd("OverviewFieldsList") %]

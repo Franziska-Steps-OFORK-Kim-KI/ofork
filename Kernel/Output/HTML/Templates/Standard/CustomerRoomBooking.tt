@@ -1,0 +1,159 @@
+# --
+# Kernel/Output/HTML/Templates/Standard/CustomerRoomBooking.tt
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# --
+# $Id: CustomerRoomBooking.tt,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<div id="MainBox" class="TicketView ARIARoleMain [% Config("Ticket::Frontend::CustomerTicketOverviewSortable") %] ">
+[% RenderBlockStart("Filled") %]
+    <div class="OFORKTicketOverviewMenuDiv">
+        <ul class="Tabs">
+[% RenderBlockStart("FilterHeader") %]
+            <li class="OFORKTicketOverviewTab [% Data.ClassA | html %]">
+                <a href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=[% Env("Subaction") %];Filter=[% Data.Filter | uri %];SortBy=[% Data.SortBy | uri %];OrderBy=[% Data.OrderBy | uri %][% Data.CustomerIDs %];">
+                    [% Translate("Bookingsystem rooms") | html %] ([% Data.Count | html %])
+                </a>
+            </li>
+[% RenderBlockEnd("FilterHeader") %]
+        [% IF Data.CustomerIDStrg %]
+            <li>
+                [% Data.CustomerIDStrg %]
+            </li>
+        [% END %]
+        </ul>
+
+        <div class="Tabs Pagination">
+            [% Data.SiteNavBar %]
+        </div>
+        <div class="Clear"></div>
+    </div>
+    <div class="Content">
+        <table class="Overview OFORKCustomerTicketOverview">
+            <thead>
+                <tr>
+                    <th class="OFORKOverviewSeen">
+                    <a href="#"></a>
+                    </th>
+                    <th class="Room [% Data.RoomSort | uri %]">
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=[% Env("Subaction") %];SortBy=Room;OrderBy=[% Data.OrderBy | uri %];Filter=[% Data.Filter | uri %]">
+                            [% Translate("Room") | html %]
+                        </a>
+                    </th>
+                    <th class="Category [% Data.CategorySort | uri %]">
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=[% Env("Subaction") %];SortBy=Category;OrderBy=[% Data.OrderBy | uri %];Filter=[% Data.Filter | uri %]">
+                            [% Translate("Category") | html %]
+                        </a>
+                    </th>
+                    <th class="PostCode [% Data.PostCodeSort | uri %]">
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=[% Env("Subaction") %];SortBy=PostCode;OrderBy=[% Data.OrderBy | uri %];Filter=[% Data.Filter | uri %]">
+                            [% Translate("Post Code") | html %]
+                        </a>
+                    </th>
+                    <th class="City [% Data.CitySort | uri %]">
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=[% Env("Subaction") %];SortBy=City;OrderBy=[% Data.OrderBy | uri %];Filter=[% Data.Filter | uri %]">
+                            [% Translate("City") | html %]
+                        </a>
+                    </th>
+                    <th class="Persons [% Data.PersonsSort | uri %]">
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=[% Env("Subaction") %];SortBy=Persons;OrderBy=[% Data.OrderBy | uri %];Filter=[% Data.Filter | uri %]">
+                            [% Translate("Persons") | html %]
+                        </a>
+                    </th>
+                     <th class="Equipment">
+                            <a href="#">[% Translate("Equipment") | html %]</a>
+                      </th>
+                 </tr>
+            </thead>
+            <tbody>
+[% RenderBlockStart("Record") %]
+                <tr class="MasterAction">
+[% RenderBlockStart("RoomIcon") %]
+                    <td class="Image">
+						<img src="data:image/png;base64,[% Data.Image | html %]" width="65px">
+					</td>
+[% RenderBlockEnd("RoomIcon") %]
+[% RenderBlockStart("NoRoomIcon") %]
+                    <td class="Image">
+						<img src="[% Config("Frontend::ImagePath") %]meeting-room.png" border="0" width="40px"/>
+					</td>
+[% RenderBlockEnd("NoRoomIcon") %]
+                    <td class="Room">
+                        <a href="[% Env("Baselink") %]Action=CustomerBookRoom;RoomID=[% Data.RoomID | uri %]" class="MasterActionLink">[% Data.Room | html %]</a>
+                    </td>
+                    <td class="Category">[% Data.CategoryName | html %]</td>
+                    <td class="PostCode">[% Data.PostCode | html %]</td>
+                    <td class="City">[% Data.City | html %]</td>
+                    <td class="Persons">[% Data.Persons | html %]</td>
+                    <td class="Equipment">[% Data.EquipmentInventary %]</td>
+                </tr>
+[% RenderBlockEnd("Record") %]
+            </tbody>
+        </table>
+    </div>
+[% RenderBlockStart("FilterFooter") %]
+    <div id="BottomActionRow" class="ActionRow BigButtons">
+        <ul class="Tabs Filter">
+[% RenderBlockStart("FilterFooterItem") %]
+            <li class="[% Data.ClassLI | html %]">
+                <a class="[% Data.ClassA | html %]" href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=[% Env("Subaction") %];Filter=[% Data.Filter | uri %];SortBy=[% Data.SortBy | uri %];OrderBy=[% Data.OrderBy | uri %];">
+                    [% Translate(Data.Name) | html %] ([% Data.Count | html %])
+                </a>
+            </li>
+[% RenderBlockEnd("FilterFooterItem") %]
+            <li class="Clear"></li>
+        </ul>
+        <div class="Tabs Pagination">
+            [% Data.SiteNavBar %]
+        </div>
+        <div class="Clear"></div>
+    </div>
+[% RenderBlockEnd("FilterFooter") %]
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">
+    $('#CustomerIDs').on('change.CustomerIDs', function (Event) {
+        var QueryString = '[% Env("Baselink") %]Action=[% Env("Action") %];[% Data.Link %]';
+
+        // Include customer selection
+        if ($(this).val()) {
+            $.each($(this).val(), function (Key, Value) {
+                QueryString += 'CustomerIDs=' + encodeURIComponent(Value) + ';';
+            })
+        }
+
+        // Redirect
+        window.location.href = QueryString;
+
+        return false;
+    });
+</script>
+[% END %]
+[% RenderBlockEnd("Filled") %]
+
+[% RenderBlockStart("Empty") %]
+    <div class="Placeholder">
+[% RenderBlockStart("EmptyDefault") %]
+        <h2>[% Translate("Welcome!") | html %]</h2>
+[% RenderBlockStart("EmptyDefaultButton") %]
+        <p>
+            [% Translate("Please click the button below to create your first ticket.") | html %]
+        </p>
+        <a class="Button" href="[% Env("Baselink") %]Action=CustomerRequest">[% Translate("Create your first ticket") | html %]</a>
+[% RenderBlockEnd("EmptyDefaultButton") %]
+[% RenderBlockEnd("EmptyDefault") %]
+[% RenderBlockStart("EmptyCustom") %]
+        <h2>[% Translate(Data.Title) | html %]</h2>
+        <p>
+            [% Translate(Data.Text) | html %]
+        </p>
+[% RenderBlockStart("EmptyCustomButton") %]
+        <a class="Button" href="[% Env("Baselink") %]Action=CustomerRequest">[% Translate(Data.Button) | html %]</a>
+[% RenderBlockEnd("EmptyCustomButton") %]
+[% RenderBlockEnd("EmptyCustom") %]
+    </div>
+[% RenderBlockEnd("Empty") %]
+</div>

@@ -1,0 +1,142 @@
+# --
+# Kernel/GenericInterface/Operation/Session/SessionCreate.pm
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: SessionCreate.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+package Kernel::GenericInterface::Operation::Session::SessionCreate;
+
+use strict;
+use warnings;
+
+use Kernel::System::VariableCheck qw(IsStringWithData IsHashRefWithData);
+
+use parent qw(
+    Kernel::GenericInterface::Operation::Common
+    Kernel::GenericInterface::Operation::Session::Common
+);
+
+our $ObjectManagerDisabled = 1;
+
+=head1 NAME
+
+Kernel::GenericInterface::Operation::Session::SessionCreate - GenericInterface Session Create Operation backend
+
+=head1 PUBLIC INTERFACE
+
+=head2 new()
+
+usually, you want to create an instance of this
+by using Kernel::GenericInterface::Operation->new();
+
+=cut
+
+sub new {
+    my ( $Type, %Param ) = @_;
+
+    my $Self = {};
+    bless( $Self, $Type );
+
+    # check needed objects
+    for my $Needed (
+        qw(DebuggerObject WebserviceID)
+        )
+    {
+        if ( !$Param{$Needed} ) {
+
+            return {
+                Success      => 0,
+                ErrorMessage => "Got no $Needed!"
+            };
+        }
+
+        $Self->{$Needed} = $Param{$Needed};
+    }
+
+    return $Self;
+}
+
+=head2 Run()
+
+Retrieve a new session id value.
+
+    my $Result = $OperationObject->Run(
+        Data => {
+            UserLogin         => 'Agent1',          # optional, provide UserLogin or CustomerUserLogin
+            # or
+            CustomerUserLogin => 'Customer1',       # optional, provide UserLogin or CustomerUserLogin
+            Password          => 'some password',   # plain text password
+        },
+    );
+
+    $Result = {
+        Success      => 1,                                # 0 or 1
+        ErrorMessage => '',                               # In case of an error
+        Data         => {
+            SessionID => $SessionID,
+        },
+    };
+
+=cut
+
+sub Run {
+    my ( $Self, %Param ) = @_;
+
+    # check needed stuff
+    if ( !IsHashRefWithData( $Param{Data} ) ) {
+
+        return $Self->ReturnError(
+            ErrorCode    => 'SessionCreate.MissingParameter',
+            ErrorMessage => "SessionCreate: The request is empty!",
+        );
+    }
+
+    for my $Needed (qw( Password )) {
+        if ( !$Param{Data}->{$Needed} ) {
+
+            return $Self->ReturnError(
+                ErrorCode    => 'SessionCreate.MissingParameter',
+                ErrorMessage => "SessionCreate: $Needed parameter is missing!",
+            );
+        }
+    }
+
+    my $SessionID = $Self->CreateSessionID(
+        %Param,
+    );
+
+    if ( !$SessionID ) {
+
+        return $Self->ReturnError(
+            ErrorCode    => 'SessionCreate.AuthFail',
+            ErrorMessage => "SessionCreate: Authorization failing!",
+        );
+    }
+
+    return {
+        Success => 1,
+        Data    => {
+            SessionID => $SessionID,
+        },
+    };
+}
+
+1;
+
+=head1 TERMS AND CONDITIONS
+
+This software is part of the OFORK project (L<https://o-fork.de/>).
+
+This software comes with ABSOLUTELY NO WARRANTY. For details, see
+the enclosed file COPYING for license information (AGPL). If you
+did not receive this file, see L<http://www.gnu.org/licenses/agpl.txt>.
+
+=cut

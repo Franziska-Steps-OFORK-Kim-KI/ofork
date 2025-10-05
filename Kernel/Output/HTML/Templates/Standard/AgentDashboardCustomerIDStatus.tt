@@ -1,0 +1,68 @@
+# --
+# Kernel/Output/HTML/Templates/Standard/AgentDashboardCustomerIDStatus.tt
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: AgentDashboardCustomerIDStatus.tt,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+
+<fieldset class="TableLike FixedLabel CustomerUserInformationOFORK">
+
+[% RenderBlockStart("ContentSmallCustomerIDStatusEscalatedTickets") %]
+    <label>[% Translate("Escalated tickets") | html %]:</label>
+    <div class="Field">
+        <a href="[% Env("Baselink") %]Action=AgentTicketSearch;Subaction=Search;EscalationTimeSearchType=TimePoint;TicketEscalationTimePointStart=Before;TicketEscalationTimePointFormat=minute;TicketEscalationTimePoint=1;CustomerIDRaw=[% Data.CustomerID | uri %]">
+            [% Data.Count | html %]
+        </a>
+    </div>
+    <div class="Clear"></div>
+[% RenderBlockEnd("ContentSmallCustomerIDStatusEscalatedTickets") %]
+
+[% RenderBlockStart("ContentSmallCustomerIDStatusOpenTickets") %]
+    <label>[% Translate("Open tickets") | html %]:</label>
+    <div class="Field">
+        <a href="[% Env("Baselink") %]Action=AgentTicketSearch;Subaction=Search;StateType=Open;CustomerIDRaw=[% Data.CustomerID | uri %]">
+            [% Data.Count | html %]
+        </a>
+    </div>
+    <div class="Clear"></div>
+[% RenderBlockEnd("ContentSmallCustomerIDStatusOpenTickets") %]
+
+[% RenderBlockStart("ContentSmallCustomerIDStatusClosedTickets") %]
+    <label>[% Translate("Closed tickets") | html %]:</label>
+    <div class="Field">
+        <a href="[% Env("Baselink") %]Action=AgentTicketSearch;Subaction=Search;StateType=Closed;CustomerIDRaw=[% Data.CustomerID | uri %]">
+            [% Data.Count | html %]
+        </a>
+    </div>
+    <div class="Clear"></div>
+[% RenderBlockEnd("ContentSmallCustomerIDStatusClosedTickets") %]
+
+[% RenderBlockStart("ContentSmallCustomerIDStatusAllTickets") %]
+    <label>[% Translate("All tickets") | html %]:</label>
+    <div class="Field">
+        <a href="[% Env("Baselink") %]Action=AgentTicketSearch;Subaction=Search;CustomerIDRaw=[% Data.CustomerID | uri %]">
+            [% Data.Count | html %]
+        </a>
+    </div>
+    <div class="Clear"></div>
+[% RenderBlockEnd("ContentSmallCustomerIDStatusAllTickets") %]
+
+[% RenderBlockStart("ContentSmallCustomerIDStatusArchivedTickets") %]
+    <label>[% Translate("Archived tickets") | html %]:</label>
+    <div class="Field">
+        <a href="[% Env("Baselink") %]Action=AgentTicketSearch;Subaction=Search;CustomerIDRaw=[% Data.CustomerID | uri %];SearchInArchive=ArchivedTickets">
+            [% Data.Count | html %]
+        </a>
+    </div>
+    <div class="Clear"></div>
+[% RenderBlockEnd("ContentSmallCustomerIDStatusArchivedTickets") %]
+
+</fieldset>

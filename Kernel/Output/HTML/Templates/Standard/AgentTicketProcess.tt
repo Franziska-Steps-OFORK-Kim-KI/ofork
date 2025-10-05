@@ -1,0 +1,42 @@
+# --
+# Kernel/Output/HTML/Templates/Standard/AgentTicketProcess.tt
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: AgentTicketProcess.tt,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<div class="MainBox ARIARoleMain FormScreen">
+    <h1>[% Translate("Create New Process Ticket") | html %]</h1>
+    <p class="AsteriskExplanation">[% Translate("All fields marked with an asterisk (*) are mandatory.") | html %]</p>
+    <div class="ContentColumn">
+        <form action="[% Env("CGIHandle") %]" method="post" enctype="multipart/form-data" name="compose" id="NewProcessTicket" class="Validate PreventMultipleSubmits">
+            <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+            <input type="hidden" name="Subaction" value="DisplayActivityDialog"/>
+            <input type="hidden" name="FormID" value="[% Data.FormID | html %]"/>
+            <input type="hidden" id="LinkTicketID" name="LinkTicketID" value="[% Data.LinkTicketID | html %]"/>
+            <input type="hidden" id="ArticleID" name="ArticleID" value="[% Data.ArticleID | html %]"/>
+            <fieldset class="TableLike">
+[% RenderBlockStart("ProcessList") %]
+                <label class="Mandatory" for="ProcessEntityID"><span class="Marker">*</span>[% Translate("Process") | html %]:</label>
+                <div class="AgentTicketProcessOFORK">
+                    [% Data.ProcessList %]
+                    <div id="ProcessEntityIDError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                    <div id="ProcessEntityIDServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                </div>
+                <div class="Spacing Clear"></div>
+[% RenderBlockEnd("ProcessList") %]
+            </fieldset>
+        </form>
+        <div id="AJAXLoader" class="Spacing Center Hidden">
+            <span class="AJAXLoader" title="[% Translate("Loading") | html %]"></span>
+        </div>
+        <div id="ActivityDialogContent"></div>
+    </div>
+</div>

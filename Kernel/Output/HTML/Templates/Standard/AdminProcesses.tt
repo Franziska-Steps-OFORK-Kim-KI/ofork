@@ -1,0 +1,2120 @@
+# --
+# Kernel/Output/HTML/Templates/Standard/AdminProcesses.tt
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# --
+# $Id: AdminProcesses.tt,v 1.1.1.1 2020/03/26 09:40:36 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<style type="text/css">
+
+.DiagramDeleteLink,
+.DiagramEditLink {
+    position: absolute;
+}
+
+.DiagramDeleteLink a,
+.DiagramEditLink a {
+    background:#FFFFFF;
+    border: 1px solid#353434;
+    border-radius: 5px;
+    display: block;
+    font-family: tahoma;
+    font-size: 13px;
+    line-height: 21px;
+    vertical-align: middle;
+    font-weight: bold;
+    height: 20px;
+    width: 20px;
+    text-align: center;
+    color:#353434;
+}
+
+.DiagramDeleteLink a:hover,
+.DiagramEditLink a:hover {
+    color: #02a543;
+}
+</style>
+
+[% RenderBlockStart("Overview") %]
+<div class="MainBox ARIARoleMain LayoutFixedSidebar SidebarFirst">
+    <h1 class="InvisibleText">[% Translate("Process Management") | html %]</h1>
+
+    [% BreadcrumbPath = [
+            {
+                Name => Translate('Process Management'),
+                Link => Env("Action"),
+            },
+        ]
+    %]
+
+    [% SWITCH Data.Action %]
+        [% CASE 'Add' %]
+            [% BreadcrumbPath.push({ Name => Translate("Add Process"),}) %]
+        [% CASE 'Change' %]
+            [% USE EditTitle = String(Translate("Edit Process")) %]
+            [% BreadcrumbPath.push({ Name => EditTitle.append( ': ', Data.Name ) }) %]
+    [% END %]
+
+    [% INCLUDE "Breadcrumb.tt" Path = BreadcrumbPath %]
+
+    <div class="SidebarColumn">
+
+[% RenderBlockStart("ActionList") %]
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>[% Translate("Actions") | html %]</h2>
+            </div>
+            <div class='Content'>
+                <ul class="ActionList">
+[% RenderBlockStart("ActionAdd") %]
+                    <li>
+                        <a href="[% Env("Baselink") %]Action=AdminProcesses;Subaction=Add" class="CallForAction Fullsize Center"><span><i class="fa fa-plus-square"></i>[% Translate("Add process") | html %]</span></a>
+                    </li>
+[% RenderBlockEnd("ActionAdd") %]
+
+[% RenderBlockStart("ActionOverview") %]
+                    <li>
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %]" class="CallForAction Fullsize Center"><span><i class="fa fa-caret-left"></i>[% Translate("Go to overview") | html %]</span></a>
+                    </li>
+[% RenderBlockEnd("ActionOverview") %]
+
+[% RenderBlockStart("ProcessStepsOverview") %]
+                    <li>
+                        <a href="[% Env("Baselink") %]Action=AdminProcesses;Subaction=Change;ID=[% Data.ID | uri %]" class="CallForAction Fullsize Center"><span><i class="fa fa-caret-left"></i>[% Translate("Go to process overview") | html %]</span></a>
+                    </li>
+[% RenderBlockEnd("ProcessStepsOverview") %]
+
+                </ul>
+            </div>
+        </div>
+[% RenderBlockEnd("ActionList") %]
+    </div>
+
+    <div class="ContentColumn">
+
+[% RenderBlockStart("OverviewResult") %]
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>[% Translate("List") | html %] ([% Data.AllItemsCount | html %] [% Translate("total") | html %])</h2>
+            </div>
+            <div class="Content">
+
+                <table class="DataTable" id="Equipments">
+                    <thead>
+                        <tr>
+                            <th>[% Translate("Process") | html %]</th>
+                            <th>[% Translate("Description") | html %]</th>
+                            <th>[% Translate("Validity") | html %]</th>
+                            <th>[% Translate("Changed") | html %]</th>
+                            <th>[% Translate("Created") | html %]</th>
+                            <th>[% Translate("Delete") | html %]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+[% RenderBlockStart("OverviewResultRow") %]
+                        <tr [% IF Data.ValidID != 1 %]class="Invalid"[% END %]>
+                            <td><a class="AsBlock" href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=Change;ID=[% Data.ID | uri %]">[% Data.Name | html %]</a></td>
+                            <td>[% Data.Description | truncate(100) %]</td>
+                            <td>[% Translate(Data.Valid) | html %]</td>
+                            <td>[% Data.ChangeTime | Localize("TimeShort") %]</td>
+                            <td>[% Data.CreateTime | Localize("TimeShort") %]</td>
+                            <td class="Center">
+                                <a class="TrashCan DynamicFieldDelete" href="[% Env("Baselink") %]Action=AdminProcesses;Subaction=Delete;ID=[% Data.ID | uri %]" title="[% Translate("Delete this process") | html %]">[% Translate("Delete this process") | html %]
+                                    <i class="fa fa-trash-o"></i>
+                                </a>
+                            </td>
+                        </tr>
+[% RenderBlockEnd("OverviewResultRow") %]
+                        <tr class="FilterMessage Hidden">
+                            <td colspan="5">[% Translate("No matches found.") | html %]</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+[% RenderBlockEnd("OverviewResult") %]
+
+[% RenderBlockStart("OverviewUpdate") %]
+        <div class="WidgetSimple">
+            <div class="Header">
+            [% IF Data.Action == 'Add' %]
+                <h2>[% Translate("Add process") | html %]</h2>
+            [% ELSE %]
+                <h2>[% Translate("Edit process") | html %]</h2>
+            [% END %]
+            </div>
+            <div class="Content">
+                <form id="ProcessFirstUpdate" action="[% Env("CGIHandle") %]" method="post" name="ProcessFirstUpdate" class="Validate PreventMultipleSubmits">
+                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                    <input type="hidden" name="Subaction" value="[% Data.Action | html %]Action"/>
+                    <input type="hidden" id="ID" name="ID" value="[% Data.ID | html %]"/>
+                    [% IF Data.Action == 'Change' %]
+                        <input type="hidden" name="ContinueAfterSave" id="ContinueAfterSave" value=""/>
+                    [% END %]
+                    <fieldset class="TableLike">
+
+                        <label class="Mandatory" for="Name"><span class="Marker">*</span> [% Translate("Name") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="Name" id="Name" value="[% Data.Name | html %]" class="W50pc Validate_Required [% Data.NameInvalid | html %]" maxlength="200"/>
+                            <div id="NameError" class="TooltipErrorMessage">
+                                <p>[% Translate("This field is required.") | html %]</p>
+                            </div>
+                            <div id="NameServerError" class="TooltipErrorMessage">
+                                <p>[% Translate("This field is required.") | html %]</p>
+                            </div>
+                        </div>
+                        <div class="Clear"></div>
+
+			            <label class="Mandatory" for="Description"><span class="Marker">*</span> [% Translate("Description") | html %]:</label>
+			            <div class="RichTextField">
+			                <textarea id="ProcessRichText" class="RichText Validate_Required [% Data.DescriptionInvalid | html %]" name="Description" title="[% Translate("Description body") | html %]" rows="15" cols="[% Config("Ticket::Frontend::TextAreaNote") | html %]">[% Data.Description | html %]</textarea>
+			                <div id="DescriptionError" class="TooltipErrorMessage">
+			                    <p>[% Translate("This field is required.") | html %]</p>
+			                </div>
+			                <div id="DescriptionServerError" class="TooltipErrorMessage">
+			                    <p>[% Translate("This field is required.") | html %]</p>
+			                </div>
+			            </div>
+			            <div class="Clear"></div>
+
+				        <label class="Mandatory" for="QueueID"><span class="Marker">*</span> [% Translate(" Start queue") | html %]:</label>
+				        <div class="Field">
+				            [% Data.QueueStartStrg %]
+                            <div id="QueueIDError" class="TooltipErrorMessage">
+                                <p>[% Translate("This field is required.") | html %]</p>
+                            </div>
+                            <div id="QueueIDServerError" class="TooltipErrorMessage">
+                                <p>[% Translate("This field is required.") | html %]</p>
+                            </div>
+				        </div>
+				        <div class="Clear"></div>
+
+                        <label for="SetArticleIDProcess">[% Translate("Should an article be created from each work step?") | html %]:</label>
+                        <div class="Field">
+                            [% Data.SetArticleIDProcessOption %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label class="Mandatory" for="ValidID"><span class="Marker">*</span> [% Translate("Validity") | html %]:</label>
+                        <div class="Field">
+                            [% Data.ValidOption %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <div class="Field SpacingTop">
+                            [% IF Data.Action == 'Change' %]
+                                <button class="CallForAction Primary" id="SubmitAndContinue" type="button" value="[% Translate("Save") | html %]"><span>[% Translate("Save") | html %]</span></button>
+                                [% Translate("or") | html %]
+                                <button class="CallForAction Primary" id="Submit" type="submit" value="[% Translate("Save") | html %]"><span>[% Translate("Save and finish") | html %]</span></button>
+                            [% ELSE %]
+                                <button class="CallForAction Primary" id="Submit" type="submit" value="[% Translate("Save") | html %]"><span>[% Translate("Save") | html %]</span></button>
+                            [% END %]
+                            [% Translate("or") | html %]
+                            <a href="[% Env("Baselink") %]Action=[% Env("Action") %]">[% Translate("Cancel") | html %]</a>
+                        </div>
+                        <div class="Clear"></div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+[% RenderBlockEnd("OverviewUpdate") %]
+
+[% RenderBlockStart("Process") %]
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>[% Translate("Work step ") | html %] [% Data.StepValue | html %]</h2>
+            </div>
+            <div class="Content">
+
+[% RenderBlockStart("ProcessStep") %]
+            <div style="float:left;margin-right:5px;">
+                <div id="DiagramEditLink[% Data.ID | html %]" class="DiagramEditLink">
+                    <a href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=EditStep;ID=[% Data.ProcessID | uri %];ProcessStepID=[% Data.ProcessStepID | uri %]" title="[% Translate("Edit this Activity") | html %]"><i class="fa fa-edit"></i></a>
+                </div>
+                <div id="Process" style="border: 3px solid [% Data.Color | html %];margin:3px;border-radius: 5px;display: inline-block;">
+                    <div id="ProcessFieldColor" style="background-color:[% Data.Color | html %];width:20px;height:55px;float:left;display: inline-block;color:yellow;font-size:20px;font-weight: bold;">
+                        <br>
+                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                    </div>
+                    <div style="padding:5px;float:left;line-height: 15px;">
+                        <b>[% Data.Name | html %]</b><br>
+                        [% Translate("type of work step: ") | html %][% Translate(Data.ProcessStepArt) | html %]
+                    </div>
+                </div>
+
+[% RenderBlockStart("ProcessStepDeleteLink") %]
+                <div id="DiagramDeleteLink[% Data.ID | html %]" class="DiagramDeleteLink" style="margin-top: -20px;">
+                    <a href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=DeleteStep;ID=[% Data.ProcessID | uri %];ProcessStepID=[% Data.ProcessStepID | uri %]" title="[% Translate("Delete this Activity") | html %]"><i class="fa fa-trash-o"></i></a>
+                </div>
+[% RenderBlockEnd("ProcessStepDeleteLink") %]
+
+            </div>
+
+[% RenderBlockStart("ProcessStepNext") %]
+            <div style="float:left;margin-left: -7px;font-size:23px;color:green;">
+            <br>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </div>
+
+            <div style="float:left;margin-left: -1px;">
+                <div id="Process" style="border: 3px solid [% Data.Color | html %];margin:3px;border-radius: 5px;display: inline-block;">
+                    <div id="ProcessFieldColor" style="background-color:[% Data.Color | html %];width:20px;height:55px;float:left;display: inline-block;color:yellow;font-size:20px;font-weight: bold;">
+                        <br>
+                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                    </div>
+                    <div style="padding:5px;float:left;line-height: 15px;">
+                        <b>[% Data.Name | html %]</b><br>
+                        [% Translate("type of work step: ") | html %][% Translate(Data.ProcessStepArt) | html %]<br>
+                        [% Translate("Next at not approved") | html %]<br>
+                    </div>
+                </div>
+            </div>
+[% RenderBlockEnd("ProcessStepNext") %]
+
+[% RenderBlockStart("ProcessStepNextDown") %]
+            <div style="float:left;margin-left: -7px;font-size:23px;color:green;">
+            <br>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </div>
+
+            <div style="float:left;margin-left: -1px;">
+                <div id="Process" style="border: 3px solid [% Data.Color | html %];margin:3px;border-radius: 5px;display: inline-block;">
+                    <div id="ProcessFieldColor" style="background-color:[% Data.Color | html %];width:20px;height:55px;float:left;display: inline-block;color:yellow;font-size:20px;font-weight: bold;">
+                        <br>
+                        <i class="fa fa-angle-up" aria-hidden="true"></i>
+                    </div>
+                    <div style="padding:5px;float:left;line-height: 15px;">
+                        <b>[% Data.Name | html %]</b><br>
+                        [% Translate("type of work step: ") | html %][% Translate(Data.ProcessStepArt) | html %]<br>
+                        [% Translate("Next step") | html %]<br>
+                    </div>
+                </div>
+            </div>
+[% RenderBlockEnd("ProcessStepNextDown") %]
+[% RenderBlockStart("ProcessStepNextDownNoTwo") %]
+            <div style="float:left;margin-left: -7px;font-size:23px;color:green;">
+            <br>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </div>
+
+            <div style="float:left;margin-left: -1px;">
+                <div id="Process" style="border: 3px solid [% Data.Color | html %];margin:3px;border-radius: 5px;display: inline-block;">
+                    <div id="ProcessFieldColor" style="background-color:[% Data.Color | html %];width:20px;height:55px;float:left;display: inline-block;color:yellow;font-size:20px;font-weight: bold;">
+                        <br>
+                        <i class="fa fa-angle-up" aria-hidden="true"></i>
+                    </div>
+                    <div style="padding:5px;float:left;line-height: 15px;">
+                        <b>[% Data.Name | html %]</b><br>
+                        [% Translate("type of work step: ") | html %][% Translate(Data.ProcessStepArt) | html %]<br>
+                        [% Translate("Next step with conditions") | html %]<br>
+                    </div>
+                </div>
+            </div>
+[% RenderBlockEnd("ProcessStepNextDownNoTwo") %]
+
+[% RenderBlockStart("ProcessStepNextUp") %]
+            <div style="float:left;margin-left: -7px;font-size:23px;color:green;">
+            <br>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </div>
+
+            <div style="float:left;margin-left: -1px;">
+                <div id="Process" style="border: 3px solid [% Data.Color | html %];margin:3px;border-radius: 5px;display: inline-block;">
+                    <div id="ProcessFieldColor" style="background-color:[% Data.Color | html %];width:20px;height:55px;float:left;display: inline-block;color:yellow;font-size:20px;font-weight: bold;">
+                        <br>
+                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                    </div>
+                    <div style="padding:5px;float:left;line-height: 15px;">
+                        <b>[% Data.Name | html %]</b><br>
+                        [% Translate("type of work step: ") | html %][% Translate(Data.ProcessStepArt) | html %]<br>
+                        [% Translate("Next step") | html %]<br>
+                    </div>
+                </div>
+            </div>
+[% RenderBlockEnd("ProcessStepNextUp") %]
+[% RenderBlockStart("ProcessStepNextUpNoTwo") %]
+            <div style="float:left;margin-left: -7px;font-size:23px;color:green;">
+            <br>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </div>
+
+            <div style="float:left;margin-left: -1px;">
+                <div id="Process" style="border: 3px solid [% Data.Color | html %];margin:3px;border-radius: 5px;display: inline-block;">
+                    <div id="ProcessFieldColor" style="background-color:[% Data.Color | html %];width:20px;height:55px;float:left;display: inline-block;color:yellow;font-size:20px;font-weight: bold;">
+                        <br>
+                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                    </div>
+                    <div style="padding:5px;float:left;line-height: 15px;">
+                        <b>[% Data.Name | html %]</b><br>
+                        [% Translate("type of work step: ") | html %][% Translate(Data.ProcessStepArt) | html %]<br>
+                        [% Translate("Next step with conditions") | html %]<br>
+                    </div>
+                </div>
+            </div>
+[% RenderBlockEnd("ProcessStepNextUpNoTwo") %]
+
+[% RenderBlockStart("ProcessStepEnd") %]
+            <div style="float:left;margin-left: -7px;font-size:23px;color:red;">
+            <br>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </div>
+
+            <div style="float:left;margin-left: -1px;">
+                <div id="Process" style="border: 3px solid [% Data.Color | html %];box-shadow: 0 0 0px 1px red;margin:3px;border-radius: 5px;display: inline-block;">
+                    <div id="ProcessFieldColor" style="background-color:[% Data.Color | html %];width:0px;height:55px;float:left;display: inline-block;">
+                        [% Translate(" ") | html %]<br>
+                    </div>
+                    <div style="padding:5px;float:left;line-height: 15px;">
+                        <b>[% Data.Name | html %]</b><br>
+                        [% Translate("type of work step: ") | html %][% Translate(Data.ProcessStepArt) | html %]<br>
+                        [% Translate("Ends at not approved") | html %]<br>
+                    </div>
+                </div>
+            </div>
+[% RenderBlockEnd("ProcessStepEnd") %]
+
+[% RenderBlockStart("ProcessStepNextWithConditions") %]
+            <div style="float:left;margin-left: -7px;font-size:23px;color:green;">
+            <br>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </div>
+
+            <div style="float:left;margin-left: -1px;">
+                <div id="Process" style="border: 3px solid [% Data.Color | html %];margin:3px;border-radius: 5px;display: inline-block;">
+                    <div id="ProcessFieldColor" style="background-color:[% Data.Color | html %];width:20px;height:55px;float:left;display: inline-block;color:yellow;font-size:20px;font-weight: bold;">
+                        <br>
+                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                    </div>
+                    <div style="padding:5px;float:left;line-height: 15px;">
+                        <b>[% Data.Name | html %]</b><br>
+                        [% Translate("type of work step: ") | html %][% Translate(Data.ProcessStepArt) | html %]<br>
+                        [% Translate("With conditions") | html %]<br>
+                    </div>
+                </div>
+            </div>
+[% RenderBlockEnd("ProcessStepNextWithConditions") %]
+
+[% RenderBlockStart("ProcessStepEndWithoutConditions") %]
+            <div style="float:left;margin-left: -7px;font-size:23px;color:red;">
+            <br>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </div>
+
+            <div style="float:left;margin-left: -1px;">
+                <div id="Process" style="border: 3px solid [% Data.Color | html %];box-shadow: 0 0 0px 1px red;margin:3px;border-radius: 5px;display: inline-block;">
+                    <div id="ProcessFieldColor" style="background-color:[% Data.Color | html %];width:0px;height:55px;float:left;display: inline-block;">
+                        [% Translate(" ") | html %]<br>
+                    </div>
+                    <div style="padding:5px;float:left;line-height: 15px;">
+                        <b>[% Data.Name | html %]</b><br>
+                        [% Translate("type of work step: ") | html %][% Translate(Data.ProcessStepArt) | html %]<br>
+                        [% Translate("process step ends here without conditions") | html %]<br>
+                    </div>
+                </div>
+            </div>
+[% RenderBlockEnd("ProcessStepEndWithoutConditions") %]
+
+[% RenderBlockStart("ProcessEnd") %]
+            <div style="float:left;margin-left: -7px;font-size:23px;color:red;">
+            <br>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </div>
+
+            <div style="float:left;margin-left: -1px;">
+                <div id="Process" style="border: 3px solid [% Data.Color | html %];box-shadow: 0 0 0px 1px red;margin:3px;border-radius: 5px;display: inline-block;">
+                    <div id="ProcessFieldColor" style="background-color:[% Data.Color | html %];width:0px;height:55px;float:left;display: inline-block;">
+                        [% Translate(" ") | html %]<br>
+                    </div>
+                    <div style="padding:5px;float:left;line-height: 15px;">
+                        <b>[% Data.Name | html %]</b><br>
+                        [% Translate("type of work step: ") | html %][% Translate(Data.ProcessStepArt) | html %]<br>
+                        [% Translate("Process end") | html %]<br>
+                    </div>
+                </div>
+            </div>
+[% RenderBlockEnd("ProcessEnd") %]
+
+[% RenderBlockEnd("ProcessStep") %]
+
+            <div class="Clear"></div>
+        </div>
+    </div>
+[% RenderBlockEnd("Process") %]
+
+[% RenderBlockStart("CreateFirstProcessStep") %]
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>[% Translate("Create first process step") | html %]</h2>
+            </div>
+            <div class="Content">
+                <form id="EquipmentUpdate" action="[% Env("CGIHandle") %]" method="post" name="EquipmentUpdate" class="Validate PreventMultipleSubmits">
+                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                    <input type="hidden" name="Subaction" value="CreateFirstProcessStep"/>
+                    <input type="hidden" id="ID" name="ID" value="[% Data.ID | html %]"/>
+                    <input type="hidden" id="ProcessStepNum" name="ProcessStepNum" value="1"/>
+                    <input type="hidden" name="SessionName" id="SessionName" value="[% Env("SessionName") | html %]"/>
+                    <input type="hidden" name="SessionID" id="SessionID" value="[% Env("SessionID") | html %]"/>
+                    <fieldset class="TableLike">
+
+                        <label class="Mandatory" for="StepName"><span class="Marker">*</span> [% Translate("name of the process step") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="StepName" id="StepName" value="[% Data.StepName | html %]" class="W50pc Validate_Required [% Data.StepNameInvalid | html %]" maxlength="200"/>
+                            <div id="StepNameError" class="TooltipErrorMessage">
+                                <p>[% Translate("This field is required.") | html %]</p>
+                            </div>
+                            <div id="StepNameServerError" class="TooltipErrorMessage">
+                                <p>[% Translate("This field is required.") | html %]</p>
+                            </div>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="Color">[% Translate("Color") | html %]:</label>
+                        <div class="Field">
+                            <input type="color" name="Color" id="Color" value="[% Data.Color | html %]" class="W5pc"/>
+                        </div>
+                        <div class="Clear"></div>
+
+			            <label class="Mandatory" for="Description"><span class="Marker">*</span> [% Translate("Description") | html %]:</label>
+			            <div class="Field">
+			                <textarea id="RichText" class="RichText Validate_Required [% Data.DescriptionInvalid | html %]" name="Description" title="[% Translate("Description body") | html %]" rows="15" cols="[% Config("Ticket::Frontend::TextAreaNote") | html %]"></textarea>
+			                <div id="DescriptionError" class="TooltipErrorMessage">
+			                    <p>[% Translate("This field is required.") | html %]</p>
+			                </div>
+			                <div id="DescriptionServerError" class="TooltipErrorMessage">
+			                    <p>[% Translate("This field is required.") | html %]</p>
+			                </div>
+			            </div>
+			            <div class="Clear"></div>
+
+                        <label class="Mandatory" for="GroupID"><span class="Marker">*</span> [% Translate("Group") | html %]:</label>
+                        <div class="Field">
+                            [% Data.GroupOption %]
+                            <div id="GroupIDError" class="TooltipErrorMessage">
+                                <p>[% Translate("This field is required.") | html %]</p>
+                            </div>
+                            <div id="GroupIDServerError" class="TooltipErrorMessage">
+                                <p>[% Translate("This field is required.") | html %]</p>
+                            </div>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label class="Mandatory" for="StepArtID"><span class="Marker">*</span> [% Translate("type of process step") | html %]:</label>
+                        <div class="Field">
+                            [% Data.StepArtIDOption %]
+                            <div id="StepArtIDError" class="TooltipErrorMessage">
+                                <p>[% Translate("This field is required.") | html %]</p>
+                            </div>
+                            <div id="StepArtIDServerError" class="TooltipErrorMessage">
+                                <p>[% Translate("This field is required.") | html %]</p>
+                            </div>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="NotifyAgent">[% Translate("Agent notification") | html %]:</label>
+                        <div class="Field">
+                            [% Data.NotifyAgentOption %]
+                        </div>
+                        <div class="Clear"></div>
+
+                    <div id="ApprovalDiv" style="margin-top:5px;visibility: hidden;">
+                    <fieldset class="TableLike">
+
+                        <label for="ApproverGroupID"> [% Translate("Customer has to approve") | html %]:</label>
+                        <div class="Field">
+                            [% Data.ApproverGroupOption %]
+                        </div>
+                        <div class="Clear"></div>
+
+	                    <label for="ApproverEmail">[% Translate("Email to approvers") | html %]:</label>
+	                    <div class="Field">
+	                        <input type="text" name="ApproverEmail" id="ApproverEmail" value="[% Data.ApproverEmail | html %]" class="W50pc" maxlength="2000"/><br>
+	                        <span>[% Translate("Please enter the email(s) of the approver(s) separated by ;") | html %]</span>
+	                    </div>
+	                    <div class="Clear"></div>
+
+                        <label for="SetArticleID">[% Translate("Should the text be transmitted from the previous work step?") | html %]:</label>
+                        <div class="Field">
+                            [% Data.SetArticleIDOption %]
+                        </div>
+                        <div class="Clear"></div>
+
+                    </fieldset>
+                    </div>
+
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+
+    $('#StepArtID').bind('change', function () {
+
+        var StepArtID  = $("#StepArtID").val();
+
+        if ( StepArtID > 1 ) {
+
+            $("#ApprovalDiv").css('visibility', 'visible');
+        }
+        else {
+            $("#ApprovalDiv").css('visibility', 'hidden');
+        }
+
+    });
+
+//]]></script>
+[% END %]
+
+
+                        <div class="Field SpacingTop">
+                            <button class="CallForAction Primary" id="Submit" type="submit" value="[% Translate("Save") | html %]"><span>[% Translate("Save") | html %]</span></button>
+                        </div>
+                        <div class="Clear"></div>
+
+
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+
+[% RenderBlockEnd("CreateFirstProcessStep") %]
+
+
+[% RenderBlockStart("ChangeProcessStep") %]
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>[% Translate("Edit process step") | html %]</h2>
+            </div>
+            <div class="Content">
+                <form id="EquipmentUpdate" action="[% Env("CGIHandle") %]" method="post" name="EquipmentUpdate" class="Validate PreventMultipleSubmits">
+                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                    <input type="hidden" name="Subaction" value="EditStep"/>
+                    <input type="hidden" id="ID" name="ID" value="[% Data.ID | html %]"/>
+                    <input type="hidden" id="ProcessStepID" name="ProcessStepID" value="[% Data.ProcessStepID | html %]"/>
+                    <input type="hidden" name="SessionName" id="SessionName" value="[% Env("SessionName") | html %]"/>
+                    <input type="hidden" name="SessionID" id="SessionID" value="[% Env("SessionID") | html %]"/>
+                    <fieldset class="TableLike">
+
+                        <label class="Mandatory" for="StepName"><span class="Marker">*</span> [% Translate("name of the process step") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="StepName" id="StepName" value="[% Data.Name | html %]" class="W50pc Validate_Required [% Data.StepNameInvalid | html %]" maxlength="200"/>
+                            <div id="StepNameError" class="TooltipErrorMessage">
+                                <p>[% Translate("This field is required.") | html %]</p>
+                            </div>
+                            <div id="StepNameServerError" class="TooltipErrorMessage">
+                                <p>[% Translate("This field is required.") | html %]</p>
+                            </div>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="Color">[% Translate("Color") | html %]:</label>
+                        <div class="Field">
+                            <input type="color" name="Color" id="Color" value="[% Data.Color | html %]" class="W5pc"/>
+                        </div>
+                        <div class="Clear"></div>
+
+			            <label class="Mandatory" for="Description"><span class="Marker">*</span> [% Translate("Description") | html %]:</label>
+			            <div class="Field">
+			                <textarea id="StepRichText" class="RichText Validate_Required [% Data.DescriptionInvalid | html %]" name="Description" title="[% Translate("Description body") | html %]" rows="15" cols="[% Config("Ticket::Frontend::TextAreaNote") | html %]">[% Data.Description | html %]</textarea>
+			                <div id="DescriptionError" class="TooltipErrorMessage">
+			                    <p>[% Translate("This field is required.") | html %]</p>
+			                </div>
+			                <div id="DescriptionServerError" class="TooltipErrorMessage">
+			                    <p>[% Translate("This field is required.") | html %]</p>
+			                </div>
+			            </div>
+			            <div class="Clear"></div>
+
+                        <label class="Mandatory" for="GroupID"><span class="Marker">*</span> [% Translate("Group") | html %]:</label>
+                        <div class="Field">
+                            [% Data.GroupOption %]
+                            <div id="GroupIDError" class="TooltipErrorMessage">
+                                <p>[% Translate("This field is required.") | html %]</p>
+                            </div>
+                            <div id="GroupIDServerError" class="TooltipErrorMessage">
+                                <p>[% Translate("This field is required.") | html %]</p>
+                            </div>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="StepArtID">[% Translate("type of process step") | html %]:</label>
+                        <div class="Field">
+                            [% Translate( Data.StepArtIDOptionName ) | html %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="NotifyAgent">[% Translate("Agent notification") | html %]:</label>
+                        <div class="Field">
+                            [% Data.NotifyAgentOption %]
+                        </div>
+                        <div class="Clear"></div>
+
+                    <div id="ApprovalDiv" style="margin-top:5px;visibility: [% Data.ApprovalVisibility | html %];">
+                    <fieldset class="TableLike">
+
+                        <label for="ApproverGroupID">[% Translate("Customer has to approve") | html %]:</label>
+                        <div class="Field">
+                            [% Data.ApproverGroupOption %]
+                        </div>
+                        <div class="Clear"></div>
+
+	                    <label for="ApproverEmail">[% Translate("Email to approvers") | html %]:</label>
+	                    <div class="Field">
+	                        <input type="text" name="ApproverEmail" id="ApproverEmail" value="[% Data.ApproverEmail | html %]" class="W50pc" maxlength="2000"/><br>
+	                        <span>[% Translate("Please enter the email(s) of the approver(s) separated by ;") | html %]</span>
+	                    </div>
+	                    <div class="Clear"></div>
+
+                        <label for="SetArticleID">[% Translate("Should the text be transmitted from the previous work step?") | html %]:</label>
+                        <div class="Field">
+                            [% Data.SetArticleIDOption %]
+                        </div>
+                        <div class="Clear"></div>
+
+                    </fieldset>
+                    </div>
+
+#[% WRAPPER JSOnDocumentComplete %]
+#<script type="text/javascript">//<![CDATA[
+
+#    $('#StepArtID').bind('change', function () {
+
+#        var StepArtID  = $("#StepArtID").val();
+
+#        if ( StepArtID > 1 ) {
+#            $("#ApprovalDiv").css('visibility', 'visible');
+#        }
+#        else {
+#            $("#ApprovalDiv").css('visibility', 'hidden');
+#        }
+
+#    });
+
+#//]]></script>
+#[% END %]
+
+
+[% RenderBlockStart("ChangeProcessStepTransition") %]
+                        <label for="Transition">[% Translate("Transition action") | html %]:</label>
+                        <div class="Field">
+                            [% Translate("Select if necessary") | html %]
+                        </div>
+                        <div class="Clear"></div>
+
+				        <label for="StateID">[% Translate("State") | html %]:</label>
+				        <div class="Field">
+				            [% Data.StateStrg %]
+				        </div>
+				        <div class="Clear"></div>
+
+				        <label for="QueueID">[% Translate("Queue") | html %]:</label>
+				        <div class="Field">
+				            [% Data.QueueStrg %]
+				        </div>
+				        <div class="Clear"></div>
+
+                        <div class="Field SpacingTop">
+                            <button class="CallForAction Primary" id="Submit" type="submit" value="[% Translate("Save") | html %]"><span>[% Translate("Save") | html %]</span></button>
+                        </div>
+                        <div class="Clear"></div>
+[% RenderBlockEnd("ChangeProcessStepTransition") %]
+
+[% RenderBlockStart("ChangeProcessStepTransitionFirst") %]
+
+                        <div class="Field SpacingTop">
+                            <button class="CallForAction Primary" id="Submit" type="submit" value="[% Translate("Save") | html %]"><span>[% Translate("Save") | html %]</span></button>
+                        </div>
+                        <div class="Clear"></div>
+[% RenderBlockEnd("ChangeProcessStepTransitionFirst") %]
+
+                    </fieldset>
+                </form>
+
+                        <hr style="background:#000000;height:1px;margin:6px;" />
+
+                        <div style="margin-left:3%;margin-right:5px;padding:5px;margin-bottom:10px;">[% Translate("Fields for the process step") | html %]:</div>
+                        <div class="Clear"></div>
+
+                        <div id="FieldListsResult"></div>
+ 
+ [% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+
+    function FieldListsResult(){
+
+        var ProcessID     = $("#ID").val();
+        var ProcessStepID = $("#ProcessStepID").val();
+	    var SessionName = $('input#SessionName').val();
+	    var SessionID   = $('input#SessionID').val();
+	    var new_names   = SessionName + "=" + SessionID;
+
+        $.ajax({
+            type:     'Post',
+            url:      'index.pl?' + new_names,
+            data:
+            {
+                Action:        'AdminProcessFields',
+                Subaction:     'AdminProcessField',
+                ProcessID:     ProcessID,
+                ProcessStepID: ProcessStepID,
+            },
+            async: false,
+            dataType: 'html',
+            success: function(Response) {
+                $('#FieldListsResult').html(Response);
+            }
+        });
+
+    }
+    FieldListsResult();
+
+//]]></script>
+[% END %]
+  
+                        <div class="Clear"></div>
+                        <hr style="background:#000000;height:1px;margin:6px;" />
+
+[% RenderBlockStart("ApprovalStep") %]
+
+[% RenderBlockStart("ApprovalStepNoNextStep") %]
+                        <div style="float:left;margin-left:3%;margin-right:5px;padding:5px;margin-bottom:10px;">[% Translate("Define the next step if approved") | html %]:</div>
+                        <div style="float:left;">
+                            <button type="button" id="ProcessStepTwo" style="visibility: visible;border: 1px solid #656566;color: green;padding: 0px 7px 2px;line-height: 18px;vertical-align: middle;font-size: 18px;display: block;cursor: pointer;position: relative;border-radius: 3px;font-weight: bold;"><span>+</span></button>
+                        </div>
+                        <div style="float:left;">
+                            <button type="button" id="NoProcessStepTwo" style="visibility:hidden;border: 1px solid #656566;color: red;padding: 0px 7px 2px;line-height: 18px;vertical-align: middle;font-size: 18px;display: block;cursor: pointer;position: relative;border-radius: 3px;font-weight: bold;"><span>-</span></button>
+                        </div>
+[% RenderBlockEnd("ApprovalStepNoNextStep") %]
+[% RenderBlockStart("ApprovalStepNoNextStepOK") %]
+                        <div style="float:left;margin-left:3%;margin-right:5px;padding:5px;margin-bottom:10px;">[% Translate("Define the next step if approved") | html %]:</div>
+                        <div style="float:left;">
+							<img src="[% Config("Frontend::ImagePath") %]/icons/tick.png" alt="[% Translate("Done") | html %]" >
+                        </div>
+[% RenderBlockEnd("ApprovalStepNoNextStepOK") %]
+
+[% RenderBlockStart("ApprovalStepNoNextStepNotApproved") %]
+                        <div style="float:left;margin-left:3%;margin-right:5px;padding:5px;margin-bottom:10px;">[% Translate("Define the next step if not approved") | html %]:</div>
+                        <div style="float:left;">
+                            <button type="button" id="ProcessStepTwoNot" style="visibility: visible;border: 1px solid #656566;color: green;padding: 0px 7px 2px;line-height: 18px;vertical-align: middle;font-size: 18px;display: block;cursor: pointer;position: relative;border-radius: 3px;font-weight: bold;"><span>+</span></button>
+                        </div>
+                        <div style="float:left;">
+                            <button type="button" id="NoProcessStepTwoNot" style="visibility:hidden;border: 1px solid #656566;color: red;padding: 0px 7px 2px;line-height: 18px;vertical-align: middle;font-size: 18px;display: block;cursor: pointer;position: relative;border-radius: 3px;font-weight: bold;"><span>-</span></button>
+                        </div>
+[% RenderBlockEnd("ApprovalStepNoNextStepNotApproved") %]
+[% RenderBlockStart("ApprovalStepNoNextStepNotApprovedOK") %]
+                        <div style="float:left;margin-left:3%;margin-right:5px;padding:5px;margin-bottom:10px;">[% Translate("Define the next step if not approved") | html %]:</div>
+                        <div style="float:left;">
+							<img src="[% Config("Frontend::ImagePath") %]/icons/tick.png" alt="[% Translate("Done") | html %]" >
+                        </div>
+[% RenderBlockEnd("ApprovalStepNoNextStepNotApprovedOK") %]
+
+                        <div style="float:left;width:200px;">
+ 
+ 		                <form id="ProcessStepEnd" action="[% Env("CGIHandle") %]" method="post" name="ProcessStepEnd" class="Validate PreventMultipleSubmits">
+		                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+		                    <input type="hidden" name="Subaction" value="ProcessStepEnd"/>
+		                    <input type="hidden" id="ID" name="ID" value="[% Data.ID | html %]"/>
+		                    <input type="hidden" id="ProcessStepID" name="ProcessStepID" value="[% Data.ProcessStepID | html %]"/>
+		                    <input type="hidden" name="SessionName" id="SessionName" value="[% Env("SessionName") | html %]"/>
+		                    <input type="hidden" name="SessionID" id="SessionID" value="[% Env("SessionID") | html %]"/>
+                            <fieldset class="TableLike">
+ 
+[% RenderBlockStart("SetStepEnd") %]
+                        <div style="float:left;margin-left:3%;margin-right:5px;padding:5px;margin-bottom:10px;">[% Translate("Or end process") | html %]:</div>
+                        <div style="float:left;">
+                            <button class="CallForAction Primary" id="Submit" type="submit" value="[% Translate("End") | html %]"><span>[% Translate("End") | html %]</span></button>
+                        </div>
+[% RenderBlockEnd("SetStepEnd") %]
+[% RenderBlockStart("StepEnd") %]
+                        <div style="float:left;margin-left:10px;margin-right:5px;padding:5px;margin-bottom:10px;color:red">[% Translate("Process step has ended") | html %]:</div>
+[% RenderBlockEnd("StepEnd") %]
+
+                           </fieldset>
+		               </form>
+                       </div>
+                       <div class="Clear"></div>
+
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+
+    $('#ProcessStepTwo').bind('click', function () {
+        $("#ShowNextDiv").css('visibility', 'visible');
+        $("#ApprovalArtTextApproved").css('visibility', 'visible');
+        $("#ApprovalArtTextNotApproved").css('visibility', 'hidden');
+        $("#ApprovalStepNoNextStepNotApprovedOK").css('visibility', 'hidden');
+        $("#ProcessStepTwo").css('visibility', 'hidden');
+        $("#NoProcessStepTwo").css('visibility', 'visible');
+        $("#NoProcessStepTwoNot").css('visibility', 'hidden');
+        $("#ProcessStepTwoNot").css('visibility', 'visible');
+        $("#ShowNextStepDiv").css('visibility', 'hidden');
+        $("#ShowNextColor").css('visibility', 'hidden');
+        $("#ShowNextStepDivEnd").css('visibility', 'hidden');
+        $('#Transition').val('');
+        $('#ApprovalArt').val('1');
+        $('#ApprovalSet').val('');
+        $('#StepNoTo').val('');
+        $('#FromStepNo').val('1');
+        $('#FromStepNext').val('1');
+        $('#FromStepGo').val('1');
+    });
+    $('#NoProcessStepTwo').bind('click', function () {
+        $("#ShowNextDiv").css('visibility', 'hidden');
+        $("#ApprovalArtTextApproved").css('visibility', 'hidden');
+        $("#ApprovalArtTextNotApproved").css('visibility', 'hidden');
+        $("#ProcessStepTwo").css('visibility', 'visible');
+        $("#NoProcessStepTwo").css('visibility', 'hidden');
+        $("#ShowNextTransition").css('visibility', 'hidden');
+        $("#ProcessStepTwoNot").css('visibility', 'visible');
+        $("#ShowNextStepDiv").css('visibility', 'hidden');
+        $("#ShowNextColor").css('visibility', 'hidden');
+        $("#ShowNextStepDivEnd").css('visibility', 'hidden');
+        $('#Transition').val('');
+        $('#ApprovalArt').val('');
+        $('#ApprovalSet').val('');
+        $('#StepNoTo').val('');
+        $('#FromStepNo').val('');
+        $('#FromStepNext').val('');
+        $('#FromStepGo').val('');
+    });
+
+    $('#ProcessStepTwoNot').bind('click', function () {
+        $("#ShowNextDiv").css('visibility', 'visible');
+        $("#ApprovalArtTextApproved").css('visibility', 'hidden');
+        $("#ApprovalArtTextNotApproved").css('visibility', 'visible');
+        $("#ProcessStepTwoNot").css('visibility', 'hidden');
+        $("#NoProcessStepTwoNot").css('visibility', 'visible');
+        $("#ApprovalStepNoNextStep").css('visibility', 'hidden');
+        $("#NoProcessStepTwo").css('visibility', 'hidden');
+        $("#ProcessStepTwo").css('visibility', 'visible');
+        $("#ShowNextStepDiv").css('visibility', 'hidden');
+        $("#ShowNextStepDivEnd").css('visibility', 'hidden');
+        $('#Transition').val('');
+        $('#ApprovalArt').val('2');
+        $('#ApprovalSet').val('1');
+        $('#StepNoTo').val('');
+        $('#FromStepNo').val('2');
+        $('#FromStepNext').val('2');
+        $('#FromStepGo').val('2');
+    });
+    $('#NoProcessStepTwoNot').bind('click', function () {
+        $("#ShowNextDiv").css('visibility', 'hidden');
+        $("#ApprovalArtTextApproved").css('visibility', 'hidden');
+        $("#ApprovalArtTextNotApproved").css('visibility', 'hidden');
+        $("#ProcessStepTwoNot").css('visibility', 'visible');
+        $("#NoProcessStepTwoNot").css('visibility', 'hidden');
+        $("#ShowNextTransition").css('visibility', 'hidden');
+        $("#ShowSetNextStep").css('visibility', 'hidden');
+        $("#ShowNextStepDiv").css('visibility', 'hidden');
+        $("#ShowNextStepDivEnd").css('visibility', 'hidden');
+        $("#ShowNextStepDiv").css('visibility', 'hidden');
+        $("#ShowNextStepDivEnd").css('visibility', 'hidden');
+        $('#Transition').val('');
+        $('#ApprovalArt').val('');
+        $('#ApprovalSet').val('');
+        $('#StepNoTo').val('');
+        $('#FromStepNo').val('');
+         $('#FromStepNext').val('');
+        $('#FromStepGo').val('');
+    });
+
+//]]></script>
+[% END %]
+
+						<div id="ShowNextDiv" style="margin-top:5px;visibility: hidden;">
+
+                            <fieldset class="TableLike">
+
+	                        <label >[% Translate("Type of approval") | html %]:</label>
+	                        <div class="FieldApprovalArt">
+	                            <div id="ApprovalArtTextApproved" style="visibility: hidden;">[% Translate("Next step if approved") | html %]</div>
+	                            <div id="ApprovalArtTextNotApproved" style="visibility: hidden;">[% Translate("Next step if not approved") | html %]</div>
+	                        </div>
+	                        <div class="Clear"></div>
+
+	                        <label class="Mandatory" for="StepNoTo"><span class="Marker">*</span> [% Translate("To next step") | html %]:</label>
+	                        <div class="Field">
+	                            [% Data.StepNoToOption %]
+	                        </div>
+	                        <div class="Clear"></div>
+                            </fieldset>
+
+
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+
+    $('#StepNoTo').bind('change', function () {
+
+        $("#ShowNextStepDiv").css('visibility', 'hidden');
+        $("#ShowNextStepDivEnd").css('visibility', 'hidden');
+        $("#ShowSetNextStep").css('visibility', 'hidden');
+        $("#ShowNextColor").css('visibility', 'hidden');
+        $('#SetNextStepID').val('0');
+        $('#NextStepEnd').val('0');
+        
+        var StepNoTo    = $("#StepNoTo").val();
+        var ApprovalSet = $("#ApprovalSet").val();
+
+        if ( StepNoTo == 'New' ) {
+            $("#ShowNextStepDiv").css('visibility', 'visible');
+            $("#ShowNextStepDiv").css('visibility', 'visible');
+            $('#SetNextStepID').val(StepNoTo);
+            if ( ApprovalSet == 1 ) {
+                $("#ShowNextColor").css('visibility', 'visible');
+            }
+            else {
+                $("#ShowNextColor").css('visibility', 'hidden');
+            }
+        }
+        if ( StepNoTo == 'End' ) {
+            $("#ShowNextStepDivEnd").css('visibility', 'visible');
+
+            if ( ApprovalSet == 1 ) {
+                $('#NextStepEnd').val('1');
+            }
+            else {
+                $('#NextStepEnd').val('2');
+            }
+            $('#StepNoToSend').val(StepNoTo);
+            $("#ShowNextColor").css('visibility', 'hidden');
+        }
+
+        if ( StepNoTo != 'End' && StepNoTo != 'New' && StepNoTo != 'Parallel' && StepNoTo != '' ) {
+            $("#ShowSetNextStep").css('visibility', 'visible');
+            $('#SetNextStepID').val(StepNoTo);
+        }
+
+
+    });
+
+//]]></script>
+[% END %]
+
+						<div id="ShowNextStepDivEnd" style="margin-top:5px;visibility: hidden;">
+
+ 		                <form id="NextProcessStep" action="[% Env("CGIHandle") %]" method="post" name="NextProcessStep" class="Validate PreventMultipleSubmits">
+		                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+		                    <input type="hidden" name="Subaction" value="NextProcessStep"/>
+		                    <input type="hidden" name="ID" id="ID" value="[% Data.ID | html %]"/>
+		                    <input type="hidden" name="ProcessStepID" id="ProcessStepID" value="[% Data.ProcessStepID | html %]"/>
+		                    <input type="hidden" name="SessionName" id="SessionName" value="[% Env("SessionName") | html %]"/>
+		                    <input type="hidden" name="SessionID" id="SessionID" value="[% Env("SessionID") | html %]"/>
+		                    <input type="hidden" name="NextStepEnd" id="NextStepEnd" value=""/>
+		                    <input type="hidden" name="StepNoToSend" id="StepNoToSend" value=""/>
+		                    <input type="hidden" name="ApprovalArt" id="ApprovalArt" value=""/>
+		                    <input type="hidden" name="FromStepNo" id="FromStepNo" value=""/>
+
+                            <fieldset class="TableLike">
+
+		                        <label for="Transition">[% Translate("Transition action") | html %]:</label>
+		                        <div class="Field">
+		                            [% Translate("Select if necessary") | html %]
+		                        </div>
+		                        <div class="Clear"></div>
+
+						        <label for="QueueID">[% Translate("Queue") | html %]:</label>
+						        <div class="Field">
+						            [% Data.QueueNewStrg %]
+						        </div>
+						        <div class="Clear"></div>
+
+	                            <label>[% Translate("Not approved") | html %]:</label>
+		                        <div class="Field">
+		                            [% Translate("The process ends here") | html %]
+		                        </div>
+		                        <div class="Clear"></div>
+                            </fieldset>
+
+	                        <div class="Field SpacingTop">
+	                            <button class="CallForAction Primary" id="Submit" type="submit" value="[% Translate("Save") | html %]"><span>[% Translate("Save") | html %]</span></button>
+	                        </div>
+	                        <div class="Clear"></div>
+
+		                </form>
+
+	                    </div>
+
+						<div id="ShowSetNextStep" style="margin-top:5px;visibility: hidden;">
+
+ 		                <form id="NextProcessStepOne" action="[% Env("CGIHandle") %]" method="post" name="NextProcessStepOne" class="Validate PreventMultipleSubmits">
+		                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+		                    <input type="hidden" name="Subaction" value="NextProcessStep"/>
+		                    <input type="hidden" id="ID" name="ID" value="[% Data.ID | html %]"/>
+		                    <input type="hidden" id="ProcessStepID" name="ProcessStepID" value="[% Data.ProcessStepID | html %]"/>
+		                    <input type="hidden" name="SessionName" id="SessionName" value="[% Env("SessionName") | html %]"/>
+		                    <input type="hidden" name="SessionID" id="SessionID" value="[% Env("SessionID") | html %]"/>
+		                    <input type="hidden" name="FromStepNext" id="FromStepNext" value=""/>
+
+                            <fieldset class="TableLike">
+
+		                    <input type="hidden" name="SetNextStepID" id="SetNextStepID" value=""/>
+
+	                            <label>[% Translate("Next step") | html %]:</label>
+		                        <div class="Field">
+		                            [% Translate("The process continues with the selected step") | html %]
+		                        </div>
+		                        <div class="Clear"></div>
+
+		                        <label for="Transition">[% Translate("Transition action") | html %]:</label>
+		                        <div class="Field">
+		                            [% Translate("Select if necessary") | html %]
+		                        </div>
+		                        <div class="Clear"></div>
+
+						        <label for="StateID">[% Translate("State") | html %]:</label>
+						        <div class="Field">
+						            [% Data.StateStrg %]
+						        </div>
+						        <div class="Clear"></div>
+
+						        <label for="QueueID">[% Translate("Queue") | html %]:</label>
+						        <div class="Field">
+						            [% Data.QueueNewStrg %]
+						        </div>
+						        <div class="Clear"></div>
+
+                            </fieldset>
+
+	                        <div class="Field SpacingTop">
+	                            <button class="CallForAction Primary" id="Submit" type="submit" value="[% Translate("Save") | html %]"><span>[% Translate("Save") | html %]</span></button>
+	                        </div>
+	                        <div class="Clear"></div>
+
+		                </form>
+
+	                    </div>
+
+						<div id="ShowNextStepDiv" style="margin-top:5px;visibility: hidden;">
+
+ 		                <form id="NextProcessStepTwo" action="[% Env("CGIHandle") %]" method="post" name="NextProcessStepTwo" class="Validate PreventMultipleSubmits">
+		                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+		                    <input type="hidden" name="Subaction" value="NextProcessStep"/>
+		                    <input type="hidden" name="ApprovalArt" id="ApprovalArt" value=""/>
+		                    <input type="hidden" name="ID" id="ID" value="[% Data.ID | html %]"/>
+		                    <input type="hidden" name="ProcessStepID" id="ProcessStepID" value="[% Data.ProcessStepID | html %]"/>
+		                    <input type="hidden" name="SessionName" id="SessionName" value="[% Env("SessionName") | html %]"/>
+		                    <input type="hidden" name="SessionID" id="SessionID" value="[% Env("SessionID") | html %]"/>
+		                    <input type="hidden" name="ApprovalSet" id="ApprovalSet" value=""/>
+		                    <input type="hidden" name="FromStepGo" id="FromStepGo" value=""/>
+
+                            <fieldset class="TableLike">
+
+	                        <label for="Transition">[% Translate("Transition action") | html %]:</label>
+	                        <div class="Field">
+	                            [% Translate("Select if necessary") | html %]
+	                        </div>
+	                        <div class="Clear"></div>
+
+#					        <label for="TypeID">[% Translate("Type") | html %]:</label>
+#					        <div class="Field">
+#					            [% Data.TypeStrg %]
+#					        </div>
+#					        <div class="Clear"></div>
+
+					        <label for="StateID">[% Translate("State") | html %]:</label>
+					        <div class="Field">
+					            [% Data.StateStrg %]
+					        </div>
+					        <div class="Clear"></div>
+
+					        <label for="QueueID">[% Translate("Queue") | html %]:</label>
+					        <div class="Field">
+					            [% Data.QueueNewStrg %]
+					        </div>
+					        <div class="Clear"></div>
+
+#					        <label for="ServiceID">[% Translate("Service") | html %]:</label>
+#					        <div class="Field">
+#					            [% Data.ServiceStrg %]
+#					        </div>
+#					        <div class="Clear"></div>
+
+#					        <label for="SLAID">[% Translate("SLA") | html %]:</label>
+#					        <div class="Field">
+#					            [% Data.SLAStrg %]
+#					        </div>
+#					        <div class="Clear"></div>
+
+	                        <label class="Mandatory" for="NextProcessName"><span class="Marker">*</span> [% Translate("name of the process step") | html %]:</label>
+	                        <div class="Field">
+	                            <input type="text" name="NextProcessName" id="NextProcessName" value="[% Data.NextProcessName | html %]" class="W50pc Validate_Required [% Data.NextProcessNameInvalid | html %]" maxlength="200"/>
+	                            <div id="NextProcessNameError" class="TooltipErrorMessage">
+	                                <p>[% Translate("This field is required.") | html %]</p>
+	                            </div>
+	                            <div id="NextProcessNameServerError" class="TooltipErrorMessage">
+	                                <p>[% Translate("This field is required.") | html %]</p>
+	                            </div>
+	                        </div>
+	                        <div class="Clear"></div>
+
+							<div id="ShowNextColor" style="visibility: hidden;">
+							<fieldset class="TableLike">
+		                        <label for="Color">[% Translate("Color") | html %]:</label>
+		                        <div class="Field">
+		                            <input type="color" name="Color" id="Color" value="[% Data.Color | html %]" class="W5pc"/>
+		                        </div>
+		                        <div class="Clear"></div>
+	                        </fieldset>
+	                        </div>
+
+				            <label class="Mandatory" for="NextDescription"><span class="Marker">*</span> [% Translate("Description") | html %]:</label>
+				            <div class="Field">
+				                <textarea id="RichText" class="RichText Validate_Required [% Data.NextDescriptionInvalid | html %]" name="NextDescription" title="[% Translate("Description body") | html %]" rows="15" cols="[% Config("Ticket::Frontend::TextAreaNote") | html %]">[% Data.NextDescription | html %]</textarea>
+				                <div id="NextDescriptionError" class="TooltipErrorMessage">
+				                    <p>[% Translate("This field is required.") | html %]</p>
+				                </div>
+				                <div id="NextDescriptionServerError" class="TooltipErrorMessage">
+				                    <p>[% Translate("This field is required.") | html %]</p>
+				                </div>
+				            </div>
+				            <div class="Clear"></div>
+
+	                        <label class="Mandatory" for="NextGroupID"><span class="Marker">*</span> [% Translate("Group") | html %]:</label>
+	                        <div class="Field">
+	                            [% Data.NextGroupOption %]
+	                            <div id="NextGroupIDError" class="TooltipErrorMessage">
+	                                <p>[% Translate("This field is required.") | html %]</p>
+	                            </div>
+	                            <div id="NextGroupIDServerError" class="TooltipErrorMessage">
+	                                <p>[% Translate("This field is required.") | html %]</p>
+	                            </div>
+	                        </div>
+	                        <div class="Clear"></div>
+	
+	                        <label class="Mandatory" for="NextStepArtID"><span class="Marker">*</span> [% Translate("type of process step") | html %]:</label>
+	                        <div class="Field">
+	                            [% Data.NextStepArtIDOption %]
+	                            <div id="NextStepArtIDError" class="TooltipErrorMessage">
+	                                <p>[% Translate("This field is required.") | html %]</p>
+	                            </div>
+	                            <div id="NextStepArtIDServerError" class="TooltipErrorMessage">
+	                                <p>[% Translate("This field is required.") | html %]</p>
+	                            </div>
+	                        </div>
+	                        <div class="Clear"></div>
+
+                        <label for="NotifyAgent">[% Translate("Agent notification") | html %]:</label>
+                        <div class="Field">
+                            [% Data.NotifyAgentOption %]
+                        </div>
+                        <div class="Clear"></div>
+
+		                    <div id="NextApprovalDiv" style="margin-top:5px;visibility: hidden;">
+		                    <fieldset class="TableLike">
+		
+		                        <label for="NextApproverGroupID">[% Translate("Customer has to approve") | html %]:</label>
+		                        <div class="Field">
+		                            [% Data.NextApproverGroupOption %]
+		                        </div>
+		                        <div class="Clear"></div>
+		
+			                    <label for="NextApproverEmail">[% Translate("Email to approvers") | html %]:</label>
+			                    <div class="Field">
+			                        <input type="text" name="NextApproverEmail" id="NextApproverEmail" value="" class="W50pc" maxlength="2000"/><br>
+			                        <span>[% Translate("Please enter the email(s) of the approver(s) separated by ;") | html %]</span>
+			                    </div>
+			                    <div class="Clear"></div>
+
+		                        <label for="SetArticleID">[% Translate("Should the text be transmitted from the previous work step?") | html %]:</label>
+		                        <div class="Field">
+		                            [% Data.SetArticleIDOption %]
+		                        </div>
+		                        <div class="Clear"></div>
+
+		                    </fieldset>
+	                        </div>
+
+	                        <div class="Field SpacingTop">
+	                            <button class="CallForAction Primary" id="Submit" type="submit" value="[% Translate("Save") | html %]"><span>[% Translate("Save") | html %]</span></button>
+	                        </div>
+	                        <div class="Clear"></div>
+
+                           </fieldset>
+
+						</div>
+
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+
+    $('#NextStepArtID').bind('change', function () {
+
+        var NextStepArtID  = $("#NextStepArtID").val();
+
+        if ( NextStepArtID > 1 ) {
+
+            $("#NextApprovalDiv").css('visibility', 'visible');
+        }
+        else {
+            $("#NextApprovalDiv").css('visibility', 'hidden');
+        }
+
+    });
+
+//]]></script>
+[% END %]
+
+                            </fieldset>
+		                </form>
+						</div>
+
+[% RenderBlockEnd("ApprovalStep") %]
+
+[% RenderBlockStart("NextStep") %]
+
+[% RenderBlockStart("SetNextStep") %]
+                        <div style="float:left;margin-left:3%;margin-right:5px;padding:5px;margin-bottom:10px;">[% Translate("Define the next step") | html %]:</div>
+                        <div style="float:left;">
+                            <button type="button" id="ProcessStepTwo" style="visibility: visible;border: 1px solid #656566;color: green;padding: 0px 7px 2px;line-height: 18px;vertical-align: middle;font-size: 18px;display: block;cursor: pointer;position: relative;border-radius: 3px;font-weight: bold;"><span>+</span></button>
+                        </div>
+                        <div style="float:left;">
+                            <button type="button" id="NoProcessStepTwo" style="visibility:hidden;border: 1px solid #656566;color: red;padding: 0px 7px 2px;line-height: 18px;vertical-align: middle;font-size: 18px;display: block;cursor: pointer;position: relative;border-radius: 3px;font-weight: bold;"><span>-</span></button>
+                        </div>
+[% RenderBlockEnd("SetNextStep") %]
+[% RenderBlockStart("SetNextStepOK") %]
+                        <div style="float:left;margin-left:3%;margin-right:5px;padding:5px;margin-bottom:10px;">[% Translate("Define the next step") | html %]:</div>
+                        <div style="float:left;">
+                            <button type="button" id="ProcessStepTwoOK" style="visibility: visible;border: 1px solid #656566;color: green;padding: 0px 7px 2px;line-height: 18px;vertical-align: middle;font-size: 18px;display: block;cursor: pointer;position: relative;border-radius: 3px;font-weight: bold;">
+							<img src="[% Config("Frontend::ImagePath") %]/icons/tick.png" alt="[% Translate("Done") | html %]" ></button>
+                        </div>
+[% RenderBlockEnd("SetNextStepOK") %]
+
+[% RenderBlockStart("SetNextStepWithConditions") %]
+                        <div style="float:left;margin-left:10px;margin-right:5px;padding:5px;margin-bottom:10px;">[% Translate("Define the next step with conditions") | html %]:</div>
+                        <div style="float:left;">
+                            <button type="button" id="ProcessStepWithConditions" style="visibility: visible;border: 1px solid #656566;color: green;padding: 0px 7px 2px;line-height: 18px;vertical-align: middle;font-size: 18px;display: block;cursor: pointer;position: relative;border-radius: 3px;font-weight: bold;"><span>+</span></button>
+                        </div>
+                        <div style="float:left;">
+                            <button type="button" id="NoProcessStepWithConditions" style="visibility:hidden;border: 1px solid #656566;color: red;padding: 0px 7px 2px;line-height: 18px;vertical-align: middle;font-size: 18px;display: block;cursor: pointer;position: relative;border-radius: 3px;font-weight: bold;"><span>-</span></button>
+                        </div>
+[% RenderBlockEnd("SetNextStepWithConditions") %]
+[% RenderBlockStart("SetNextStepWithConditionsOK") %]
+                        <div style="float:left;margin-left:10px;margin-right:5px;padding:5px;margin-bottom:10px;">[% Translate("Define the next step with conditions") | html %]:</div>
+                        <div style="float:left;">
+                            <button type="button" id="ProcessStepWithConditionsOK" style="visibility: visible;border: 1px solid #656566;color: green;padding: 0px 7px 2px;line-height: 18px;vertical-align: middle;font-size: 18px;display: block;cursor: pointer;position: relative;border-radius: 3px;font-weight: bold;">
+							<img src="[% Config("Frontend::ImagePath") %]/icons/tick.png" alt="[% Translate("Done") | html %]" ></button>
+                        </div>
+[% RenderBlockEnd("SetNextStepWithConditionsOK") %]
+
+                        <div style="float:left;margin-left:10px;margin-right:5px;padding:5px;margin-bottom:10px;">[% Translate("Parallel step") | html %]:</div>
+                        <div style="float:left;">
+                            <button type="button" id="ProcessStepParallel" style="visibility: visible;border: 1px solid #656566;color: green;padding: 0px 7px 2px;line-height: 18px;vertical-align: middle;font-size: 18px;display: block;cursor: pointer;position: relative;border-radius: 3px;font-weight: bold;"><span>+</span></button>
+                        </div>
+
+                        <div style="float:left;width:200px;">
+ 
+ 		                <form id="ProcessStepEnd" action="[% Env("CGIHandle") %]" method="post" name="ProcessStepEnd" class="Validate PreventMultipleSubmits">
+		                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+		                    <input type="hidden" name="Subaction" value="ProcessStepEnd"/>
+		                    <input type="hidden" id="ID" name="ID" value="[% Data.ID | html %]"/>
+		                    <input type="hidden" id="ProcessStepID" name="ProcessStepID" value="[% Data.ProcessStepID | html %]"/>
+		                    <input type="hidden" name="SessionName" id="SessionName" value="[% Env("SessionName") | html %]"/>
+		                    <input type="hidden" name="SessionID" id="SessionID" value="[% Env("SessionID") | html %]"/>
+                            <fieldset class="TableLike">
+ 
+[% RenderBlockStart("SetStepEnd") %]
+                        <div style="float:left;margin-left:3%;margin-right:5px;padding:5px;margin-bottom:10px;">[% Translate("Or end process") | html %]:</div>
+                        <div style="float:left;">
+                            <button class="CallForAction Primary" id="Submit" type="submit" value="[% Translate("End") | html %]"><span>[% Translate("End") | html %]</span></button>
+                        </div>
+[% RenderBlockEnd("SetStepEnd") %]
+
+[% RenderBlockStart("StepEnd") %]
+                        <div style="float:left;margin-left:10px;margin-right:5px;padding:5px;margin-bottom:10px;color:red">[% Translate("Process step has ended") | html %]:</div>
+[% RenderBlockEnd("StepEnd") %]
+
+[% RenderBlockStart("StepFinish") %]
+                        <div style="float:left;margin-left:10px;margin-right:5px;padding:5px;margin-bottom:10px;color:red">[% Translate("Process step has ended") | html %]:</div>
+[% RenderBlockEnd("StepFinish") %]
+
+                           </fieldset>
+		               </form>
+                       </div>
+                       <div class="Clear"></div>
+
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+
+    $('#ProcessStepTwo').bind('click', function () {
+        $("#ShowNextDiv").css('visibility', 'visible');
+        $("#ProcessStepTwo").css('visibility', 'hidden');
+        $("#NoProcessStepTwo").css('visibility', 'visible');
+        $("#ShowNextStepDiv").css('visibility', 'hidden');
+        $("#NextWithoutConditions").css('visibility', 'visible');
+        $("#NextWithConditions").css('visibility', 'hidden');
+        $("#NoProcessStepWithConditions").css('visibility', 'hidden');
+        $("#ProcessStepWithConditions").css('visibility', 'visible');
+        $("#ShowNextColor").css('visibility', 'hidden');
+        $("#Conditions").css('visibility', 'hidden');
+        $("#ShowNextStepDivEnd").css('visibility', 'hidden');
+        $('#WithConditions').val('0');
+        $('#WithConditionsNext').val('');
+        $('#FromStepNo').val('1');
+        $('#Transition').val('');
+        $('#StepNoTo').val('');
+        $('#FromStepNext').val('1');
+        $('#FromStepGo').val('1');
+    });
+    $('#NoProcessStepTwo').bind('click', function () {
+        $("#ShowSetNextStep").css('visibility', 'hidden');
+        $("#ShowNextStepDivEnd").css('visibility', 'hidden');
+        $("#ShowNextStepDiv").css('visibility', 'hidden');
+        $("#ShowNextDiv").css('visibility', 'hidden');
+        $("#ProcessStepTwo").css('visibility', 'visible');
+        $("#NoProcessStepTwo").css('visibility', 'hidden');
+        $("#ShowNextTransition").css('visibility', 'hidden');
+        $("#NextWithoutConditions").css('visibility', 'hidden');
+        $("#NextWithConditions").css('visibility', 'hidden');
+        $("#Conditions").css('visibility', 'hidden');
+        $("#ShowNextStepDivEnd").css('visibility', 'hidden');
+        $('#Transition').val('');
+        $('#FromStepNo').val('');
+        $('#StepNoTo').val('');
+        $('#FromStepNext').val('');
+        $('#FromStepGo').val('');
+        $('#WithConditionsNext').val('');
+    });
+
+    $('#ProcessStepParallel').bind('click', function () {
+        $("#ShowNextDiv").css('visibility', 'hidden');
+        $("#ShowNextStepParallelDiv").css('visibility', 'visible');
+        $('#SetNextStepID').val(StepNoTo);
+        $("#Conditions").css('visibility', 'hidden');
+        $("#ProcessStepTwo").css('visibility', 'hidden');
+        $("#NoProcessStepTwo").css('visibility', 'hidden');
+        $("#ShowNextStepDiv").css('visibility', 'hidden');
+        $("#ShowNextStepDiv").css('display', 'none');
+        $("#NextWithoutConditions").css('visibility', 'hidden');
+        $("#NextWithConditions").css('visibility', 'hidden');
+        $("#NoProcessStepWithConditions").css('visibility', 'hidden');
+        $("#ProcessStepWithConditions").css('visibility', 'hidden');
+        $("#ShowNextColor").css('visibility', 'hidden');
+        $("#Conditions").css('visibility', 'hidden');
+        $("#ShowNextStepDivEnd").css('visibility', 'hidden');
+        $("#ShowNextStepDivEnd").css('display', 'none');
+        $('#WithConditions').val('0');
+        $('#WithConditionsNext').val('');
+        $('#FromStepNo').val('1');
+        $('#Transition').val('');
+        $('#StepNoTo').val('');
+        $('#FromStepNext').val('1');
+        $('#FromStepGo').val('1');
+    });
+
+    $('#ProcessStepTwoOK').bind('click', function () {
+
+        var ProcessStepID = $("#ProcessStepID").val();
+        var ProcessID     = $("#ID").val();
+	    var SessionName = $('input#SessionName').val();
+	    var SessionID   = $('input#SessionID').val();
+	    var new_names   = SessionName + "=" + SessionID;
+
+        $.ajax({
+            type:     'Post',
+            url:      'index.pl?' + new_names,
+            data:
+            {
+                Action:        'AdminGetProcessSteps',
+                Subaction:     'GetProcessSteps',
+                ProcessID:     ProcessID,
+                ProcessStepID: ProcessStepID,
+                StepNo:        '1',
+            },
+            async: false,
+            dataType: 'html',
+            success: function(Response) {
+                $("#Conditions").css('visibility', 'visible');
+                $('#Conditions').html(Response);
+            }
+        });
+    });
+
+    $('#ProcessStepWithConditions').bind('click', function () {
+        $("#ShowNextDiv").css('visibility', 'visible');
+        $("#ProcessStepWithConditions").css('visibility', 'hidden');
+        $("#NoProcessStepTwo").css('visibility', 'hidden');
+        $("#ProcessStepTwo").css('visibility', 'visible');
+        $("#NoProcessStepWithConditions").css('visibility', 'visible');
+        $("#ShowNextStepDiv").css('visibility', 'hidden');
+        $("#NextWithoutConditions").css('visibility', 'hidden');
+        $("#NextWithConditions").css('visibility', 'visible');
+        $("#ShowNextStepDivEnd").css('visibility', 'hidden');
+        $('#Transition').val('');
+        $('#WithConditions').val('1');
+        $('#WithConditionsNext').val('1');
+        $('#WithConditionsEnd').val('1');
+        $('#StepNoTo').val('');
+        $('#FromStepNo').val('2');
+        $('#FromStepNext').val('2');
+        $('#FromStepGo').val('2');
+    });
+    $('#NoProcessStepWithConditions').bind('click', function () {
+        $("#ShowSetNextStep").css('visibility', 'hidden');
+        $("#ShowNextStepDivEnd").css('visibility', 'hidden');
+        $("#ShowNextStepDiv").css('visibility', 'hidden');
+        $("#ShowNextDiv").css('visibility', 'hidden');
+        $("#ProcessStepWithConditions").css('visibility', 'visible');
+        $("#NoProcessStepWithConditions").css('visibility', 'hidden');
+        $("#ShowNextTransition").css('visibility', 'hidden');
+        $("#NextWithConditions").css('visibility', 'hidden');
+        $("#Conditions").css('visibility', 'hidden');
+        $("#ShowNextColor").css('visibility', 'hidden');
+        $("#ShowNextStepDivEnd").css('visibility', 'hidden');
+        $('#Transition').val('');
+        $('#FromStepNo').val('');
+        $('#FromStepNext').val('');
+        $('#FromStepGo').val('');
+        $('#WithConditions').val('');
+        $('#StepNoTo').val('');
+        $('#WithConditionsNext').val('');
+    });
+
+    $('#ProcessStepWithConditionsOK').bind('click', function () {
+
+        var ProcessStepID = $("#ProcessStepID").val();
+        var ProcessID     = $("#ID").val();
+	    var SessionName = $('input#SessionName').val();
+	    var SessionID   = $('input#SessionID').val();
+	    var new_names   = SessionName + "=" + SessionID;
+
+        $.ajax({
+            type:     'Post',
+            url:      'index.pl?' + new_names,
+            data:
+            {
+                Action:        'AdminGetProcessSteps',
+                Subaction:     'GetProcessSteps',
+                ProcessID:     ProcessID,
+                ProcessStepID: ProcessStepID,
+                StepNo:        '2',
+            },
+            async: false,
+            dataType: 'html',
+            success: function(Response) {
+                $("#Conditions").css('visibility', 'visible');
+                $('#Conditions').html(Response);
+            }
+        });
+    });
+
+//]]></script>
+[% END %]
+
+						<div id="ShowNextDiv" style="margin-top:5px;visibility: hidden;">
+
+                            <fieldset class="TableLike">
+
+	                        <label >[% Translate("type of step") | html %]:</label>
+	                        <div class="FieldApprovalArt">
+	                            <div id="NextWithoutConditions" style="visibility: hidden;">[% Translate("Next step without conditions") | html %]</div>
+	                            <div id="NextWithConditions" style="visibility: hidden;">[% Translate("Next step with conditions") | html %]</div>
+	                        </div>
+	                        <div class="Clear"></div>
+
+	                        <label class="Mandatory" for="StepNoTo"><span class="Marker">*</span> [% Translate("To next step") | html %]:</label>
+	                        <div class="Field">
+	                            [% Data.StepNoToOption %]
+	                        </div>
+	                        <div class="Clear"></div>
+                            </fieldset>
+
+
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+
+    $('#StepNoTo').bind('change', function () {
+
+        $("#ShowNextStepDiv").css('visibility', 'hidden');
+        $("#ShowNextStepDivEnd").css('visibility', 'hidden');
+        $("#ShowSetNextStep").css('visibility', 'hidden');
+        $("#ShowNextColor").css('visibility', 'hidden');
+        $('#SetNextStepID').val('0');
+        var WithConditions = $("#WithConditions").val();
+
+        var StepNoTo    = $("#StepNoTo").val();
+
+        if ( StepNoTo == 'New' && WithConditions == 1 ) {
+            $("#ShowNextStepDiv").css('visibility', 'visible');
+            $("#ShowNextStepDiv").css('display', 'inline');
+            $('#SetNextStepID').val(StepNoTo);
+            $("#ShowNextColor").css('visibility', 'visible');
+ 	        $("#ConditionsEnd").css('visibility', 'hidden');
+	        $('#ConditionsEnd').html('');
+ 	        $("#ConditionsNext").css('visibility', 'hidden');
+	        $('#ConditionsNext').html('');
+
+	        var ProcessStepID = $("#ProcessStepID").val();
+            var ProcessID     = $("#ID").val();
+		    var SessionName = $('input#SessionName').val();
+		    var SessionID   = $('input#SessionID').val();
+		    var new_names   = SessionName + "=" + SessionID;
+	
+	        $.ajax({
+	            type:     'Post',
+	            url:      'index.pl?' + new_names,
+	            data:
+	            {
+	                Action:        'AdminSetProcessConditions',
+	                Subaction:     'ProcessConditions',
+	                ProcessID:     ProcessID,
+	                ProcessStepID: ProcessStepID,
+	            },
+	            async: false,
+	            dataType: 'html',
+	            success: function(Response) {
+	                $("#Conditions").css('visibility', 'visible');
+	                $('#Conditions').html(Response);
+	            }
+	        });
+
+        }
+        if ( StepNoTo == 'New' && WithConditions == 0 ) {
+            $("#ShowNextStepDiv").css('visibility', 'visible');
+            $("#ShowNextStepDiv").css('display', 'inline');
+            $('#SetNextStepID').val(StepNoTo);
+            $("#Conditions").css('visibility', 'hidden');
+        }
+        if ( StepNoTo == 'End' && WithConditions == 0 ) {
+            $("#ShowNextStepDivEnd").css('visibility', 'visible');
+            $("#ShowNextStepDivEnd").css('display', 'inline');
+            $('#NextStepEnd').val('1');
+            $('#StepNoToSend').val(StepNoTo);
+            $("#ShowNextColor").css('visibility', 'hidden');
+ 	        $("#Conditions").css('visibility', 'hidden');
+	        $('#Conditions').html('');
+	        $("#ConditionsEnd").css('visibility', 'hidden');
+	        $('#ConditionsEnd').html(''); 
+        }
+        if ( StepNoTo == 'End' && WithConditions == 1 ) {
+            $("#ShowNextStepDivEnd").css('visibility', 'visible');
+            $("#ShowNextStepDivEnd").css('display', 'inline');
+            $('#NextStepEnd').val('2');
+            $('#StepNoToSend').val(StepNoTo);
+            $("#ShowNextColor").css('visibility', 'hidden');
+ 	        $("#Conditions").css('visibility', 'hidden');
+	        $('#Conditions').html('');
+ 
+ 	        var ProcessStepID = $("#ProcessStepID").val();
+            var ProcessID     = $("#ID").val();
+		    var SessionName = $('input#SessionName').val();
+		    var SessionID   = $('input#SessionID').val();
+		    var new_names   = SessionName + "=" + SessionID;
+	
+	        $.ajax({
+	            type:     'Post',
+	            url:      'index.pl?' + new_names,
+	            data:
+	            {
+	                Action:        'AdminSetProcessConditions',
+	                Subaction:     'ProcessConditions',
+	                ProcessID:     ProcessID,
+	                ProcessStepID: ProcessStepID,
+	            },
+	            async: false,
+	            dataType: 'html',
+	            success: function(Response) {
+	                $("#ConditionsEnd").css('visibility', 'visible');
+	                $('#ConditionsEnd').html(Response);
+	            }
+	        });
+ 
+        }
+
+        if ( StepNoTo != 'End' && StepNoTo != 'New' && StepNoTo != 'Parallel' && StepNoTo != '' ) {
+            $("#ShowSetNextStep").css('visibility', 'visible');
+            $("#ShowSetNextStep").css('display', 'inline');
+            $('#SetNextStepID').val(StepNoTo);
+ 	        $("#Conditions").css('visibility', 'hidden');
+	        $('#Conditions').html('');
+ 	        $("#ConditionsEnd").css('visibility', 'hidden');
+	        $('#ConditionsEnd').html('');
+
+ 	        var ProcessStepID = $("#ProcessStepID").val();
+            var ProcessID     = $("#ID").val();
+		    var SessionName = $('input#SessionName').val();
+		    var SessionID   = $('input#SessionID').val();
+		    var new_names   = SessionName + "=" + SessionID;
+	
+	        $.ajax({
+	            type:     'Post',
+	            url:      'index.pl?' + new_names,
+	            data:
+	            {
+	                Action:        'AdminSetProcessConditions',
+	                Subaction:     'ProcessConditions',
+	                ProcessID:     ProcessID,
+	                ProcessStepID: ProcessStepID,
+	            },
+	            async: false,
+	            dataType: 'html',
+	            success: function(Response) {
+	                $("#ConditionsNext").css('visibility', 'visible');
+	                $('#ConditionsNext').html(Response);
+	            }
+	        });
+
+        }
+
+    });
+
+//]]></script>
+[% END %]
+
+						<div id="ShowNextStepDivEnd" style="margin-top:5px;visibility: hidden;display:none;">
+
+ 		                <form id="NextProcessStep" action="[% Env("CGIHandle") %]" method="post" name="NextProcessStep" class="Validate PreventMultipleSubmits">
+		                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+		                    <input type="hidden" name="Subaction" value="NextProcessStep"/>
+		                    <input type="hidden" name="ID" id="ID" value="[% Data.ID | html %]"/>
+		                    <input type="hidden" name="ProcessStepID" id="ProcessStepID" value="[% Data.ProcessStepID | html %]"/>
+		                    <input type="hidden" name="SessionName" id="SessionName" value="[% Env("SessionName") | html %]"/>
+		                    <input type="hidden" name="SessionID" id="SessionID" value="[% Env("SessionID") | html %]"/>
+		                    <input type="hidden" name="NextStepEnd" id="NextStepEnd" value=""/>
+		                    <input type="hidden" name="StepNoToSend" id="StepNoToSend" value=""/>
+		                    <input type="hidden" name="StepArt" id="StepArt" value="WorkStep"/>
+		                    <input type="hidden" name="WithConditionsEnd" id="WithConditionsEnd" value=""/>
+		                    <input type="hidden" name="FromStepNo" id="FromStepNo" value=""/>
+
+                            <fieldset class="TableLike">
+
+	                            <label>[% Translate(" ") | html %]:</label>
+		                        <div class="Field">
+		                            [% Translate("The process ends here") | html %]
+		                        </div>
+		                        <div class="Clear"></div>
+
+								<div id="ConditionsEnd" style="margin-top:5px;visibility: hidden;"></div>
+	
+		                        <label for="Transition">[% Translate("Transition action") | html %]:</label>
+		                        <div class="Field">
+		                            [% Translate("Select if necessary") | html %]
+		                        </div>
+		                        <div class="Clear"></div>
+		
+						        <label for="QueueID">[% Translate("Queue") | html %]:</label>
+						        <div class="Field">
+						            [% Data.QueueNewStrg %]
+						        </div>
+						        <div class="Clear"></div>
+
+                            </fieldset>
+
+	                        <div class="Field SpacingTop">
+	                            <button class="CallForAction Primary" id="Submit" type="submit" value="[% Translate("Save") | html %]"><span>[% Translate("Save") | html %]</span></button>
+	                        </div>
+	                        <div class="Clear"></div>
+
+		                </form>
+
+	                    </div>
+
+						<div id="ShowSetNextStep" style="margin-top:5px;visibility: hidden;display:none;">
+
+ 		                <form id="NextProcessStepOne" action="[% Env("CGIHandle") %]" method="post" name="NextProcessStepOne" class="Validate PreventMultipleSubmits">
+		                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+		                    <input type="hidden" name="Subaction" value="NextProcessStep"/>
+		                    <input type="hidden" id="ID" name="ID" value="[% Data.ID | html %]"/>
+		                    <input type="hidden" id="ProcessStepID" name="ProcessStepID" value="[% Data.ProcessStepID | html %]"/>
+		                    <input type="hidden" name="SessionName" id="SessionName" value="[% Env("SessionName") | html %]"/>
+		                    <input type="hidden" name="SessionID" id="SessionID" value="[% Env("SessionID") | html %]"/>
+		                    <input type="hidden" name="WithConditionsNext" id="WithConditionsNext" value=""/>
+		                    <input type="hidden" name="FromStepNext" id="FromStepNext" value=""/>
+
+                            <fieldset class="TableLike">
+
+		                    <input type="hidden" name="SetNextStepID" id="SetNextStepID" value=""/>
+
+	                            <label>[% Translate("Next step") | html %]:</label>
+		                        <div class="Field">
+		                            [% Translate("The process continues with the selected step") | html %]
+		                        </div>
+		                        <div class="Clear"></div>
+
+								<div id="ConditionsNext" style="margin-top:5px;visibility: hidden;"></div>
+	
+		                        <label for="Transition">[% Translate("Transition action") | html %]:</label>
+		                        <div class="Field">
+		                            [% Translate("Select if necessary") | html %]
+		                        </div>
+		                        <div class="Clear"></div>
+
+						        <label for="StateID">[% Translate("State") | html %]:</label>
+						        <div class="Field">
+						            [% Data.StateStrg %]
+						        </div>
+						        <div class="Clear"></div>
+
+						        <label for="QueueID">[% Translate("Queue") | html %]:</label>
+						        <div class="Field">
+						            [% Data.QueueNewStrg %]
+						        </div>
+						        <div class="Clear"></div>
+
+                            </fieldset>
+
+	                        <div class="Field SpacingTop">
+	                            <button class="CallForAction Primary" id="Submit" type="submit" value="[% Translate("Save") | html %]"><span>[% Translate("Save") | html %]</span></button>
+	                        </div>
+	                        <div class="Clear"></div>
+
+		                </form>
+
+	                    </div>
+
+						<div id="ShowNextStepDiv" style="margin-top:5px;visibility: hidden;display:none;">
+
+ 		                <form id="NextProcessStepTwo" action="[% Env("CGIHandle") %]" method="post" name="NextProcessStepTwo" class="Validate PreventMultipleSubmits">
+		                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+		                    <input type="hidden" name="Subaction" value="NextProcessStep"/>
+		                    <input type="hidden" name="ID" id="ID" value="[% Data.ID | html %]"/>
+		                    <input type="hidden" name="ProcessStepID" id="ProcessStepID" value="[% Data.ProcessStepID | html %]"/>
+		                    <input type="hidden" name="SessionName" id="SessionName" value="[% Env("SessionName") | html %]"/>
+		                    <input type="hidden" name="SessionID" id="SessionID" value="[% Env("SessionID") | html %]"/>
+		                    <input type="hidden" name="SetNextStepID" id="SetNextStepID" value=""/>
+		                    <input type="hidden" name="WithConditions" id="WithConditions" value=""/>
+		                    <input type="hidden" name="FromStepGo" id="FromStepGo" value=""/>
+
+                            <fieldset class="TableLike">
+
+							<div id="Conditions" style="margin-top:5px;visibility: hidden;"></div>
+
+	                        <label for="Transition">[% Translate("Transition action") | html %]:</label>
+	                        <div class="Field">
+	                            [% Translate("Select if necessary") | html %]
+	                        </div>
+	                        <div class="Clear"></div>
+
+#					        <label for="TypeID">[% Translate("Type") | html %]:</label>
+#					        <div class="Field">
+#					            [% Data.TypeStrg %]
+#					        </div>
+#					        <div class="Clear"></div>
+
+					        <label for="StateID">[% Translate("State") | html %]:</label>
+					        <div class="Field">
+					            [% Data.StateStrg %]
+					        </div>
+					        <div class="Clear"></div>
+
+					        <label for="QueueID">[% Translate("Queue") | html %]:</label>
+					        <div class="Field">
+					            [% Data.QueueNewStrg %]
+					        </div>
+					        <div class="Clear"></div>
+
+#					        <label for="ServiceID">[% Translate("Service") | html %]:</label>
+#					        <div class="Field">
+#					            [% Data.ServiceStrg %]
+#					        </div>
+#					        <div class="Clear"></div>
+
+#					        <label for="SLAID">[% Translate("SLA") | html %]:</label>
+#					        <div class="Field">
+#					            [% Data.SLAStrg %]
+#					        </div>
+#					        <div class="Clear"></div>
+
+	                        <label class="Mandatory" for="NextProcessName"><span class="Marker">*</span> [% Translate("name of the process step") | html %]:</label>
+	                        <div class="Field">
+	                            <input type="text" name="NextProcessName" id="NextProcessName" value="[% Data.NextProcessName | html %]" class="W50pc Validate_Required [% Data.NextProcessNameInvalid | html %]" maxlength="200"/>
+	                            <div id="NextProcessNameError" class="TooltipErrorMessage">
+	                                <p>[% Translate("This field is required.") | html %]</p>
+	                            </div>
+	                            <div id="NextProcessNameServerError" class="TooltipErrorMessage">
+	                                <p>[% Translate("This field is required.") | html %]</p>
+	                            </div>
+	                        </div>
+	                        <div class="Clear"></div>
+
+							<div id="ShowNextColor" style="visibility: hidden;">
+							<fieldset class="TableLike">
+		                        <label for="Color">[% Translate("Color") | html %]:</label>
+		                        <div class="Field">
+		                            <input type="color" name="Color" id="Color" value="[% Data.Color | html %]" class="W5pc"/>
+		                        </div>
+		                        <div class="Clear"></div>
+	                        </fieldset>
+	                        </div>
+
+				            <label class="Mandatory" for="NextDescription"><span class="Marker">*</span> [% Translate("Description") | html %]:</label>
+				            <div class="Field">
+				                <textarea id="RichText" class="RichText Validate_Required [% Data.NextDescriptionInvalid | html %]" name="NextDescription" title="[% Translate("Description body") | html %]" rows="15" cols="[% Config("Ticket::Frontend::TextAreaNote") | html %]">[% Data.NextDescription | html %]</textarea>
+				                <div id="NextDescriptionError" class="TooltipErrorMessage">
+				                    <p>[% Translate("This field is required.") | html %]</p>
+				                </div>
+				                <div id="NextDescriptionServerError" class="TooltipErrorMessage">
+				                    <p>[% Translate("This field is required.") | html %]</p>
+				                </div>
+				            </div>
+				            <div class="Clear"></div>
+	
+	                        <label class="Mandatory" for="NextGroupID"><span class="Marker">*</span> [% Translate("Group") | html %]:</label>
+	                        <div class="Field">
+	                            [% Data.NextGroupOption %]
+	                            <div id="NextGroupIDError" class="TooltipErrorMessage">
+	                                <p>[% Translate("This field is required.") | html %]</p>
+	                            </div>
+	                            <div id="NextGroupIDServerError" class="TooltipErrorMessage">
+	                                <p>[% Translate("This field is required.") | html %]</p>
+	                            </div>
+	                        </div>
+	                        <div class="Clear"></div>
+	
+	                        <label class="Mandatory" for="NextStepArtID"><span class="Marker">*</span> [% Translate("type of process step") | html %]:</label>
+	                        <div class="Field">
+	                            [% Data.NextStepArtIDOption %]
+	                            <div id="NextStepArtIDError" class="TooltipErrorMessage">
+	                                <p>[% Translate("This field is required.") | html %]</p>
+	                            </div>
+	                            <div id="NextStepArtIDServerError" class="TooltipErrorMessage">
+	                                <p>[% Translate("This field is required.") | html %]</p>
+	                            </div>
+	                        </div>
+	                        <div class="Clear"></div>
+
+                        <label for="NotifyAgent">[% Translate("Agent notification") | html %]:</label>
+                        <div class="Field">
+                            [% Data.NotifyAgentOption %]
+                        </div>
+                        <div class="Clear"></div>
+
+		                    <div id="NextApprovalDiv" style="margin-top:5px;visibility: hidden;">
+		                    <fieldset class="TableLike">
+		
+		                        <label for="NextApproverGroupID">[% Translate("Customer has to approve") | html %]:</label>
+		                        <div class="Field">
+		                            [% Data.NextApproverGroupOption %]
+		                        </div>
+		                        <div class="Clear"></div>
+		
+			                    <label for="NextApproverEmail">[% Translate("Email to approvers") | html %]:</label>
+			                    <div class="Field">
+			                        <input type="text" name="NextApproverEmail" id="NextApproverEmail" value="" class="W50pc" maxlength="2000"/><br>
+			                        <span>[% Translate("Please enter the email(s) of the approver(s) separated by ;") | html %]</span>
+			                    </div>
+			                    <div class="Clear"></div>
+
+		                        <label for="SetArticleID">[% Translate("Should the text be transmitted from the previous work step?") | html %]:</label>
+		                        <div class="Field">
+		                            [% Data.SetArticleIDOption %]
+		                        </div>
+		                        <div class="Clear"></div>
+
+		                    </fieldset>
+	                        </div>
+
+	                        <div class="Field SpacingTop">
+	                            <button class="CallForAction Primary" id="Submit" type="submit" value="[% Translate("Save") | html %]"><span>[% Translate("Save") | html %]</span></button>
+	                        </div>
+	                        <div class="Clear"></div>
+
+                           </fieldset>
+
+						</div>
+
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+
+    $('#NextStepArtID').bind('change', function () {
+
+        var NextStepArtID  = $("#NextStepArtID").val();
+
+        if ( NextStepArtID > 1 ) {
+
+            $("#NextApprovalDiv").css('visibility', 'visible');
+        }
+        else {
+            $("#NextApprovalDiv").css('visibility', 'hidden');
+        }
+
+    });
+
+//]]></script>
+[% END %]
+
+                            </fieldset>
+		                </form>
+						</div>
+
+						<div id="ShowNextStepParallelDiv" style="margin-top:5px;visibility: hidden;">
+
+ 		                <form id="NextProcessStepParallel" action="[% Env("CGIHandle") %]" method="post" name="NextProcessStepParallel" class="Validate PreventMultipleSubmits">
+		                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+		                    <input type="hidden" name="Subaction" value="NextProcessStepParallel"/>
+		                    <input type="hidden" name="ID" id="ID" value="[% Data.ID | html %]"/>
+		                    <input type="hidden" name="ProcessStepID" id="ProcessStepID" value="[% Data.ProcessStepID | html %]"/>
+		                    <input type="hidden" name="SessionName" id="SessionName" value="[% Env("SessionName") | html %]"/>
+		                    <input type="hidden" name="SessionID" id="SessionID" value="[% Env("SessionID") | html %]"/>
+		                    <input type="hidden" name="SetNextStepID" id="SetNextStepID" value=""/>
+		                    <input type="hidden" name="WithConditions" id="WithConditions" value=""/>
+		                    <input type="hidden" name="FromStepGo" id="FromStepGo" value=""/>
+
+                            <fieldset class="TableLike">
+
+							<div id="Conditions" style="margin-top:5px;visibility: hidden;"></div>
+
+#					        <label for="TypeID">[% Translate("Type") | html %]:</label>
+#					        <div class="Field">
+#					            [% Data.TypeStrg %]
+#					        </div>
+#					        <div class="Clear"></div>
+
+#					        <label for="StateID">[% Translate("State") | html %]:</label>
+#					        <div class="Field">
+#					            [% Data.StateStrg %]
+#					        </div>
+#					        <div class="Clear"></div>
+
+#					        <label for="QueueID">[% Translate("Queue") | html %]:</label>
+#					        <div class="Field">
+#					            [% Data.QueueNewStrg %]
+#					        </div>
+#					        <div class="Clear"></div>
+
+#					        <label for="ServiceID">[% Translate("Service") | html %]:</label>
+#					        <div class="Field">
+#					            [% Data.ServiceStrg %]
+#					        </div>
+#					        <div class="Clear"></div>
+
+#					        <label for="SLAID">[% Translate("SLA") | html %]:</label>
+#					        <div class="Field">
+#					            [% Data.SLAStrg %]
+#					        </div>
+#					        <div class="Clear"></div>
+
+	                        <label class="Mandatory" for="NextProcessName"><span class="Marker">*</span> [% Translate("name of the process step") | html %]:</label>
+	                        <div class="Field">
+	                            <input type="text" name="NextProcessName" id="NextProcessName" value="[% Data.NextProcessName | html %]" class="W50pc Validate_Required [% Data.NextProcessNameInvalid | html %]" maxlength="200"/>
+	                            <div id="NextProcessNameError" class="TooltipErrorMessage">
+	                                <p>[% Translate("This field is required.") | html %]</p>
+	                            </div>
+	                            <div id="NextProcessNameServerError" class="TooltipErrorMessage">
+	                                <p>[% Translate("This field is required.") | html %]</p>
+	                            </div>
+	                        </div>
+	                        <div class="Clear"></div>
+
+							<div id="ShowNextColor" style="visibility: hidden;">
+							<fieldset class="TableLike">
+		                        <label for="Color">[% Translate("Color") | html %]:</label>
+		                        <div class="Field">
+		                            <input type="color" name="Color" id="Color" value="[% Data.Color | html %]" class="W5pc"/>
+		                        </div>
+		                        <div class="Clear"></div>
+	                        </fieldset>
+	                        </div>
+
+				            <label class="Mandatory" for="NextDescription"><span class="Marker">*</span> [% Translate("Description") | html %]:</label>
+				            <div class="Field">
+				                <textarea id="ParallelRichText" class="RichText Validate_Required [% Data.NextDescriptionInvalid | html %]" name="NextDescription" title="[% Translate("Description body") | html %]" rows="15" cols="[% Config("Ticket::Frontend::TextAreaNote") | html %]">[% Data.NextDescription | html %]</textarea>
+				                <div id="NextDescriptionError" class="TooltipErrorMessage">
+				                    <p>[% Translate("This field is required.") | html %]</p>
+				                </div>
+				                <div id="NextDescriptionServerError" class="TooltipErrorMessage">
+				                    <p>[% Translate("This field is required.") | html %]</p>
+				                </div>
+				            </div>
+				            <div class="Clear"></div>
+	
+	                        <label class="Mandatory" for="NextGroupID"><span class="Marker">*</span> [% Translate("Group") | html %]:</label>
+	                        <div class="Field">
+	                            [% Data.NextGroupOption %]
+	                            <div id="NextGroupIDError" class="TooltipErrorMessage">
+	                                <p>[% Translate("This field is required.") | html %]</p>
+	                            </div>
+	                            <div id="NextGroupIDServerError" class="TooltipErrorMessage">
+	                                <p>[% Translate("This field is required.") | html %]</p>
+	                            </div>
+	                        </div>
+	                        <div class="Clear"></div>
+	
+	                        <label class="Mandatory" for="NextStepArtParallelID"><span class="Marker">*</span> [% Translate("type of process step") | html %]:</label>
+	                        <div class="Field">
+	                            [% Data.NextStepArtParallelIDOption %]
+	                            <div id="NextStepArtParallelIDError" class="TooltipErrorMessage">
+	                                <p>[% Translate("This field is required.") | html %]</p>
+	                            </div>
+	                            <div id="NextStepArtParallelIDServerError" class="TooltipErrorMessage">
+	                                <p>[% Translate("This field is required.") | html %]</p>
+	                            </div>
+	                        </div>
+	                        <div class="Clear"></div>
+
+                        <label for="NotifyAgent">[% Translate("Agent notification") | html %]:</label>
+                        <div class="Field">
+                            [% Data.NotifyAgentOption %]
+                        </div>
+                        <div class="Clear"></div>
+
+		                    <div id="NextApprovalParallelDiv" style="margin-top:5px;visibility: hidden;">
+		                    <fieldset class="TableLike">
+		
+		                        <label for="NextApproverGroupID">[% Translate("Customer has to approve") | html %]:</label>
+		                        <div class="Field">
+		                            [% Data.NextApproverGroupOption %]
+		                        </div>
+		                        <div class="Clear"></div>
+		
+			                    <label for="NextApproverEmail">[% Translate("Email to approvers") | html %]:</label>
+			                    <div class="Field">
+			                        <input type="text" name="NextApproverEmail" id="NextApproverEmail" value="" class="W50pc" maxlength="2000"/><br>
+			                        <span>[% Translate("Please enter the email(s) of the approver(s) separated by ;") | html %]</span>
+			                    </div>
+			                    <div class="Clear"></div>
+
+		                        <label for="SetArticleID">[% Translate("Should the text be transmitted from the previous work step?") | html %]:</label>
+		                        <div class="Field">
+		                            [% Data.SetArticleIDOption %]
+		                        </div>
+		                        <div class="Clear"></div>
+
+		                    </fieldset>
+	                        </div>
+
+	                        <div class="Field SpacingTop">
+	                            <button class="CallForAction Primary" id="Submit" type="submit" value="[% Translate("Save") | html %]"><span>[% Translate("Save") | html %]</span></button>
+	                        </div>
+	                        <div class="Clear"></div>
+
+                           </fieldset>
+
+						</div>
+
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+
+    $('#NextStepArtParallelID').bind('change', function () {
+
+        var NextStepArtParallelID  = $("#NextStepArtParallelID").val();
+
+        if ( NextStepArtParallelID > 1 ) {
+
+            $("#NextApprovalParallelDiv").css('visibility', 'visible');
+        }
+        else {
+            $("#NextApprovalParallelDiv").css('visibility', 'hidden');
+        }
+
+    });
+
+//]]></script>
+[% END %]
+
+                            </fieldset>
+		                </form>
+						</div>
+
+
+
+
+
+[% RenderBlockEnd("NextStep") %]
+
+            </div>
+        </div>
+
+[% RenderBlockEnd("ChangeProcessStep") %]
+
+    </div>
+    <div class="Clear"></div>
+</div>
+[% RenderBlockEnd("Overview") %]

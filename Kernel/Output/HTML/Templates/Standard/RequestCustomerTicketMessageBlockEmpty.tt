@@ -1,0 +1,10 @@
+# --
+# RequestCustomerTicketMessageBlockEmpty.tt - provides HTML form for customer message
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# --
+# $Id: RequestCustomerTicketMessageBlockEmpty.tt,v 1.1 2016/09/20 12:56:19 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --

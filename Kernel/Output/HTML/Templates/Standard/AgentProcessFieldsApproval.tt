@@ -1,0 +1,54 @@
+# --
+# AgentProcessFieldsApproval.tt - provides HTML form for customer message
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# --
+# $Id: AgentProcessFieldsApproval.tt,v 1.2 2016/11/20 19:31:54 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<form action="[% Env("CGIHandle") %]" method="post" enctype="multipart/form-data" name="compose[% Data.ProcessStepID | html %]" id="Compose[% Data.ProcessStepID | html %]" class="Validate PreventMultipleSubmits">
+    <input type="hidden" name="Action" value="AgentProcessStep"/>
+    <input type="hidden" name="Subaction" value="Store"/>
+    <input type="hidden" name="ProcessStepID" value="[% Data.ProcessStepID | html %]"/>
+    <input type="hidden" name="ProcessID" value="[% Data.ProcessID | html %]"/>
+    <input type="hidden" name="TicketID" value="[% Data.TicketID | html %]"/>
+
+    <div class="LayoutPopup ARIARoleMain">
+        <div class="Header">
+            <h1>[% Data.Name | html %]</h1>
+            [% Data.Description %]
+        </div>
+        <div class="Content">
+
+    	<fieldset class="TableLike">
+
+            <label class="Mandatory" for="RichText[% Data.ProcessStepID | html %]"><span class="Marker">*</span> [% Translate("Report") | html %]:</label>
+            <div class="Field">
+                <textarea id="RichText[% Data.ProcessStepID | html %]" class="RichText Validate_Required [% Data.RichTextInvalid | html %]" name="Report" title="[% Translate("Message body") | html %]" rows="15" cols="[% Config("Ticket::Frontend::TextAreaNote") | html %]">[% Data.Report | html %]</textarea>
+                <div id="RichText[% Data.ProcessStepID | html %]Error" class="TooltipErrorMessage">
+                    <p>[% Translate("This field is required.") | html %]</p>
+                </div>
+                <div id="RichText[% Data.ProcessStepID | html %]ServerError" class="TooltipErrorMessage">
+                    <p>[% Translate("This field is required.") | html %]</p>
+                </div>
+            </div>
+            <div class="Clear"></div>
+
+            <label class="Mandatory" for="StepApproval"><span class="Marker">*</span> [% Translate("Approval") | html %]:</label>
+            <div class="Field">
+                [% Data.StepApprovalOption %]
+                <div id="StepApprovalError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                <div id="StepApprovalServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+            </div>
+            <div class="Clear"></div>
+
+            <div class="Field SpacingTop">
+                <button class="Primary CallForAction" id="submit" accesskey="g" title="[% Translate("Create") | html %] (g)" type="submit" value="[% Translate("Create") | html %]"><span><i class="fa fa-check-square-o"></i> [% Translate("Create") | html %]</span></button>
+            </div>
+
+        </fieldset>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+# --
+# Kernel/Output/HTML/Templates/Standard/AgentDashboardCustomerCompanyInformation.tt
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: AgentDashboardCustomerCompanyInformation.tt,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+
+<fieldset class="TableLike FixedLabelSmall CustomerUserInformationOFORK">
+
+[% RenderBlockStart("ContentSmallCustomerCompanyInformationRow") %]
+
+[% RenderBlockStart("ContentSmallCustomerCompanyInformationRowText") %]
+    <label>[% Translate(Data.Label) | html %]:</label>
+    <p class="Field FixedValueSmall">[% Data.Value | html %]
+[% RenderBlockStart("ContentSmallCustomerCompanyInvalid") %]
+        <em class="Error">[% Translate("Note: Customer is invalid!") | html %]</em>
+[% RenderBlockEnd("ContentSmallCustomerCompanyInvalid") %]
+    </p>
+    <div class="Clear"></div>
+[% RenderBlockEnd("ContentSmallCustomerCompanyInformationRowText") %]
+
+[% RenderBlockStart("ContentSmallCustomerCompanyInformationRowLink") %]
+    <label>[% Translate(Data.Label) | html %]:</label>
+    <div class="Field">
+        <a href="[% Data.URL | Interpolate %]" target="[% Data.Target | html %]">
+            [% Data.Value | html %]
+        </a>
+    </div>
+    <div class="Clear"></div>
+[% RenderBlockEnd("ContentSmallCustomerCompanyInformationRowLink") %]
+
+[% RenderBlockEnd("ContentSmallCustomerCompanyInformationRow") %]
+
+</fieldset>

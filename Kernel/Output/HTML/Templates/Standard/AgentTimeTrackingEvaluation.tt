@@ -1,0 +1,74 @@
+# --
+# Kernel/Output/HTML/Templates/Standard/AgentTimeTrackingEvaluation.tt
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de/
+# --
+# $Id: AgentTimeTrackingEvaluation.tt,v 1.2 2019/08/21 08:44:18 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<div class="MainBox ARIARoleMain FormScreen">
+
+    <h1 style="margin-left: 10px;">[% Translate("Time tracking evaluation") | html %]</h1>
+
+    <div class="LayoutFixedSidebar SidebarLast">
+
+        <div class="SidebarColumn">
+            <div id="CustomerInfo" class="WidgetSimpleEvaluation">
+                <div class="HeaderEvaluation">
+                    <h2></h2>
+                </div>
+                <div class="Content">
+                </div>
+            </div>
+        </div>
+
+        <div class="ContentColumn">
+            <form action="[% Env("CGIHandle") %]" method="post" enctype="multipart/form-data" name="compose" id="NewPhoneTicket" class="Validate PreventMultipleSubmits">
+                <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                <input type="hidden" name="Subaction" value="NewStats"/>
+                <input type="hidden" name="FormID" value="[% Data.FormID | html %]"/>
+
+                <fieldset class="TableLike">
+
+                    <label for="CustomerID">[% Translate("Customer") | html %]:</label>
+                    <div class="Field">
+                        [% Data.CustomerStrg %]
+                    </div>
+                    <div class="Clear"></div>
+
+                    <label>[% Translate("From") | html %]:</label>
+                    <div class="Field" style="margin-bottom:7px;">
+                        [% Data.FromDateString %]
+                        <div id="FromDayServerError" class="TooltipErrorMessage"><p>[% Translate("Date invalid!") | html %]</p></div>
+                        <div id="FromHourServerError" class="TooltipErrorMessage"><p>[% Translate("Date invalid!") | html %]</p></div>
+                    </div>
+                    <div class="Clear"></div>
+
+                    <label>[% Translate("Until") | html %]:</label>
+                    <div class="Field" style="margin-bottom:7px;">
+                        [% Data.ToDateString %]
+                        <div id="ToDayServerError" class="TooltipErrorMessage"><p>[% Translate("Date invalid!") | html %]</p></div>
+                        <div id="ToHourServerError" class="TooltipErrorMessage"><p>[% Translate("Date invalid!") | html %]</p></div>
+                    </div>
+                    <div class="Clear"></div>
+
+                    <label>[% Translate("Output") | html %]:</label>
+                    <div class="Field">
+                        [% Data.ResultFormStrg %]
+                    </div>
+                    <div class="Clear"></div>
+
+                    <div class="Field SpacingTop">
+                        <button class="Primary CallForAction" id="submitRichText" accesskey="g" title="[% Translate("Create") | html %] (g)" type="submit" value="[% Translate("Create") | html %]"><span><i class="fa fa-check-square-o"></i> [% Translate("Create") | html %]</span></button>
+                    </div>
+
+                </fieldset>
+
+            </form>
+        </div>
+        <div class="Clear"></div>
+    </div>
+</div>

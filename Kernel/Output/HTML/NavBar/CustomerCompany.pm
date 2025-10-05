@@ -1,0 +1,56 @@
+# --
+# Kernel/Output/HTML/NavBar/CustomerCompany.pm
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: CustomerCompany.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+package Kernel::Output::HTML::NavBar::CustomerCompany;
+
+use parent 'Kernel::Output::HTML::Base';
+
+use strict;
+use warnings;
+
+our @ObjectDependencies = (
+    'Kernel::Config',
+);
+
+sub Run {
+    my ( $Self, %Param ) = @_;
+
+    # get config object
+    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+
+    # check if frontend module is registared
+    my $Config = $ConfigObject->Get('Frontend::Module')->{AdminCustomerCompany};
+    return if !$Config;
+
+    # check if customer company support feature is active
+    SOURCE:
+    for my $Item ( '', 1 .. 10 ) {
+        my $CustomerMap = $ConfigObject->Get( 'CustomerUser' . $Item );
+        next SOURCE if !$CustomerMap;
+
+        # return if CustomerCompany feature is used
+        return if $CustomerMap->{CustomerCompanySupport};
+    }
+
+    # frontend module is enabled but not customer company support feature, then remove the menu entry
+    my $NavBarName = $Config->{NavBarName};
+    my %Return     = %{ $Param{NavBar}->{Sub} };
+
+    # remove CustomerCompany from the CustomerMenu
+    delete $Return{$NavBarName}->{ItemArea0009100};
+
+    return ( Sub => \%Return );
+}
+
+1;

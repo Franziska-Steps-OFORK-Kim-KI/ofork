@@ -1,0 +1,82 @@
+# --
+# Kernel/System/SupportDataCollector/PluginAsynchronous.pm
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: PluginAsynchronous.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+package Kernel::System::SupportDataCollector::PluginAsynchronous;
+
+use strict;
+use warnings;
+
+our @ObjectDependencies = (
+    'Kernel::System::JSON',
+    'Kernel::System::SystemData',
+);
+
+use parent qw(Kernel::System::SupportDataCollector::PluginBase);
+
+sub _GetAsynchronousData {
+    my ( $Self, %Param ) = @_;
+
+    my $Identifier = Scalar::Util::blessed($Self);
+
+    my $AsynchronousDataString = $Kernel::OM->Get('Kernel::System::SystemData')->SystemDataGet(
+        Key => $Identifier,
+    );
+
+    return if !defined $AsynchronousDataString;
+
+    # get asynchronous data as array ref
+    my $AsynchronousData = $Kernel::OM->Get('Kernel::System::JSON')->Decode(
+        Data => $AsynchronousDataString,
+    ) || [];
+
+    return $AsynchronousData;
+}
+
+sub _StoreAsynchronousData {
+    my ( $Self, %Param ) = @_;
+
+    return 1 if !$Param{Data};
+
+    my $Identifier = Scalar::Util::blessed($Self);
+
+    my $CurrentAsynchronousData = $Self->_GetAsynchronousData();
+
+    my $AsynchronousDataString = $Kernel::OM->Get('Kernel::System::JSON')->Encode(
+        Data => $Param{Data},
+    );
+
+    # get system data object
+    my $SystemDataObject = $Kernel::OM->Get('Kernel::System::SystemData');
+
+    if ( !defined $CurrentAsynchronousData ) {
+
+        $SystemDataObject->SystemDataAdd(
+            Key    => $Identifier,
+            Value  => $AsynchronousDataString,
+            UserID => 1,
+        );
+    }
+    else {
+
+        $SystemDataObject->SystemDataUpdate(
+            Key    => $Identifier,
+            Value  => $AsynchronousDataString,
+            UserID => 1,
+        );
+    }
+
+    return 1;
+}
+
+1;

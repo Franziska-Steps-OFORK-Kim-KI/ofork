@@ -1,0 +1,2701 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<database Name="ofork">
+
+<!-- framework -->
+    <Insert Table="valid">
+        <Data Key="id" Type="AutoIncrement">1</Data>
+        <Data Key="name" Type="Quote" Translatable="1">valid</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="valid">
+        <Data Key="id" Type="AutoIncrement">2</Data>
+        <Data Key="name" Type="Quote" Translatable="1">invalid</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="valid">
+        <Data Key="id" Type="AutoIncrement">3</Data>
+        <Data Key="name" Type="Quote" Translatable="1">invalid-temporarily</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+    <Insert Table="users">
+        <Data Key="id" Type="AutoIncrement">1</Data>
+        <Data Key="first_name" Type="Quote">Admin</Data>
+        <Data Key="last_name" Type="Quote">OFORK</Data>
+        <Data Key="login" Type="Quote">root@localhost</Data>
+        <Data Key="pw" Type="Quote">roK20XGbWEsSM</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+    <Insert Table="groups">
+        <Data Key="id" Type="AutoIncrement">1</Data>
+        <Data Key="name" Type="Quote">users</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Group for default access.</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="groups">
+        <Data Key="id" Type="AutoIncrement">2</Data>
+        <Data Key="name" Type="Quote">admin</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Group of all administrators.</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="groups">
+        <Data Key="id" Type="AutoIncrement">3</Data>
+        <Data Key="name" Type="Quote">stats</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Group for statistics access.</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="groups">
+        <Data Key="id" Type="AutoIncrement">4</Data>
+        <Data Key="name" Type="Quote">RoomBooking</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Group for room booking access.</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="groups">
+        <Data Key="id" Type="AutoIncrement">5</Data>
+        <Data Key="name" Type="Quote">TimeTracking</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Group for time tracking access.</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="groups">
+        <Data Key="id" Type="AutoIncrement">6</Data>
+        <Data Key="name" Type="Quote">TimeTrackingEvaluation</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Group for time tracking evaluation access.</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="groups">
+        <Data Key="id" Type="AutoIncrement">7</Data>
+        <Data Key="name" Type="Quote">ProcessManager</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Group for ProcessManager access.</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="groups">
+        <Data Key="id" Type="AutoIncrement">8</Data>
+        <Data Key="name" Type="Quote">ContractManager</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Group for ContractManager access.</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+   <Insert Table="group_user">
+        <Data Key="user_id">1</Data>
+        <Data Key="group_id">1</Data>
+        <Data Key="permission_key" Type="Quote">rw</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="group_user">
+        <Data Key="user_id">1</Data>
+        <Data Key="group_id">2</Data>
+        <Data Key="permission_key" Type="Quote">rw</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="group_user">
+        <Data Key="user_id">1</Data>
+        <Data Key="group_id">3</Data>
+        <Data Key="permission_key" Type="Quote">rw</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+<!-- link -->
+    <Insert Table="link_type">
+        <Data Key="name" Type="Quote">Normal</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="link_type">
+        <Data Key="name" Type="Quote">ParentChild</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+    <Insert Table="link_state">
+        <Data Key="name" Type="Quote" Translatable="1">Valid</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="link_state">
+        <Data Key="name" Type="Quote">Temporary</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+<!-- ticket -->
+    <Insert Table="ticket_state_type">
+        <Data Key="id" Type="AutoIncrement">1</Data>
+        <Data Key="name" Type="Quote" Translatable="1">new</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">All new state types (default: viewable).</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_state_type">
+        <Data Key="id" Type="AutoIncrement">2</Data>
+        <Data Key="name" Type="Quote" Translatable="1">open</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">All open state types (default: viewable).</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_state_type">
+        <Data Key="id" Type="AutoIncrement">3</Data>
+        <Data Key="name" Type="Quote" Translatable="1">closed</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">All closed state types (default: not viewable).</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_state_type">
+        <Data Key="id" Type="AutoIncrement">4</Data>
+        <Data Key="name" Type="Quote" Translatable="1">pending reminder</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">All 'pending reminder' state types (default: viewable).</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_state_type">
+        <Data Key="id" Type="AutoIncrement">5</Data>
+        <Data Key="name" Type="Quote" Translatable="1">pending auto</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">All 'pending auto *' state types (default: viewable).</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_state_type">
+        <Data Key="id" Type="AutoIncrement">6</Data>
+        <Data Key="name" Type="Quote" Translatable="1">removed</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">All 'removed' state types (default: not viewable).</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_state_type">
+        <Data Key="id" Type="AutoIncrement">7</Data>
+        <Data Key="name" Type="Quote" Translatable="1">merged</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">State type for merged tickets (default: not viewable).</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+    <Insert Table="ticket_state">
+        <Data Key="id" Type="AutoIncrement">1</Data>
+        <Data Key="name" Type="Quote" Translatable="1">new</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">New ticket created by customer.</Data>
+        <Data Key="type_id">1</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_state">
+        <Data Key="id" Type="AutoIncrement">2</Data>
+        <Data Key="name" Type="Quote" Translatable="1">closed successful</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Ticket is closed successful.</Data>
+        <Data Key="type_id">3</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_state">
+        <Data Key="id" Type="AutoIncrement">3</Data>
+        <Data Key="name" Type="Quote" Translatable="1">closed unsuccessful</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Ticket is closed unsuccessful.</Data>
+        <Data Key="type_id">3</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_state">
+        <Data Key="id" Type="AutoIncrement">4</Data>
+        <Data Key="name" Type="Quote" Translatable="1">open</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Open tickets.</Data>
+        <Data Key="type_id">2</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_state">
+        <Data Key="id" Type="AutoIncrement">5</Data>
+        <Data Key="name" Type="Quote" Translatable="1">removed</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Customer removed ticket.</Data>
+        <Data Key="type_id">6</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_state">
+        <Data Key="id" Type="AutoIncrement">6</Data>
+        <Data Key="name" Type="Quote" Translatable="1">pending reminder</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Ticket is pending for agent reminder.</Data>
+        <Data Key="type_id">4</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_state">
+        <Data Key="id" Type="AutoIncrement">7</Data>
+        <Data Key="name" Type="Quote" Translatable="1">pending auto close+</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Ticket is pending for automatic close.</Data>
+        <Data Key="type_id">5</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_state">
+        <Data Key="id" Type="AutoIncrement">8</Data>
+        <Data Key="name" Type="Quote" Translatable="1">pending auto close-</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Ticket is pending for automatic close.</Data>
+        <Data Key="type_id">5</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_state">
+        <Data Key="id" Type="AutoIncrement">9</Data>
+        <Data Key="name" Type="Quote" Translatable="1">merged</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">State for merged tickets.</Data>
+        <Data Key="type_id">7</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+    <Insert Table="salutation">
+        <Data Key="id" Type="AutoIncrement">1</Data>
+        <Data Key="name" Type="Quote" Translatable="1">system standard salutation (en)</Data>
+        <Data Key="text" Type="Quote">Dear &lt;OFORK_CUSTOMER_REALNAME&gt;,
+
+Thank you for your request.
+
+</Data>
+        <Data Key="content_type" Type="Quote">text/plain; charset=utf-8</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Standard Salutation.</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+    <Insert Table="signature">
+        <Data Key="id" Type="AutoIncrement">1</Data>
+        <Data Key="name" Type="Quote" Translatable="1">system standard signature (en)</Data>
+        <Data Key="text" Type="Quote">
+Your Ticket-Team
+
+ &lt;OFORK_Agent_UserFirstname&gt; &lt;OFORK_Agent_UserLastname&gt;
+
+--
+ Super Support - Waterford Business Park
+ 5201 Blue Lagoon Drive - 8th Floor &amp; 9th Floor - Miami, 33126 USA
+ Email: hot@example.com - Web: http://www.example.com/
+--</Data>
+        <Data Key="content_type" Type="Quote">text/plain; charset=utf-8</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Standard Signature.</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+    <Insert Table="system_address">
+        <Data Key="id" Type="AutoIncrement">1</Data>
+        <Data Key="value0" Type="Quote">ofork@localhost</Data>
+        <Data Key="value1" Type="Quote">OFORK System</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Standard Address.</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="queue_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+    <Insert Table="follow_up_possible">
+        <Data Key="id" Type="AutoIncrement">1</Data>
+        <Data Key="name" Type="Quote" Translatable="1">possible</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Follow-ups for closed tickets are possible. Ticket will be reopened.</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="follow_up_possible">
+        <Data Key="id" Type="AutoIncrement">2</Data>
+        <Data Key="name" Type="Quote" Translatable="1">reject</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Follow-ups for closed tickets are not possible. No new ticket will be created.</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="follow_up_possible">
+        <Data Key="id" Type="AutoIncrement">3</Data>
+        <Data Key="name" Type="Quote" Translatable="1">new ticket</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Follow-ups for closed tickets are not possible. A new ticket will be created.</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+    <Insert Table="queue">
+        <Data Key="id" Type="AutoIncrement">1</Data>
+        <Data Key="name" Type="Quote">Postmaster</Data>
+        <Data Key="group_id">1</Data>
+        <Data Key="system_address_id">1</Data>
+        <Data Key="salutation_id">1</Data>
+        <Data Key="signature_id">1</Data>
+        <Data Key="follow_up_id">1</Data>
+        <Data Key="follow_up_lock">0</Data>
+        <Data Key="unlock_timeout">0</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Postmaster queue.</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="queue">
+        <Data Key="id" Type="AutoIncrement">2</Data>
+        <Data Key="name" Type="Quote">Raw</Data>
+        <Data Key="group_id">1</Data>
+        <Data Key="system_address_id">1</Data>
+        <Data Key="salutation_id">1</Data>
+        <Data Key="signature_id">1</Data>
+        <Data Key="follow_up_id">1</Data>
+        <Data Key="follow_up_lock">0</Data>
+        <Data Key="unlock_timeout">0</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">All default incoming tickets.</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="queue">
+        <Data Key="id" Type="AutoIncrement">3</Data>
+        <Data Key="name" Type="Quote">Junk</Data>
+        <Data Key="group_id">1</Data>
+        <Data Key="system_address_id">1</Data>
+        <Data Key="salutation_id">1</Data>
+        <Data Key="signature_id">1</Data>
+        <Data Key="follow_up_id">1</Data>
+        <Data Key="follow_up_lock">0</Data>
+        <Data Key="unlock_timeout">0</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">All junk tickets.</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="queue">
+        <Data Key="id" Type="AutoIncrement">4</Data>
+        <Data Key="name" Type="Quote">Misc</Data>
+        <Data Key="group_id">1</Data>
+        <Data Key="system_address_id">1</Data>
+        <Data Key="salutation_id">1</Data>
+        <Data Key="signature_id">1</Data>
+        <Data Key="follow_up_id">1</Data>
+        <Data Key="follow_up_lock">0</Data>
+        <Data Key="unlock_timeout">0</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">All misc tickets.</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+    <Insert Table="standard_template">
+        <Data Key="id" Type="AutoIncrement">1</Data>
+        <Data Key="name" Type="Quote">empty answer</Data>
+        <Data Key="text" Type="Quote"></Data>
+        <Data Key="content_type" Type="Quote">text/plain; charset=utf-8</Data>
+        <Data Key="template_type" Type="Quote">Answer</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="standard_template">
+        <Data Key="id" Type="AutoIncrement">2</Data>
+        <Data Key="name" Type="Quote">test answer</Data>
+        <Data Key="text" Type="Quote">Some test answer to show how a standard template can be used.</Data>
+        <Data Key="content_type" Type="Quote">text/plain; charset=utf-8</Data>
+        <Data Key="template_type" Type="Quote">Answer</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+    <Insert Table="queue_standard_template">
+        <Data Key="queue_id">1</Data>
+        <Data Key="standard_template_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="queue_standard_template">
+        <Data Key="queue_id">2</Data>
+        <Data Key="standard_template_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="queue_standard_template">
+        <Data Key="queue_id">3</Data>
+        <Data Key="standard_template_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="queue_standard_template">
+        <Data Key="queue_id">4</Data>
+        <Data Key="standard_template_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+    <Insert Table="auto_response_type">
+        <Data Key="id" Type="AutoIncrement">1</Data>
+        <Data Key="name" Type="Quote" Translatable="1">auto reply</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Automatic reply which will be sent out after a new ticket has been created.</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="auto_response_type">
+        <Data Key="id" Type="AutoIncrement">2</Data>
+        <Data Key="name" Type="Quote" Translatable="1">auto reject</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Automatic reject which will be sent out after a follow-up has been rejected (in case queue follow-up option is "reject").</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="auto_response_type">
+        <Data Key="id" Type="AutoIncrement">3</Data>
+        <Data Key="name" Type="Quote" Translatable="1">auto follow up</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Automatic confirmation which is sent out after a follow-up has been received for a ticket (in case queue follow-up option is "possible").</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="auto_response_type">
+        <Data Key="id" Type="AutoIncrement">4</Data>
+        <Data Key="name" Type="Quote" Translatable="1">auto reply/new ticket</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Automatic response which will be sent out after a follow-up has been rejected and a new ticket has been created (in case queue follow-up option is "new ticket").</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="auto_response_type">
+        <Data Key="id" Type="AutoIncrement">5</Data>
+        <Data Key="name" Type="Quote" Translatable="1">auto remove</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Auto remove will be sent out after a customer removed the request.</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+    <Insert Table="auto_response">
+        <Data Key="id" Type="AutoIncrement">1</Data>
+        <Data Key="type_id">1</Data>
+        <Data Key="system_address_id">1</Data>
+        <Data Key="name" Type="Quote" Translatable="1">default reply (after new ticket has been created)</Data>
+        <Data Key="text0" Type="Quote">This is a demo text which is send to every inquiry.
+It could contain something like:
+
+Thanks for your email. A new ticket has been created.
+
+You wrote:
+&lt;OFORK_CUSTOMER_EMAIL[6]&gt;
+
+Your email will be answered by a human ASAP
+
+Have fun with OFORK! :-)
+
+Your OFORK Team
+</Data>
+        <Data Key="text1" Type="Quote">RE: &lt;OFORK_CUSTOMER_SUBJECT[24]&gt;</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="comments" Type="Quote"></Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="auto_response">
+        <Data Key="id" Type="AutoIncrement">2</Data>
+        <Data Key="type_id">2</Data>
+        <Data Key="system_address_id">1</Data>
+        <Data Key="name" Type="Quote" Translatable="1">default reject (after follow-up and rejected of a closed ticket)</Data>
+        <Data Key="text0" Type="Quote">Your previous ticket is closed.
+
+-- Your follow-up has been rejected. --
+
+Please create a new ticket.
+
+Your OFORK Team
+</Data>
+        <Data Key="text1" Type="Quote">Your email has been rejected! (RE: &lt;OFORK_CUSTOMER_SUBJECT[24]&gt;)</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="comments" Type="Quote"></Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="auto_response">
+        <Data Key="id" Type="AutoIncrement">3</Data>
+        <Data Key="type_id">3</Data>
+        <Data Key="system_address_id">1</Data>
+        <Data Key="name" Type="Quote" Translatable="1">default follow-up (after a ticket follow-up has been added)</Data>
+        <Data Key="text0" Type="Quote">Thanks for your follow-up email
+
+You wrote:
+&lt;OFORK_CUSTOMER_EMAIL[6]&gt;
+
+Your email will be answered by a human ASAP.
+
+Have fun with OFORK!
+
+Your OFORK Team
+</Data>
+        <Data Key="text1" Type="Quote">RE: &lt;OFORK_CUSTOMER_SUBJECT[24]&gt;</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="comments" Type="Quote"></Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="auto_response">
+        <Data Key="id" Type="AutoIncrement">4</Data>
+        <Data Key="type_id">4</Data>
+        <Data Key="system_address_id">1</Data>
+        <Data Key="name" Type="Quote" Translatable="1">default reject/new ticket created (after closed follow-up with new ticket creation)</Data>
+        <Data Key="text0" Type="Quote">Your previous ticket is closed.
+
+-- A new ticket has been created for you. --
+
+You wrote:
+&lt;OFORK_CUSTOMER_EMAIL[6]&gt;
+
+Your email will be answered by a human ASAP.
+
+Have fun with OFORK!
+
+Your OFORK Team
+</Data>
+        <Data Key="text1" Type="Quote">New ticket has been created! (RE: &lt;OFORK_CUSTOMER_SUBJECT[24]&gt;)</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="comments" Type="Quote"></Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+    <Insert Table="ticket_type">
+        <Data Key="id" Type="AutoIncrement">1</Data>
+        <Data Key="name" Type="Quote" Translatable="1">Unclassified</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_type">
+        <Data Key="id" Type="AutoIncrement">2</Data>
+        <Data Key="name" Type="Quote" Translatable="1">RoomBooking</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+    <Insert Table="ticket_priority">
+        <Data Key="id" Type="AutoIncrement">1</Data>
+        <Data Key="name" Type="Quote" Translatable="1">1 very low</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_priority">
+        <Data Key="id" Type="AutoIncrement">2</Data>
+        <Data Key="name" Type="Quote" Translatable="1">2 low</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_priority">
+        <Data Key="id" Type="AutoIncrement">3</Data>
+        <Data Key="name" Type="Quote" Translatable="1">3 normal</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_priority">
+        <Data Key="id" Type="AutoIncrement">4</Data>
+        <Data Key="name" Type="Quote" Translatable="1">4 high</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_priority">
+        <Data Key="id" Type="AutoIncrement">5</Data>
+        <Data Key="name" Type="Quote" Translatable="1">5 very high</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+    <Insert Table="ticket_lock_type">
+        <Data Key="id" Type="AutoIncrement">1</Data>
+        <Data Key="name" Type="Quote" Translatable="1">unlock</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_lock_type">
+        <Data Key="id" Type="AutoIncrement">2</Data>
+        <Data Key="name" Type="Quote" Translatable="1">lock</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_lock_type">
+        <Data Key="id" Type="AutoIncrement">3</Data>
+        <Data Key="name" Type="Quote" Translatable="1">tmp_lock</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">1</Data>
+        <Data Key="name" Type="Quote">NewTicket</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">2</Data>
+        <Data Key="name" Type="Quote">FollowUp</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">3</Data>
+        <Data Key="name" Type="Quote">SendAutoReject</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">4</Data>
+        <Data Key="name" Type="Quote">SendAutoReply</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">5</Data>
+        <Data Key="name" Type="Quote">SendAutoFollowUp</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">6</Data>
+        <Data Key="name" Type="Quote">Forward</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">7</Data>
+        <Data Key="name" Type="Quote">Bounce</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">8</Data>
+        <Data Key="name" Type="Quote">SendAnswer</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">9</Data>
+        <Data Key="name" Type="Quote">SendAgentNotification</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">10</Data>
+        <Data Key="name" Type="Quote">SendCustomerNotification</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">11</Data>
+        <Data Key="name" Type="Quote">EmailAgent</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">12</Data>
+        <Data Key="name" Type="Quote">EmailCustomer</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">13</Data>
+        <Data Key="name" Type="Quote">PhoneCallAgent</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">14</Data>
+        <Data Key="name" Type="Quote">PhoneCallCustomer</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">15</Data>
+        <Data Key="name" Type="Quote">AddNote</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">16</Data>
+        <Data Key="name" Type="Quote">Move</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">17</Data>
+        <Data Key="name" Type="Quote">Lock</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">18</Data>
+        <Data Key="name" Type="Quote">Unlock</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">19</Data>
+        <Data Key="name" Type="Quote">Remove</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">20</Data>
+        <Data Key="name" Type="Quote">TimeAccounting</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">21</Data>
+        <Data Key="name" Type="Quote">CustomerUpdate</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">22</Data>
+        <Data Key="name" Type="Quote">PriorityUpdate</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">23</Data>
+        <Data Key="name" Type="Quote">OwnerUpdate</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">24</Data>
+        <Data Key="name" Type="Quote">LoopProtection</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">25</Data>
+        <Data Key="name" Type="Quote">Misc</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">26</Data>
+        <Data Key="name" Type="Quote">SetPendingTime</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">27</Data>
+        <Data Key="name" Type="Quote">StateUpdate</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">28</Data>
+        <Data Key="name" Type="Quote">TicketDynamicFieldUpdate</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">29</Data>
+        <Data Key="name" Type="Quote">WebRequestCustomer</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">30</Data>
+        <Data Key="name" Type="Quote">TicketLinkAdd</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">31</Data>
+        <Data Key="name" Type="Quote">TicketLinkDelete</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">32</Data>
+        <Data Key="name" Type="Quote">SystemRequest</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">33</Data>
+        <Data Key="name" Type="Quote">Merged</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">34</Data>
+        <Data Key="name" Type="Quote">ResponsibleUpdate</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">35</Data>
+        <Data Key="name" Type="Quote">Subscribe</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">36</Data>
+        <Data Key="name" Type="Quote">Unsubscribe</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">37</Data>
+        <Data Key="name" Type="Quote">TypeUpdate</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">38</Data>
+        <Data Key="name" Type="Quote">ServiceUpdate</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">39</Data>
+        <Data Key="name" Type="Quote">SLAUpdate</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">40</Data>
+        <Data Key="name" Type="Quote">ArchiveFlagUpdate</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">41</Data>
+        <Data Key="name" Type="Quote">EscalationSolutionTimeStop</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">42</Data>
+        <Data Key="name" Type="Quote">EscalationResponseTimeStart</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">43</Data>
+        <Data Key="name" Type="Quote">EscalationUpdateTimeStart</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">44</Data>
+        <Data Key="name" Type="Quote">EscalationSolutionTimeStart</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">45</Data>
+        <Data Key="name" Type="Quote">EscalationResponseTimeNotifyBefore</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">46</Data>
+        <Data Key="name" Type="Quote">EscalationUpdateTimeNotifyBefore</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">47</Data>
+        <Data Key="name" Type="Quote">EscalationSolutionTimeNotifyBefore</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">48</Data>
+        <Data Key="name" Type="Quote">EscalationResponseTimeStop</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">49</Data>
+        <Data Key="name" Type="Quote">EscalationUpdateTimeStop</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">50</Data>
+        <Data Key="name" Type="Quote">TitleUpdate</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="ticket_history_type">
+        <Data Key="id" Type="AutoIncrement">51</Data>
+        <Data Key="name" Type="Quote">EmailResend</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+    <Insert Table="article_sender_type">
+        <Data Key="id" Type="AutoIncrement">1</Data>
+        <Data Key="name" Type="Quote" Translatable="1">agent</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="article_sender_type">
+        <Data Key="id" Type="AutoIncrement">2</Data>
+        <Data Key="name" Type="Quote" Translatable="1">system</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="article_sender_type">
+        <Data Key="id" Type="AutoIncrement">3</Data>
+        <Data Key="name" Type="Quote" Translatable="1">customer</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+    <Insert Table="ticket">
+        <Data Key="id" Type="AutoIncrement">1</Data>
+        <Data Key="tn" Type="Quote">2015071510123456</Data>
+        <Data Key="queue_id">2</Data>
+        <Data Key="ticket_lock_id">1</Data>
+        <Data Key="user_id">1</Data>
+        <Data Key="responsible_user_id">1</Data>
+        <Data Key="ticket_priority_id">3</Data>
+        <Data Key="ticket_state_id">1</Data>
+        <Data Key="title" Type="Quote">Welcome to OFORK!</Data>
+        <Data Key="timeout">0</Data>
+        <Data Key="until_time">0</Data>
+        <Data Key="escalation_time">0</Data>
+        <Data Key="escalation_response_time">0</Data>
+        <Data Key="escalation_update_time">0</Data>
+        <Data Key="escalation_solution_time">0</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+    <Insert Table="communication_channel">
+        <Data Key="id" Type="AutoIncrement">1</Data>
+        <Data Key="name" Type="Quote">Email</Data>
+        <Data Key="module" Type="Quote">Kernel::System::CommunicationChannel::Email</Data>
+        <Data Key="package_name" Type="Quote">Framework</Data>
+        <Data Key="channel_data" Type="Quote">---
+ArticleDataArticleIDField: article_id
+ArticleDataTables:
+- article_data_mime
+- article_data_mime_plain
+- article_data_mime_attachment
+- article_data_mime_send_error
+</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="communication_channel">
+        <Data Key="id" Type="AutoIncrement">2</Data>
+        <Data Key="name" Type="Quote">Phone</Data>
+        <Data Key="module" Type="Quote">Kernel::System::CommunicationChannel::Phone</Data>
+        <Data Key="package_name" Type="Quote">Framework</Data>
+        <Data Key="channel_data" Type="Quote">---
+ArticleDataArticleIDField: article_id
+ArticleDataTables:
+- article_data_mime
+- article_data_mime_plain
+- article_data_mime_attachment
+- article_data_mime_send_error
+</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="communication_channel">
+        <Data Key="id" Type="AutoIncrement">3</Data>
+        <Data Key="name" Type="Quote">Internal</Data>
+        <Data Key="module" Type="Quote">Kernel::System::CommunicationChannel::Internal</Data>
+        <Data Key="package_name" Type="Quote">Framework</Data>
+        <Data Key="channel_data" Type="Quote">---
+ArticleDataArticleIDField: article_id
+ArticleDataTables:
+- article_data_mime
+- article_data_mime_plain
+- article_data_mime_attachment
+- article_data_mime_send_error
+</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="communication_channel">
+        <Data Key="id" Type="AutoIncrement">4</Data>
+        <Data Key="name" Type="Quote">Chat</Data>
+        <Data Key="module" Type="Quote">Kernel::System::CommunicationChannel::Chat</Data>
+        <Data Key="package_name" Type="Quote">Framework</Data>
+        <Data Key="channel_data" Type="Quote">---
+ArticleDataArticleIDField: article_id
+ArticleDataTables:
+- article_data_ofork_chat
+</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+    <Insert Table="article">
+        <Data Key="id" Type="AutoIncrement">1</Data>
+        <Data Key="ticket_id">1</Data>
+        <Data Key="communication_channel_id">1</Data>
+        <Data Key="article_sender_type_id">3</Data>
+        <Data Key="is_visible_for_customer">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+    <Insert Table="article_data_mime">
+        <Data Key="id" Type="AutoIncrement">1</Data>
+        <Data Key="article_id">1</Data>
+        <Data Key="a_from" Type="Quote">OFORK Feedback &lt;support@o-fork.de&gt;</Data>
+        <Data Key="a_to" Type="Quote">Your OFORK System &lt;ofork@localhost&gt;</Data>
+        <Data Key="a_subject" Type="Quote">Welcome to OFORK!</Data>
+        <Data Key="a_body" Type="Quote">Welcome to OFORK!
+
+Thank you for installing OFORK.
+
+You can find updates and patches for OFORK at
+https://o-fork.de/Download.html
+
+Find more information about it at https://o-fork.de/.
+
+Best regards and ((enjoy)) OFORK,
+
+Your OFORK Team
+</Data>
+        <Data Key="a_message_id" Type="Quote">&lt;007@localhost&gt;</Data>
+        <Data Key="incoming_time">1436949030</Data>
+        <Data Key="content_path" Type="Quote">2015/07/15</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+    <Insert Table="article_data_mime_plain">
+        <Data Key="id" Type="AutoIncrement">1</Data>
+        <Data Key="article_id">1</Data>
+        <Data Key="body" Type="Quote">From: OFORK &lt;support@o-fork.de&gt;
+To: Your OFORK System &lt;ofork@localhost&gt;
+Subject: Welcome to OFORK!
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+Welcome to OFORK!
+
+Thank you for installing OFORK.
+
+You can find updates and patches for OFORK at
+https://o-fork.de/Download.html
+
+Find more information about it at https://o-fork.de/.
+
+Best regards and ((enjoy)) OFORK,
+
+Your OFORK Team
+</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+    <Insert Table="ticket_history">
+        <Data Key="id" Type="AutoIncrement">1</Data>
+        <Data Key="name" Type="Quote">New Ticket [2015071510123456] created.</Data>
+        <Data Key="history_type_id">1</Data>
+        <Data Key="ticket_id">1</Data>
+        <Data Key="type_id">1</Data>
+        <Data Key="article_id">1</Data>
+        <Data Key="priority_id">3</Data>
+        <Data Key="owner_id">1</Data>
+        <Data Key="state_id">1</Data>
+        <Data Key="queue_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+    <Insert Table="notification_event">
+        <Data Key="id" Type="AutoIncrement">1</Data>
+        <Data Key="name" Type="Quote" Translatable="1">Ticket create notification</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="comments" Type="Quote"></Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">1</Data>
+        <Data Key="event_key" Type="Quote">VisibleForAgent</Data>
+        <Data Key="event_value" Type="Quote">1</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">1</Data>
+        <Data Key="event_key" Type="Quote">VisibleForAgentTooltip</Data>
+        <Data Key="event_value" Type="Quote" Translatable="1">You will receive a notification each time a new ticket is created in one of your "My Queues" or "My Services".</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">1</Data>
+        <Data Key="event_key" Type="Quote">Events</Data>
+        <Data Key="event_value" Type="Quote">NotificationNewTicket</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">1</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AgentMyQueues</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">1</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AgentMyServices</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">1</Data>
+        <Data Key="event_key" Type="Quote">SendOnOutOfOffice</Data>
+        <Data Key="event_value" Type="Quote">1</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">1</Data>
+        <Data Key="event_key" Type="Quote">Transports</Data>
+        <Data Key="event_value" Type="Quote">Email</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">1</Data>
+        <Data Key="event_key" Type="Quote">AgentEnabledByDefault</Data>
+        <Data Key="event_value" Type="Quote">Email</Data>
+    </Insert>
+
+    <Insert Table="notification_event">
+        <Data Key="id" Type="AutoIncrement">2</Data>
+        <Data Key="name" Type="Quote" Translatable="1">Ticket follow-up notification (unlocked)</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="comments" Type="Quote"></Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">2</Data>
+        <Data Key="event_key" Type="Quote">VisibleForAgent</Data>
+        <Data Key="event_value" Type="Quote">1</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">2</Data>
+        <Data Key="event_key" Type="Quote">VisibleForAgentTooltip</Data>
+        <Data Key="event_value" Type="Quote" Translatable="1">You will receive a notification if a customer sends a follow-up to an unlocked ticket which is in your "My Queues" or "My Services".</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">2</Data>
+        <Data Key="event_key" Type="Quote">Events</Data>
+        <Data Key="event_value" Type="Quote">NotificationFollowUp</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">2</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AgentOwner</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">2</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AgentWatcher</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">2</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AgentMyQueues</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">2</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AgentMyServices</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">2</Data>
+        <Data Key="event_key" Type="Quote">SendOnOutOfOffice</Data>
+        <Data Key="event_value" Type="Quote">1</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">2</Data>
+        <Data Key="event_key" Type="Quote">LockID</Data>
+        <Data Key="event_value" Type="Quote">1</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">2</Data>
+        <Data Key="event_key" Type="Quote">Transports</Data>
+        <Data Key="event_value" Type="Quote">Email</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">2</Data>
+        <Data Key="event_key" Type="Quote">AgentEnabledByDefault</Data>
+        <Data Key="event_value" Type="Quote">Email</Data>
+    </Insert>
+
+    <Insert Table="notification_event">
+        <Data Key="id" Type="AutoIncrement">3</Data>
+        <Data Key="name" Type="Quote" Translatable="1">Ticket follow-up notification (locked)</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="comments" Type="Quote"></Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">3</Data>
+        <Data Key="event_key" Type="Quote">VisibleForAgent</Data>
+        <Data Key="event_value" Type="Quote">1</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">3</Data>
+        <Data Key="event_key" Type="Quote">VisibleForAgentTooltip</Data>
+        <Data Key="event_value" Type="Quote" Translatable="1">You will receive a notification if a customer sends a follow-up to a locked ticket of which you are the ticket owner or responsible.</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">3</Data>
+        <Data Key="event_key" Type="Quote">Events</Data>
+        <Data Key="event_value" Type="Quote">NotificationFollowUp</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">3</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AgentOwner</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">3</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AgentResponsible</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">3</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AgentWatcher</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">3</Data>
+        <Data Key="event_key" Type="Quote">SendOnOutOfOffice</Data>
+        <Data Key="event_value" Type="Quote">1</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">3</Data>
+        <Data Key="event_key" Type="Quote">LockID</Data>
+        <Data Key="event_value" Type="Quote">2</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">3</Data>
+        <Data Key="event_key" Type="Quote">LockID</Data>
+        <Data Key="event_value" Type="Quote">3</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">3</Data>
+        <Data Key="event_key" Type="Quote">Transports</Data>
+        <Data Key="event_value" Type="Quote">Email</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">3</Data>
+        <Data Key="event_key" Type="Quote">AgentEnabledByDefault</Data>
+        <Data Key="event_value" Type="Quote">Email</Data>
+    </Insert>
+
+    <Insert Table="notification_event">
+        <Data Key="id" Type="AutoIncrement">4</Data>
+        <Data Key="name" Type="Quote" Translatable="1">Ticket lock timeout notification</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="comments" Type="Quote"></Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">4</Data>
+        <Data Key="event_key" Type="Quote">VisibleForAgent</Data>
+        <Data Key="event_value" Type="Quote">1</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">4</Data>
+        <Data Key="event_key" Type="Quote">VisibleForAgentTooltip</Data>
+        <Data Key="event_value" Type="Quote" Translatable="1">You will receive a notification as soon as a ticket owned by you is automatically unlocked.</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">4</Data>
+        <Data Key="event_key" Type="Quote">Events</Data>
+        <Data Key="event_value" Type="Quote">NotificationLockTimeout</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">4</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AgentOwner</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">4</Data>
+        <Data Key="event_key" Type="Quote">SendOnOutOfOffice</Data>
+        <Data Key="event_value" Type="Quote">1</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">4</Data>
+        <Data Key="event_key" Type="Quote">Transports</Data>
+        <Data Key="event_value" Type="Quote">Email</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">4</Data>
+        <Data Key="event_key" Type="Quote">AgentEnabledByDefault</Data>
+        <Data Key="event_value" Type="Quote">Email</Data>
+    </Insert>
+
+    <Insert Table="notification_event">
+        <Data Key="id" Type="AutoIncrement">5</Data>
+        <Data Key="name" Type="Quote" Translatable="1">Ticket owner update notification</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="comments" Type="Quote"></Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">5</Data>
+        <Data Key="event_key" Type="Quote">Events</Data>
+        <Data Key="event_value" Type="Quote">NotificationOwnerUpdate</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">5</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AgentOwner</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">5</Data>
+        <Data Key="event_key" Type="Quote">SendOnOutOfOffice</Data>
+        <Data Key="event_value" Type="Quote">1</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">5</Data>
+        <Data Key="event_key" Type="Quote">Transports</Data>
+        <Data Key="event_value" Type="Quote">Email</Data>
+    </Insert>
+
+    <Insert Table="notification_event">
+        <Data Key="id" Type="AutoIncrement">6</Data>
+        <Data Key="name" Type="Quote" Translatable="1">Ticket responsible update notification</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="comments" Type="Quote"></Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">6</Data>
+        <Data Key="event_key" Type="Quote">Events</Data>
+        <Data Key="event_value" Type="Quote">NotificationResponsibleUpdate</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">6</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AgentResponsible</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">6</Data>
+        <Data Key="event_key" Type="Quote">SendOnOutOfOffice</Data>
+        <Data Key="event_value" Type="Quote">1</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">6</Data>
+        <Data Key="event_key" Type="Quote">Transports</Data>
+        <Data Key="event_value" Type="Quote">Email</Data>
+    </Insert>
+
+    <Insert Table="notification_event">
+        <Data Key="id" Type="AutoIncrement">7</Data>
+        <Data Key="name" Type="Quote" Translatable="1">Ticket new note notification</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="comments" Type="Quote"></Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">7</Data>
+        <Data Key="event_key" Type="Quote">Events</Data>
+        <Data Key="event_value" Type="Quote">NotificationAddNote</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">7</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AgentOwner</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">7</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AgentResponsible</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">7</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AgentWatcher</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">7</Data>
+        <Data Key="event_key" Type="Quote">SendOnOutOfOffice</Data>
+        <Data Key="event_value" Type="Quote">1</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">7</Data>
+        <Data Key="event_key" Type="Quote">Transports</Data>
+        <Data Key="event_value" Type="Quote">Email</Data>
+    </Insert>
+
+    <Insert Table="notification_event">
+        <Data Key="id" Type="AutoIncrement">8</Data>
+        <Data Key="name" Type="Quote" Translatable="1">Ticket queue update notification</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="comments" Type="Quote"></Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">8</Data>
+        <Data Key="event_key" Type="Quote">VisibleForAgent</Data>
+        <Data Key="event_value" Type="Quote">1</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">8</Data>
+        <Data Key="event_key" Type="Quote">VisibleForAgentTooltip</Data>
+        <Data Key="event_value" Type="Quote" Translatable="1">You will receive a notification if a ticket is moved into one of your "My Queues".</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">8</Data>
+        <Data Key="event_key" Type="Quote">Events</Data>
+        <Data Key="event_value" Type="Quote">NotificationMove</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">8</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AgentMyQueues</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">8</Data>
+        <Data Key="event_key" Type="Quote">SendOnOutOfOffice</Data>
+        <Data Key="event_value" Type="Quote">1</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">8</Data>
+        <Data Key="event_key" Type="Quote">Transports</Data>
+        <Data Key="event_value" Type="Quote">Email</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">8</Data>
+        <Data Key="event_key" Type="Quote">AgentEnabledByDefault</Data>
+        <Data Key="event_value" Type="Quote">Email</Data>
+    </Insert>
+
+    <Insert Table="notification_event">
+        <Data Key="id" Type="AutoIncrement">9</Data>
+        <Data Key="name" Type="Quote" Translatable="1">Ticket pending reminder notification (locked)</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="comments" Type="Quote"></Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">9</Data>
+        <Data Key="event_key" Type="Quote">Events</Data>
+        <Data Key="event_value" Type="Quote">NotificationPendingReminder</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">9</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AgentOwner</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">9</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AgentResponsible</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">9</Data>
+        <Data Key="event_key" Type="Quote">SendOnOutOfOffice</Data>
+        <Data Key="event_value" Type="Quote">1</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">9</Data>
+        <Data Key="event_key" Type="Quote">OncePerDay</Data>
+        <Data Key="event_value" Type="Quote">1</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">9</Data>
+        <Data Key="event_key" Type="Quote">LockID</Data>
+        <Data Key="event_value" Type="Quote">2</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">9</Data>
+        <Data Key="event_key" Type="Quote">LockID</Data>
+        <Data Key="event_value" Type="Quote">3</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">9</Data>
+        <Data Key="event_key" Type="Quote">Transports</Data>
+        <Data Key="event_value" Type="Quote">Email</Data>
+    </Insert>
+
+    <Insert Table="notification_event">
+        <Data Key="id" Type="AutoIncrement">10</Data>
+        <Data Key="name" Type="Quote" Translatable="1">Ticket pending reminder notification (unlocked)</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="comments" Type="Quote"></Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">10</Data>
+        <Data Key="event_key" Type="Quote">Events</Data>
+        <Data Key="event_value" Type="Quote">NotificationPendingReminder</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">10</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AgentOwner</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">10</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AgentResponsible</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">10</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AgentMyQueues</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">10</Data>
+        <Data Key="event_key" Type="Quote">SendOnOutOfOffice</Data>
+        <Data Key="event_value" Type="Quote">1</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">10</Data>
+        <Data Key="event_key" Type="Quote">OncePerDay</Data>
+        <Data Key="event_value" Type="Quote">1</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">10</Data>
+        <Data Key="event_key" Type="Quote">LockID</Data>
+        <Data Key="event_value" Type="Quote">1</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">10</Data>
+        <Data Key="event_key" Type="Quote">Transports</Data>
+        <Data Key="event_value" Type="Quote">Email</Data>
+    </Insert>
+
+    <Insert Table="notification_event">
+        <Data Key="id" Type="AutoIncrement">11</Data>
+        <Data Key="name" Type="Quote" Translatable="1">Ticket escalation notification</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="comments" Type="Quote"></Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">11</Data>
+        <Data Key="event_key" Type="Quote">Events</Data>
+        <Data Key="event_value" Type="Quote">NotificationEscalation</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">11</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AgentMyQueues</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">11</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AgentWritePermissions</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">11</Data>
+        <Data Key="event_key" Type="Quote">SendOnOutOfOffice</Data>
+        <Data Key="event_value" Type="Quote">1</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">11</Data>
+        <Data Key="event_key" Type="Quote">OncePerDay</Data>
+        <Data Key="event_value" Type="Quote">1</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">11</Data>
+        <Data Key="event_key" Type="Quote">Transports</Data>
+        <Data Key="event_value" Type="Quote">Email</Data>
+    </Insert>
+
+    <Insert Table="notification_event">
+        <Data Key="id" Type="AutoIncrement">12</Data>
+        <Data Key="name" Type="Quote" Translatable="1">Ticket escalation warning notification</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="comments" Type="Quote"></Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">12</Data>
+        <Data Key="event_key" Type="Quote">Events</Data>
+        <Data Key="event_value" Type="Quote">NotificationEscalationNotifyBefore</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">12</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AgentMyQueues</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">12</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AgentWritePermissions</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">12</Data>
+        <Data Key="event_key" Type="Quote">SendOnOutOfOffice</Data>
+        <Data Key="event_value" Type="Quote">1</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">12</Data>
+        <Data Key="event_key" Type="Quote">OncePerDay</Data>
+        <Data Key="event_value" Type="Quote">1</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">12</Data>
+        <Data Key="event_key" Type="Quote">Transports</Data>
+        <Data Key="event_value" Type="Quote">Email</Data>
+    </Insert>
+
+    <Insert Table="notification_event">
+        <Data Key="id" Type="AutoIncrement">13</Data>
+        <Data Key="name" Type="Quote" Translatable="1">Ticket service update notification</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="comments" Type="Quote"></Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">13</Data>
+        <Data Key="event_key" Type="Quote">VisibleForAgent</Data>
+        <Data Key="event_value" Type="Quote">1</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">13</Data>
+        <Data Key="event_key" Type="Quote">VisibleForAgentTooltip</Data>
+        <Data Key="event_value" Type="Quote" Translatable="1">You will receive a notification if a ticket's service is changed to one of your "My Services".</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">13</Data>
+        <Data Key="event_key" Type="Quote">Events</Data>
+        <Data Key="event_value" Type="Quote">NotificationServiceUpdate</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">13</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AgentMyServices</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">13</Data>
+        <Data Key="event_key" Type="Quote">SendOnOutOfOffice</Data>
+        <Data Key="event_value" Type="Quote">1</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">13</Data>
+        <Data Key="event_key" Type="Quote">Transports</Data>
+        <Data Key="event_value" Type="Quote">Email</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">13</Data>
+        <Data Key="event_key" Type="Quote">AgentEnabledByDefault</Data>
+        <Data Key="event_value" Type="Quote">Email</Data>
+    </Insert>
+
+    <Insert Table="notification_event">
+        <Data Key="id" Type="AutoIncrement">14</Data>
+        <Data Key="name" Type="Quote" Translatable="1">Appointment reminder notification</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="comments" Type="Quote"></Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">14</Data>
+        <Data Key="event_key" Type="Quote">VisibleForAgent</Data>
+        <Data Key="event_value" Type="Quote">1</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">14</Data>
+        <Data Key="event_key" Type="Quote">VisibleForAgentTooltip</Data>
+        <Data Key="event_value" Type="Quote" Translatable="1">You will receive a notification each time a reminder time is reached for one of your appointments.</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">14</Data>
+        <Data Key="event_key" Type="Quote">Events</Data>
+        <Data Key="event_value" Type="Quote">AppointmentNotification</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">14</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AppointmentAgentReadPermissions</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">14</Data>
+        <Data Key="event_key" Type="Quote">SendOnOutOfOffice</Data>
+        <Data Key="event_value" Type="Quote">1</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">14</Data>
+        <Data Key="event_key" Type="Quote">Transports</Data>
+        <Data Key="event_value" Type="Quote">Email</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">14</Data>
+        <Data Key="event_key" Type="Quote">AgentEnabledByDefault</Data>
+        <Data Key="event_value" Type="Quote">Email</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">14</Data>
+        <Data Key="event_key" Type="Quote">NotificationType</Data>
+        <Data Key="event_value" Type="Quote">Appointment</Data>
+    </Insert>
+
+    <Insert Table="notification_event">
+        <Data Key="id" Type="AutoIncrement">15</Data>
+        <Data Key="name" Type="Quote" Translatable="1">Ticket email delivery failure notification</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="comments" Type="Quote"></Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">15</Data>
+        <Data Key="event_key" Type="Quote">AgentEnabledByDefault</Data>
+        <Data Key="event_value" Type="Quote">Email</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">15</Data>
+        <Data Key="event_key" Type="Quote">ArticleAttachmentInclude</Data>
+        <Data Key="event_value" Type="Quote">0</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">15</Data>
+        <Data Key="event_key" Type="Quote">ArticleCommunicationChannelID</Data>
+        <Data Key="event_value" Type="Quote">1</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">15</Data>
+        <Data Key="event_key" Type="Quote">Events</Data>
+        <Data Key="event_value" Type="Quote">ArticleEmailSendingError</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">15</Data>
+        <Data Key="event_key" Type="Quote">LanguageID</Data>
+        <Data Key="event_value" Type="Quote">en</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">15</Data>
+        <Data Key="event_key" Type="Quote">RecipientGroups</Data>
+        <Data Key="event_value" Type="Quote">2</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">15</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AgentResponsible</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">15</Data>
+        <Data Key="event_key" Type="Quote">Recipients</Data>
+        <Data Key="event_value" Type="Quote">AgentOwner</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">15</Data>
+        <Data Key="event_key" Type="Quote">TransportEmailTemplate</Data>
+        <Data Key="event_value" Type="Quote">Default</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">15</Data>
+        <Data Key="event_key" Type="Quote">Transports</Data>
+        <Data Key="event_value" Type="Quote">Email</Data>
+    </Insert>
+    <Insert Table="notification_event_item">
+        <Data Key="notification_id">15</Data>
+        <Data Key="event_key" Type="Quote">VisibleForAgent</Data>
+        <Data Key="event_value" Type="Quote">0</Data>
+    </Insert>
+
+    <!-- notification_event_message - en -->
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">1</Data>
+        <Data Key="notification_id">1</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">en</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Ticket Created: <OFORK_TICKET_Title>]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hi <OFORK_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+ticket [<OFORK_CONFIG_Ticket::Hook><OFORK_CONFIG_Ticket::HookDivider><OFORK_TICKET_TicketNumber>] has been created in queue <OFORK_TICKET_Queue>.
+
+<OFORK_CUSTOMER_REALNAME> wrote:
+<OFORK_CUSTOMER_BODY[30]>
+
+<OFORK_CONFIG_HttpType>://<OFORK_CONFIG_FQDN>/<OFORK_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OFORK_TICKET_TicketID>
+
+-- <OFORK_CONFIG_NotificationSenderName>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">2</Data>
+        <Data Key="notification_id">2</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">en</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Unlocked Ticket Follow-Up: <OFORK_CUSTOMER_SUBJECT[24]>]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hi <OFORK_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+the unlocked ticket [<OFORK_CONFIG_Ticket::Hook><OFORK_CONFIG_Ticket::HookDivider><OFORK_TICKET_TicketNumber>] received a follow-up.
+
+<OFORK_CUSTOMER_REALNAME> wrote:
+<OFORK_CUSTOMER_BODY[30]>
+
+<OFORK_CONFIG_HttpType>://<OFORK_CONFIG_FQDN>/<OFORK_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OFORK_TICKET_TicketID>
+
+-- <OFORK_CONFIG_NotificationSenderName>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">3</Data>
+        <Data Key="notification_id">3</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">en</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Locked Ticket Follow-Up: <OFORK_CUSTOMER_SUBJECT[24]>]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hi <OFORK_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+the locked ticket [<OFORK_CONFIG_Ticket::Hook><OFORK_CONFIG_Ticket::HookDivider><OFORK_TICKET_TicketNumber>] received a follow-up.
+
+<OFORK_CUSTOMER_REALNAME> wrote:
+<OFORK_CUSTOMER_BODY[30]>
+
+<OFORK_CONFIG_HttpType>://<OFORK_CONFIG_FQDN>/<OFORK_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OFORK_TICKET_TicketID>
+
+-- <OFORK_CONFIG_NotificationSenderName>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">4</Data>
+        <Data Key="notification_id">4</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">en</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Ticket Lock Timeout: <OFORK_TICKET_Title>]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hi <OFORK_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+ticket [<OFORK_CONFIG_Ticket::Hook><OFORK_CONFIG_Ticket::HookDivider><OFORK_TICKET_TicketNumber>] has reached its lock timeout period and is now unlocked.
+
+<OFORK_CONFIG_HttpType>://<OFORK_CONFIG_FQDN>/<OFORK_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OFORK_TICKET_TicketID>
+
+-- <OFORK_CONFIG_NotificationSenderName>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">5</Data>
+        <Data Key="notification_id">5</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">en</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Ticket Owner Update to <OFORK_OWNER_UserFullname>: <OFORK_TICKET_Title>]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hi <OFORK_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+the owner of ticket [<OFORK_CONFIG_Ticket::Hook><OFORK_CONFIG_Ticket::HookDivider><OFORK_TICKET_TicketNumber>] has been updated to <OFORK_TICKET_OWNER_UserFullname> by <OFORK_CURRENT_UserFullname>.
+
+<OFORK_CONFIG_HttpType>://<OFORK_CONFIG_FQDN>/<OFORK_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OFORK_TICKET_TicketID>
+
+-- <OFORK_CONFIG_NotificationSenderName>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">6</Data>
+        <Data Key="notification_id">6</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">en</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Ticket Responsible Update to <OFORK_RESPONSIBLE_UserFullname>: <OFORK_TICKET_Title>]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hi <OFORK_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+the responsible agent of ticket [<OFORK_CONFIG_Ticket::Hook><OFORK_CONFIG_Ticket::HookDivider><OFORK_TICKET_TicketNumber>] has been updated to <OFORK_TICKET_RESPONSIBLE_UserFullname> by <OFORK_CURRENT_UserFullname>.
+
+<OFORK_CONFIG_HttpType>://<OFORK_CONFIG_FQDN>/<OFORK_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OFORK_TICKET_TicketID>
+
+-- <OFORK_CONFIG_NotificationSenderName>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">7</Data>
+        <Data Key="notification_id">7</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">en</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Ticket Note: <OFORK_AGENT_SUBJECT[24]>]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hi <OFORK_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+<OFORK_CURRENT_UserFullname> wrote:
+<OFORK_AGENT_BODY[30]>
+
+<OFORK_CONFIG_HttpType>://<OFORK_CONFIG_FQDN>/<OFORK_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OFORK_TICKET_TicketID>
+
+-- <OFORK_CONFIG_NotificationSenderName>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">8</Data>
+        <Data Key="notification_id">8</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">en</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Ticket Queue Update to <OFORK_TICKET_Queue>: <OFORK_TICKET_Title>]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hi <OFORK_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+ticket [<OFORK_CONFIG_Ticket::Hook><OFORK_CONFIG_Ticket::HookDivider><OFORK_TICKET_TicketNumber>] has been updated to queue <OFORK_TICKET_Queue>.
+
+<OFORK_CONFIG_HttpType>://<OFORK_CONFIG_FQDN>/<OFORK_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OFORK_TICKET_TicketID>
+
+-- <OFORK_CONFIG_NotificationSenderName>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">9</Data>
+        <Data Key="notification_id">9</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">en</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Locked Ticket Pending Reminder Time Reached: <OFORK_TICKET_Title>]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hi <OFORK_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+the pending reminder time of the locked ticket [<OFORK_CONFIG_Ticket::Hook><OFORK_CONFIG_Ticket::HookDivider><OFORK_TICKET_TicketNumber>] has been reached.
+
+<OFORK_CONFIG_HttpType>://<OFORK_CONFIG_FQDN>/<OFORK_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OFORK_TICKET_TicketID>
+
+-- <OFORK_CONFIG_NotificationSenderName>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">10</Data>
+        <Data Key="notification_id">10</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">en</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Unlocked Ticket Pending Reminder Time Reached: <OFORK_TICKET_Title>]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hi <OFORK_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+the pending reminder time of the unlocked ticket [<OFORK_CONFIG_Ticket::Hook><OFORK_CONFIG_Ticket::HookDivider><OFORK_TICKET_TicketNumber>] has been reached.
+
+<OFORK_CONFIG_HttpType>://<OFORK_CONFIG_FQDN>/<OFORK_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OFORK_TICKET_TicketID>
+
+-- <OFORK_CONFIG_NotificationSenderName>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">11</Data>
+        <Data Key="notification_id">11</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">en</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Ticket Escalation! <OFORK_TICKET_Title>]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hi <OFORK_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+ticket [<OFORK_CONFIG_Ticket::Hook><OFORK_CONFIG_Ticket::HookDivider><OFORK_TICKET_TicketNumber>] is escalated!
+
+Escalated at: <OFORK_TICKET_EscalationDestinationDate>
+Escalated since: <OFORK_TICKET_EscalationDestinationIn>
+
+<OFORK_CONFIG_HttpType>://<OFORK_CONFIG_FQDN>/<OFORK_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OFORK_TICKET_TicketID>
+
+-- <OFORK_CONFIG_NotificationSenderName>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">12</Data>
+        <Data Key="notification_id">12</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">en</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Ticket Escalation Warning! <OFORK_TICKET_Title>]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hi <OFORK_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+ticket [<OFORK_CONFIG_Ticket::Hook><OFORK_CONFIG_Ticket::HookDivider><OFORK_TICKET_TicketNumber>] will escalate!
+
+Escalation at: <OFORK_TICKET_EscalationDestinationDate>
+Escalation in: <OFORK_TICKET_EscalationDestinationIn>
+
+<OFORK_CONFIG_HttpType>://<OFORK_CONFIG_FQDN>/<OFORK_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OFORK_TICKET_TicketID>
+
+
+-- <OFORK_CONFIG_NotificationSenderName>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">13</Data>
+        <Data Key="notification_id">13</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">en</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Ticket Service Update to <OFORK_TICKET_Service>: <OFORK_TICKET_Title>]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hi <OFORK_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+the service of ticket [<OFORK_CONFIG_Ticket::Hook><OFORK_CONFIG_Ticket::HookDivider><OFORK_TICKET_TicketNumber>] has been updated to <OFORK_TICKET_Service>.
+
+<OFORK_CONFIG_HttpType>://<OFORK_CONFIG_FQDN>/<OFORK_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OFORK_TICKET_TicketID>
+
+-- <OFORK_CONFIG_NotificationSenderName>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">14</Data>
+        <Data Key="notification_id">14</Data>
+        <Data Key="content_type" Type="Quote">text/html</Data>
+        <Data Key="language" Type="Quote">en</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Reminder: <OFORK_APPOINTMENT_TITLE>]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hi &lt;OFORK_NOTIFICATION_RECIPIENT_UserFirstname&gt;,<br />
+<br />
+appointment &quot;&lt;OFORK_APPOINTMENT_TITLE&gt;&quot; has reached its notification time.<br />
+<br />
+Description: &lt;OFORK_APPOINTMENT_DESCRIPTION&gt;<br />
+Location: &lt;OFORK_APPOINTMENT_LOCATION&gt;<br />
+Calendar: <span style="color: &lt;OFORK_CALENDAR_COLOR&gt;;">■</span> &lt;OFORK_CALENDAR_CALENDARNAME&gt;<br />
+Start date: &lt;OFORK_APPOINTMENT_STARTTIME&gt;<br />
+End date: &lt;OFORK_APPOINTMENT_ENDTIME&gt;<br />
+All-day: &lt;OFORK_APPOINTMENT_ALLDAY&gt;<br />
+Repeat: &lt;OFORK_APPOINTMENT_RECURRING&gt;<br />
+<br />
+<a href="&lt;OFORK_CONFIG_HttpType&gt;://&lt;OFORK_CONFIG_FQDN&gt;/&lt;OFORK_CONFIG_ScriptAlias&gt;index.pl?Action=AgentAppointmentCalendarOverview;AppointmentID=&lt;OFORK_APPOINTMENT_APPOINTMENTID&gt;" title="&lt;OFORK_CONFIG_HttpType&gt;://&lt;OFORK_CONFIG_FQDN&gt;/&lt;OFORK_CONFIG_ScriptAlias&gt;index.pl?Action=AgentAppointmentCalendarOverview;AppointmentID=&lt;OFORK_APPOINTMENT_APPOINTMENTID&gt;">&lt;OFORK_CONFIG_HttpType&gt;://&lt;OFORK_CONFIG_FQDN&gt;/&lt;OFORK_CONFIG_ScriptAlias&gt;index.pl?Action=AgentAppointmentCalendarOverview;AppointmentID=&lt;OFORK_APPOINTMENT_APPOINTMENTID&gt;</a><br />
+<br />
+-- &lt;OFORK_CONFIG_NotificationSenderName&gt;]]></Data>
+    </Insert>
+
+    <!-- notification_event_message - de -->
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">15</Data>
+        <Data Key="notification_id">1</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">de</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Ticket erstellt: <OFORK_TICKET_Title>]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hallo <OFORK_NOTIFICATION_RECIPIENT_UserFirstname> <OFORK_NOTIFICATION_RECIPIENT_UserLastname>,
+
+das Ticket [<OFORK_CONFIG_Ticket::Hook><OFORK_CONFIG_Ticket::HookDivider><OFORK_TICKET_TicketNumber>] wurde in der Queue <OFORK_TICKET_Queue> erstellt.
+
+<OFORK_CUSTOMER_REALNAME> schrieb:
+<OFORK_CUSTOMER_BODY[30]>
+
+<OFORK_CONFIG_HttpType>://<OFORK_CONFIG_FQDN>/<OFORK_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OFORK_TICKET_TicketID>
+
+-- <OFORK_CONFIG_NotificationSenderName>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">16</Data>
+        <Data Key="notification_id">2</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">de</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Nachfrage zum freigegebenen Ticket: <OFORK_CUSTOMER_SUBJECT[24]>]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hallo <OFORK_NOTIFICATION_RECIPIENT_UserFirstname> <OFORK_NOTIFICATION_RECIPIENT_UserLastname>,
+
+zum freigegebenen Ticket [<OFORK_CONFIG_Ticket::Hook><OFORK_CONFIG_Ticket::HookDivider><OFORK_TICKET_TicketNumber>] gibt es eine Nachfrage.
+
+<OFORK_CUSTOMER_REALNAME> schrieb:
+<OFORK_CUSTOMER_BODY[30]>
+
+<OFORK_CONFIG_HttpType>://<OFORK_CONFIG_FQDN>/<OFORK_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OFORK_TICKET_TicketID>
+
+-- <OFORK_CONFIG_NotificationSenderName>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">17</Data>
+        <Data Key="notification_id">3</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">de</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Nachfrage zum gesperrten Ticket: <OFORK_CUSTOMER_SUBJECT[24]>]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hallo <OFORK_NOTIFICATION_RECIPIENT_UserFirstname> <OFORK_NOTIFICATION_RECIPIENT_UserLastname>,
+
+zum gesperrten Ticket [<OFORK_CONFIG_Ticket::Hook><OFORK_CONFIG_Ticket::HookDivider><OFORK_TICKET_TicketNumber>] gibt es eine Nachfrage.
+
+<OFORK_CUSTOMER_REALNAME> schrieb:
+<OFORK_CUSTOMER_BODY[30]>
+
+<OFORK_CONFIG_HttpType>://<OFORK_CONFIG_FQDN>/<OFORK_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OFORK_TICKET_TicketID>
+
+-- <OFORK_CONFIG_NotificationSenderName>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">18</Data>
+        <Data Key="notification_id">4</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">de</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Ticketsperre aufgehoben: <OFORK_TICKET_Title>]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hallo <OFORK_NOTIFICATION_RECIPIENT_UserFirstname> <OFORK_NOTIFICATION_RECIPIENT_UserLastname>,
+
+die Sperrzeit des Tickets [<OFORK_CONFIG_Ticket::Hook><OFORK_CONFIG_Ticket::HookDivider><OFORK_TICKET_TicketNumber>] ist abgelaufen. Es ist jetzt freigegeben.
+
+<OFORK_CONFIG_HttpType>://<OFORK_CONFIG_FQDN>/<OFORK_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OFORK_TICKET_TicketID>
+
+-- <OFORK_CONFIG_NotificationSenderName>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">19</Data>
+        <Data Key="notification_id">5</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">de</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Änderung des Ticket-Besitzers auf <OFORK_OWNER_UserFullname>: <OFORK_TICKET_Title>]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hallo <OFORK_NOTIFICATION_RECIPIENT_UserFirstname> <OFORK_NOTIFICATION_RECIPIENT_UserLastname>,
+
+der Besitzer des Tickets [<OFORK_CONFIG_Ticket::Hook><OFORK_CONFIG_Ticket::HookDivider><OFORK_TICKET_TicketNumber>] wurde von <OFORK_CURRENT_UserFullname> geändert auf <OFORK_TICKET_OWNER_UserFullname>.
+
+<OFORK_CONFIG_HttpType>://<OFORK_CONFIG_FQDN>/<OFORK_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OFORK_TICKET_TicketID>
+
+-- <OFORK_CONFIG_NotificationSenderName>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">20</Data>
+        <Data Key="notification_id">6</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">de</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Änderung des Ticket-Verantwortlichen auf <OFORK_RESPONSIBLE_UserFullname>: <OFORK_TICKET_Title>]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hallo <OFORK_NOTIFICATION_RECIPIENT_UserFirstname> <OFORK_NOTIFICATION_RECIPIENT_UserLastname>,
+
+der Verantwortliche für das Ticket [<OFORK_CONFIG_Ticket::Hook><OFORK_CONFIG_Ticket::HookDivider><OFORK_TICKET_TicketNumber>] wurde von <OFORK_CURRENT_UserFullname> geändert auf <OFORK_TICKET_RESPONSIBLE_UserFullname>.
+
+<OFORK_CONFIG_HttpType>://<OFORK_CONFIG_FQDN>/<OFORK_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OFORK_TICKET_TicketID>
+
+-- <OFORK_CONFIG_NotificationSenderName>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">21</Data>
+        <Data Key="notification_id">7</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">de</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Ticket-Notiz: <OFORK_AGENT_SUBJECT[24]>]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hallo <OFORK_NOTIFICATION_RECIPIENT_UserFirstname> <OFORK_NOTIFICATION_RECIPIENT_UserLastname>,
+
+<OFORK_CURRENT_UserFullname> schrieb:
+<OFORK_AGENT_BODY[30]>
+
+<OFORK_CONFIG_HttpType>://<OFORK_CONFIG_FQDN>/<OFORK_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OFORK_TICKET_TicketID>
+
+-- <OFORK_CONFIG_NotificationSenderName>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">22</Data>
+        <Data Key="notification_id">8</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">de</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Ticket-Queue geändert zu <OFORK_TICKET_Queue>: <OFORK_TICKET_Title>]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hallo <OFORK_NOTIFICATION_RECIPIENT_UserFirstname> <OFORK_NOTIFICATION_RECIPIENT_UserLastname>,
+
+das Ticket [<OFORK_CONFIG_Ticket::Hook><OFORK_CONFIG_Ticket::HookDivider><OFORK_TICKET_TicketNumber>] wurde in die Queue <OFORK_TICKET_Queue> verschoben.
+
+<OFORK_CONFIG_HttpType>://<OFORK_CONFIG_FQDN>/<OFORK_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OFORK_TICKET_TicketID>
+
+-- <OFORK_CONFIG_NotificationSenderName>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">23</Data>
+        <Data Key="notification_id">9</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">de</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Erinnerungszeit des gesperrten Tickets erreicht: <OFORK_TICKET_Title>]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hallo <OFORK_NOTIFICATION_RECIPIENT_UserFirstname> <OFORK_NOTIFICATION_RECIPIENT_UserLastname>,
+
+die Erinnerungszeit für das gesperrte Ticket [<OFORK_CONFIG_Ticket::Hook><OFORK_CONFIG_Ticket::HookDivider><OFORK_TICKET_TicketNumber>] wurde erreicht.
+
+<OFORK_CONFIG_HttpType>://<OFORK_CONFIG_FQDN>/<OFORK_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OFORK_TICKET_TicketID>
+
+-- <OFORK_CONFIG_NotificationSenderName>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">24</Data>
+        <Data Key="notification_id">10</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">de</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Erinnerungszeit des freigegebenen Tickets erreicht: <OFORK_TICKET_Title>]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hallo <OFORK_NOTIFICATION_RECIPIENT_UserFirstname> <OFORK_NOTIFICATION_RECIPIENT_UserLastname>,
+
+die Erinnerungszeit für das freigegebene Ticket [<OFORK_CONFIG_Ticket::Hook><OFORK_CONFIG_Ticket::HookDivider><OFORK_TICKET_TicketNumber>] wurde erreicht.
+
+<OFORK_CONFIG_HttpType>://<OFORK_CONFIG_FQDN>/<OFORK_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OFORK_TICKET_TicketID>
+
+-- <OFORK_CONFIG_NotificationSenderName>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">25</Data>
+        <Data Key="notification_id">11</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">de</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Ticket-Eskalation! <OFORK_TICKET_Title>]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hallo <OFORK_NOTIFICATION_RECIPIENT_UserFirstname> <OFORK_NOTIFICATION_RECIPIENT_UserLastname>,
+
+das Ticket [<OFORK_CONFIG_Ticket::Hook><OFORK_CONFIG_Ticket::HookDivider><OFORK_TICKET_TicketNumber>] ist eskaliert!
+
+Eskaliert am: <OFORK_TICKET_EscalationDestinationDate>
+Eskaliert seit: <OFORK_TICKET_EscalationDestinationIn>
+
+<OFORK_CONFIG_HttpType>://<OFORK_CONFIG_FQDN>/<OFORK_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OFORK_TICKET_TicketID>
+
+-- <OFORK_CONFIG_NotificationSenderName>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">26</Data>
+        <Data Key="notification_id">12</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">de</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Ticket-Eskalations-Warnung! <OFORK_TICKET_Title>]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hallo <OFORK_NOTIFICATION_RECIPIENT_UserFirstname> <OFORK_NOTIFICATION_RECIPIENT_UserLastname>,
+
+das Ticket [<OFORK_CONFIG_Ticket::Hook><OFORK_CONFIG_Ticket::HookDivider><OFORK_TICKET_TicketNumber>] wird bald eskalieren!
+
+Eskalation um: <OFORK_TICKET_EscalationDestinationDate>
+Eskalation in: <OFORK_TICKET_EscalationDestinationIn>
+
+<OFORK_CONFIG_HttpType>://<OFORK_CONFIG_FQDN>/<OFORK_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OFORK_TICKET_TicketID>
+
+
+-- <OFORK_CONFIG_NotificationSenderName>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">27</Data>
+        <Data Key="notification_id">13</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">de</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Ticket-Service aktualisiert zu <OFORK_TICKET_Service>: <OFORK_TICKET_Title>]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hallo <OFORK_NOTIFICATION_RECIPIENT_UserFirstname> <OFORK_NOTIFICATION_RECIPIENT_UserLastname>,
+
+der Service des Tickets [<OFORK_CONFIG_Ticket::Hook><OFORK_CONFIG_Ticket::HookDivider><OFORK_TICKET_TicketNumber>] wurde geändert zu <OFORK_TICKET_Service>.
+
+<OFORK_CONFIG_HttpType>://<OFORK_CONFIG_FQDN>/<OFORK_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OFORK_TICKET_TicketID>
+
+-- <OFORK_CONFIG_NotificationSenderName>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">28</Data>
+        <Data Key="notification_id">14</Data>
+        <Data Key="content_type" Type="Quote">text/html</Data>
+        <Data Key="language" Type="Quote">de</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Erinnerung: <OFORK_APPOINTMENT_TITLE>]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hallo &lt;OFORK_NOTIFICATION_RECIPIENT_UserFirstname&gt;,<br />
+<br />
+Termin &quot;&lt;OFORK_APPOINTMENT_TITLE&gt;&quot; hat seine Benachrichtigungszeit erreicht.<br />
+<br />
+Beschreibung: &lt;OFORK_APPOINTMENT_DESCRIPTION&gt;<br />
+Standort: &lt;OFORK_APPOINTMENT_LOCATION&gt;<br />
+Kalender: <span style="color: &lt;OFORK_CALENDAR_COLOR&gt;;">■</span> &lt;OFORK_CALENDAR_CALENDARNAME&gt;<br />
+Startzeitpunkt: &lt;OFORK_APPOINTMENT_STARTTIME&gt;<br />
+Endzeitpunkt: &lt;OFORK_APPOINTMENT_ENDTIME&gt;<br />
+Ganztägig: &lt;OFORK_APPOINTMENT_ALLDAY&gt;<br />
+Wiederholung: &lt;OFORK_APPOINTMENT_RECURRING&gt;<br />
+<br />
+<a href="&lt;OFORK_CONFIG_HttpType&gt;://&lt;OFORK_CONFIG_FQDN&gt;/&lt;OFORK_CONFIG_ScriptAlias&gt;index.pl?Action=AgentAppointmentCalendarOverview;AppointmentID=&lt;OFORK_APPOINTMENT_APPOINTMENTID&gt;" title="&lt;OFORK_CONFIG_HttpType&gt;://&lt;OFORK_CONFIG_FQDN&gt;/&lt;OFORK_CONFIG_ScriptAlias&gt;index.pl?Action=AgentAppointmentCalendarOverview;AppointmentID=&lt;OFORK_APPOINTMENT_APPOINTMENTID&gt;">&lt;OFORK_CONFIG_HttpType&gt;://&lt;OFORK_CONFIG_FQDN&gt;/&lt;OFORK_CONFIG_ScriptAlias&gt;index.pl?Action=AgentAppointmentCalendarOverview;AppointmentID=&lt;OFORK_APPOINTMENT_APPOINTMENTID&gt;</a><br />
+<br />
+-- &lt;OFORK_CONFIG_NotificationSenderName&gt;]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="id" Type="AutoIncrement">110</Data>
+        <Data Key="notification_id">15</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">en</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Email Delivery Failure]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Hi <OFORK_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+Please note, that the delivery of an email article of [<OFORK_CONFIG_Ticket::Hook><OFORK_CONFIG_Ticket::HookDivider><OFORK_TICKET_TicketNumber>] has failed. Please check the email address of your recipient for mistakes and try again. You can manually resend the article from the ticket if required.
+
+Error Message:
+<OFORK_AGENT_TransmissionStatusMessage>
+
+<OFORK_CONFIG_HttpType>://<OFORK_CONFIG_FQDN>/<OFORK_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OFORK_TICKET_TicketID>;ArticleID=<OFORK_AGENT_ArticleID>
+
+-- <OFORK_CONFIG_NotificationSenderName>]]></Data>
+    </Insert>
+    <!-- Internal dynamic fields for ProcessManagement -->
+    <Insert Table="dynamic_field">
+        <Data Key="id" Type="AutoIncrement">1</Data>
+        <Data Key="internal_field">1</Data>
+        <Data Key="name" Type="Quote">ProcessManagementProcessID</Data>
+        <Data Key="label" Type="Quote">Process</Data>
+        <Data Key="field_order">1</Data>
+        <Data Key="field_type" Type="Quote">ProcessID</Data>
+        <Data Key="object_type" Type="Quote">Ticket</Data>
+        <Data Key="config" Type="Quote">---
+DefaultValue: ''
+</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="dynamic_field">
+        <Data Key="id" Type="AutoIncrement">2</Data>
+        <Data Key="internal_field">1</Data>
+        <Data Key="name" Type="Quote">ProcessManagementActivityID</Data>
+        <Data Key="label" Type="Quote">Activity</Data>
+        <Data Key="field_order">1</Data>
+        <Data Key="field_type" Type="Quote">ActivityID</Data>
+        <Data Key="object_type" Type="Quote">Ticket</Data>
+        <Data Key="config" Type="Quote">---
+DefaultValue: ''
+</Data>
+        <Data Key="valid_id">1</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+</database>

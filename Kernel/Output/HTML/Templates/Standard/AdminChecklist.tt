@@ -1,0 +1,346 @@
+# --
+# AdminChecklist.tt - provides HTML form for AdminSLA
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# --
+# $Id: AdminChecklist.tt,v 1.2 2017/02/02 10:06:16 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<div class="MainBox ARIARoleMain LayoutFixedSidebar SidebarFirst">
+    <h1 class="InvisibleText">[% Translate("Checklist Field Management") | html %]</h1>
+
+    [% BreadcrumbPath = [
+            {
+                Name => Translate('Checklists management'),
+                Link => Env("Action"),
+            },
+        ]
+    %]
+
+    [% SWITCH Data.Action %]
+        [% CASE 'Add' %]
+            [% BreadcrumbPath.push({ Name => Translate("Add Group"),}) %]
+        [% CASE 'Change' %]
+            [% USE EditTitle = String(Translate("Edit Group")) %]
+            [% BreadcrumbPath.push({ Name => EditTitle.append( ': ', Data.Name ) }) %]
+    [% END %]
+
+    [% INCLUDE "Breadcrumb.tt" Path = BreadcrumbPath %]
+
+[% RenderBlockStart("Overview") %]
+<div class="MainBox ARIARoleMain LayoutFixedSidebar SidebarFirst">
+    <h1>[% Translate("Check lists") | html %]</h1>
+
+    <div class="SidebarColumn">
+
+[% RenderBlockStart("ActionList") %]
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>[% Translate("Actions") | html %]</h2>
+            </div>
+            <div class="Content">
+                <ul class="ActionList">
+
+[% RenderBlockStart("ActionOverview") %]
+                    <li>
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %]" class="CallForAction"><span>[% Translate("Go to overview") | html %]</span></a>
+                    </li>
+[% RenderBlockEnd("ActionOverview") %]
+
+[% RenderBlockStart("ActionAdd") %]
+                    <li>
+                        <a class="CallForAction Plus" href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=ChecklistEdit">
+                        <span>[% Translate("Checklist add") | html %]</span>
+                        </a>
+                    </li>
+[% RenderBlockEnd("ActionAdd") %]
+
+                </ul>
+            </div>
+        </div>
+[% RenderBlockEnd("ActionList") %]
+
+    </div>
+
+    <div class="ContentColumn">
+        <div class="WidgetSimple">
+[% RenderBlockStart("OverviewList") %]
+            <div class="Header">
+                <h2>[% Translate("List") | html %]</h2>
+            </div>
+            <div class="Content">
+
+                <table class="DataTable">
+                    <thead>
+                        <tr>
+                            <th>[% Translate("Name") | html %]</th>
+                            <th>[% Translate("Comment") | html %]</th>
+                            <th>[% Translate("Valid") | html %]</th>
+                            <th>[% Translate("Changed") | html %]</th>
+                            <th>[% Translate("Created") | html %]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+[% RenderBlockStart("NoDataFoundMsg") %]
+                        <tr>
+                            <td colspan="6">
+                                [% Translate("No data found.") | html %]
+                            </td>
+                        </tr>
+[% RenderBlockEnd("NoDataFoundMsg") %]
+[% RenderBlockStart("OverviewListRow") %]
+                        <tr>
+                            <td><a class="AsBlock" href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=ChecklistEdit;ChecklistID=[% Data.ChecklistID | uri %]">[% Data.Name | html %]</a></td>
+                            <td title="[% Data.Comment | html %]">[% Data.Comment | truncate(26) | html %]</td>
+                            <td>[% Translate(Data.Valid) | html %]</td>
+                            <td>[% Data.ChangeTime | Localize("TimeShort") %]</td>
+                            <td>[% Data.CreateTime | Localize("TimeShort") %]</td>
+                        </tr>
+[% RenderBlockEnd("OverviewListRow") %]
+                    </tbody>
+                </table>
+            </div>
+[% RenderBlockEnd("OverviewList") %]
+
+[% RenderBlockStart("ChecklistEdit") %]
+            <div class="Header">
+[% RenderBlockStart("HeaderAdd") %]
+                <h2>[% Translate("New checklist") | html %]</h2>
+[% RenderBlockEnd("HeaderAdd") %]
+[% RenderBlockStart("HeaderEdit") %]
+                <h2>[% Translate("Checklist edit") | html %]</h2>
+[% RenderBlockEnd("HeaderEdit") %]
+            </div>
+            <div class="Content">
+
+                <form action="[% Env("CGIHandle") %]" method="post" class="Validate">
+                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                    <input type="hidden" name="Subaction" value="ChecklistSave"/>
+                    <input type="hidden" name="ChecklistID" value="[% Data.ChecklistID | html %]"/>
+                    <fieldset class="TableLike">
+
+                        <label class="Mandatory" for="Name"><span class="Marker">*</span>[% Translate("Name") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="Name" id="Name" value="[% Data.Name | html %]" class="W50pc Validate_Required [% Data.NameInvalid | html %]" maxlength="200"/>
+                            <div id="NameError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                            <div id="NameServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="QueueID">[% Translate("Queue") | html %]:</label>
+                        <div class="Field">
+                            [% Data.QueueStrg %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="ServiceID">[% Translate("Service") | html %]:</label>
+                        <div class="Field">
+                            [% Data.ServiceStrg %]
+                        </div>
+                        <div class="Clear"></div>
+
+[% RenderBlockStart("TicketType") %]
+                        <label for="TypeID">[% Translate("Ticket type") | html %]:</label>
+                        <div class="Field">
+                            [% Data.TypeStrg %]
+                        </div>
+                        <div class="Clear"></div>
+[% RenderBlockEnd("TicketType") %]
+
+                        <label for="SetArticle">[% Translate("Set article") | html %]:</label>
+                        <div class="Field">
+                            [% Data.SetArticleStrg %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="ValidID">[% Translate("Valid") | html %]:</label>
+                        <div class="Field">
+                            [% Data.ValidOptionStrg %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="Comment">[% Translate("Comment") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="Comment" id="Comment" value="[% Data.Comment | html %]" class="W50pc" maxlength="150"/>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <div class="Field SpacingTop">
+                            <button class="Primary" type="submit" value="[% Translate("Submit") | html %]">[% Translate("Submit") | html %]</button>
+                            [% Translate("or") | html %]
+                            <a href="[% Env("Baselink") %]Action=[% Env("Action") %]">[% Translate("Cancel") | html %]</a>
+                        </div>
+                        <div class="Clear"></div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+
+[% RenderBlockStart("FieldAdd") %]
+        <div class="WidgetSimple">
+            <div class="Header">
+
+[% RenderBlockStart("FieldHeaderAdd") %]
+                <h2>[% Translate("Task assign") | html %]</h2>
+[% RenderBlockEnd("FieldHeaderAdd") %]
+[% RenderBlockStart("FieldHeaderEdit") %]
+                <h2>[% Translate("Task edit") | html %] <a title="abort" href="[% Env("Baselink") %]Action=AdminChecklist;Subaction=ChecklistEdit;ChecklistID=[% Data.ChecklistID | html %]">abort</a></h2>
+[% RenderBlockEnd("FieldHeaderEdit") %]
+            </div>
+
+            <div class="Content">
+
+                <form action="[% Env("CGIHandle") %]" method="post" name="newfield" enctype="multipart/form-data" class="Validate PreventMultipleSubmits">
+                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                    <input type="hidden" name="Subaction" value="ChecklistFieldSave"/>
+                    <input type="hidden" name="ChecklistID" id="ChecklistID" value="[% Data.ChecklistID | html %]"/>
+                    <input type="hidden" name="ID" id="ID" value="[% Data.ID | html %]"/>
+                    <input type="hidden" name="FieldType" id="FieldType" value="Task"/>
+                    <input type="hidden" name="ChecklistFieldID" id="ChecklistFieldID" value="[% Data.ChecklistFieldID | html %]"/>
+
+                    <fieldset class="TableLike">
+
+                        <label class="Mandatory" for="Task"><span class="Marker">*</span>[% Translate("Task") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="Task" id="Task" value="[% Data.Task | html %]" class="W50pc Validate_Required [% Data.TaskInvalid | html %]" maxlength="200"/>
+                            <div id="TaskError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                            <div id="TaskServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label class="Mandatory" for="Order"><span class="Marker">*</span>[% Translate("Order") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="Order" id="Order" class="Validate_Required" value="[% Data.Order | html %]" size="1"/>
+                            <div id="OrderError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                            <div id="OrderServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <div class="Field SpacingTop">
+                            <button class="Primary" type="submit" value="[% Translate("Submit") | html %]">[% Translate("Submit") | html %]</button>
+                        </div>
+                        <div class="Clear"></div>
+
+                    </fieldset>
+
+                </form>
+            </div>
+        </div>
+
+[% RenderBlockEnd("FieldAdd") %]
+
+
+[% RenderBlockStart("FieldHeadlineAdd") %]
+            <div class="WidgetSimple">
+                <div class="Header">
+
+[% RenderBlockStart("FieldHeadlineHeaderAdd") %]
+                    <h2>[% Translate("Headline assign") | html %]</h2>
+[% RenderBlockEnd("FieldHeadlineHeaderAdd") %]
+[% RenderBlockStart("FieldHeadlineHeaderEdit") %]
+                    <h2>[% Translate("Headline edit") | html %] <a title="abort" href="[% Env("Baselink") %]Action=AdminChecklist;Subaction=ChecklistEdit;ChecklistID=[% Data.ChecklistID | html %]">abort</a></h2>
+[% RenderBlockEnd("FieldHeadlineHeaderEdit") %]
+                </div>
+
+                <div class="Content">
+
+                    <form action="[% Env("CGIHandle") %]" method="post" name="headline" enctype="multipart/form-data" class="Validate PreventMultipleSubmits">
+                        <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+	                    <input type="hidden" name="Subaction" value="ChecklistFieldSave"/>
+	                    <input type="hidden" name="ChecklistID" id="ChecklistID" value="[% Data.ChecklistID | html %]"/>
+	                    <input type="hidden" name="ID" id="ID" value="[% Data.ID | html %]"/>
+	                    <input type="hidden" name="FieldType" id="FieldType" value="Headline"/>
+                        <input type="hidden" name="ChecklistFieldID" id="ChecklistFieldID" value="[% Data.ChecklistFieldID | html %]"/>
+
+                        <fieldset class="TableLike">
+
+	                        <label class="Mandatory" for="Task"><span class="Marker">*</span>[% Translate("Headline") | html %]:</label>
+	                        <div class="Field">
+	                            <input type="text" name="Task" id="Task" value="[% Data.Task | html %]" class="W50pc Validate_Required [% Data.TaskInvalid | html %]" maxlength="200"/>
+	                            <div id="TaskError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+	                            <div id="TaskServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+	                        </div>
+	                        <div class="Clear"></div>
+
+	                        <label class="Mandatory" for="Order"><span class="Marker">*</span>[% Translate("Order") | html %]:</label>
+	                        <div class="Field">
+                            <input type="text" name="Order" id="Order" class="Validate_Required" value="[% Data.Order | html %]" size="1"/>
+	                            <div id="OrderError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+	                            <div id="OrderServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+	                        </div>
+	                        <div class="Clear"></div>
+	
+	                        <div class="Field SpacingTop">
+	                            <button class="Primary" type="submit" value="[% Translate("Submit") | html %]">[% Translate("Submit") | html %]</button>
+	                        </div>
+	                        <div class="Clear"></div>
+
+                        </fieldset>
+
+                    </form>
+                </div>
+            </div>
+[% RenderBlockEnd("FieldHeadlineAdd") %]
+
+[% RenderBlockEnd("ChecklistEdit") %]
+
+[% RenderBlockEnd("Overview") %]
+
+
+[% RenderBlockStart("OverviewFieldList") %]
+                    <div class="WidgetSimple">
+                        <div class="Header">
+                            <h2>[% Translate("Check list") | html %][% Data.Name | html %]</h2>
+                        </div>
+                        <div class="Content">
+
+                            <form action="[% Env("CGIHandle") %]" method="post" class="Validate">
+                                <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                                <input type="hidden" name="Subaction" value="OrderEdit"/>
+                                <input type="hidden" name="ChecklistID" id="ChecklistID" value="[% Data.ChecklistID | html %]"/>
+                                <input type="hidden" name="ChecklistFieldID" id="ChecklistFieldID" value="[% Data.ChecklistFieldID | html %]"/>
+				                <input type="hidden" name="SessionName" id="SessionName" value="[% Env("SessionName") | html %]"/>
+				                <input type="hidden" name="SessionID" id="SessionID" value="[% Env("SessionID") | html %]"/>
+                                <fieldset class="TableLike TableLikeRequestOFORK AdminRequestFormResultingOFORK">
+
+[% RenderBlockStart("OverviewListFieldRow") %]
+
+[% RenderBlockStart("OverviewListFieldTask") %]
+                                    <div class="Field">[% Data.Task | html %]
+                                        <input type="hidden" name="[% Data.Task | html %]" id="[% Data.Task | html %]" value="[% Data.Task | html %]"/>&nbsp;&nbsp;<a class="fa fa-refresh" title="bearbeiten" href="[% Env("Baselink") %]Action=AdminChecklist;Subaction=ChecklistFieldEdit;ChecklistFieldID=[% Data.ID | html %];ChecklistID=[% Data.ChecklistID | html %];">&nbsp;&nbsp;</a>
+                                        <input type="text" name="Order[% Data.FeldAktuellID | html %]" id="Order[% Data.FeldAktuellID | html %]" value="[% Data.Order | html %]" size="1"/>
+                                        <a class="IconNotReady" title="löschen" href="[% Env("Baselink") %]Action=AdminChecklist;Subaction=ChecklistFieldDelete;ChecklistFieldID=[% Data.ID | html %];ChecklistID=[% Data.ChecklistID | html %];">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                                    </div>
+                                    <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFieldTask") %]
+
+[% RenderBlockStart("OverviewListFieldHeadline") %]
+                                    <div class="Field"><br><strong>[% Data.Task | html %]</strong>
+                                        <input type="hidden" name="[% Data.Task | html %]" id="[% Data.Task | html %]" value="[% Data.Task | html %]"/>&nbsp;&nbsp;<a class="fa fa-refresh" title="bearbeiten" href="[% Env("Baselink") %]Action=AdminChecklist;Subaction=ChecklistFieldEdit;ChecklistFieldID=[% Data.ID | html %];ChecklistID=[% Data.ChecklistID | html %];">&nbsp;&nbsp;</a>
+                                        <input type="text" name="Order[% Data.FeldAktuellID | html %]" id="Order[% Data.FeldAktuellID | html %]" value="[% Data.Order | html %]" size="1"/>
+                                        <a class="IconNotReady" title="löschen" href="[% Env("Baselink") %]Action=AdminChecklist;Subaction=ChecklistFieldDelete;ChecklistFieldID=[% Data.ID | html %];ChecklistID=[% Data.ChecklistID | html %];">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                                    </div>
+                                    <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFieldHeadline") %]
+
+[% RenderBlockEnd("OverviewListFieldRow") %]
+
+                                    <div class="Field SpacingTop">
+[% RenderBlockStart("OverviewListFieldChecklistFormIDs") %]
+                                        <input type="hidden" name="ChecklistFormIDs" id="ChecklistFormIDs" value="[% Data.ChecklistFormIDs | html %]"/>
+[% RenderBlockEnd("OverviewListFieldChecklistFormIDs") %]
+                                        <button class="Primary" type="submit" value="[% Translate("Order edit") | html %]">[% Translate("Order edit") | html %]</button>
+                                    </div>
+                                    <div class="Clear"></div>
+
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="Clear"></div>
+            </div>
+[% RenderBlockEnd("OverviewFieldList") %]

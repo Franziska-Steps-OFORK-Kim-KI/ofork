@@ -1,0 +1,120 @@
+# --
+# Kernel/Output/HTML/Templates/Standard/AgentStatisticsAdd.tt
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: AgentStatisticsAdd.tt,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<div class="MainBox AriaRoleMain LayoutFixedSidebar SidebarFirst">
+    <h1>[% Translate("Statistics Overview") | html %]</h1>
+
+    <div class="Clear"></div>
+    <div class="SidebarColumn">
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>[% Translate("Actions") | html %]</h2>
+            </div>
+            <div class="Content">
+                <ul class="ActionList">
+                    <li>
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=Overview" class="CallForAction Fullsize Center"><span><i class="fa fa-caret-left"></i>[% Translate("Go to overview") | html %]</span></a>
+                    </li>
+                    <li>
+                        <a href="https://o-fork.de/doc/manual/admin/[% Data.ManualVersion | uri %].0/en/html/statistics-module.html" target="_blank" class="CallForAction Fullsize Center"><span><i class="fa fa-book"></i>[% Translate("Read more about statistics in OFORK") | html %]</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="ContentColumn">
+        <form action="[% Env("CGIHandle") %]" method="post" enctype="multipart/form-data" class="Validate PreventMultipleSubmits">
+            <input type="hidden" name="Action"    value="[% Env("Action") %]"/>
+            <input type="hidden" name="Subaction" value="AddAction"/>
+
+            <div class="WidgetSimple">
+                <div class="Header">
+                    <h2>[% Translate("Add Statistics") | html %]</h2>
+                </div>
+                <div class="Content">
+                    <ul class="ItemListGrid WithIcons">
+                        <li>
+                            <a href="" data-statistic-preselection="DynamicMatrix" class="AsBlock [% IF Data.StatisticPreselection == 'DynamicMatrix' %] Active[% END %][% IF !Data.ShowAddDynamicMatrixButton %] Disabled[% END %]">
+                                <span class="Icons">
+                                    <i class="fa fa-table"></i>
+                                </span>
+                                <span class="Title">
+                                    [% Translate('Dynamic Matrix') | html %]
+                                </span>
+                                <span class="Description">
+                                    [% Translate('Each cell contains a singular data point.') | html %]
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-statistic-preselection="DynamicList" class="AsBlock [% IF Data.StatisticPreselection == 'DynamicList' %] Active[% END %][% IF !Data.ShowAddDynamicListButton %] Disabled[% END %]">
+                                <span class="Icons">
+                                    <i class="fa fa-list"></i>
+                                </span>
+                                <span class="Title">
+                                    [% Translate('Dynamic List') | html %]
+                                </span>
+                                <span class="Description">
+                                    [% Translate('Each row contains data of one entity.') | html %]
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-statistic-preselection="Static" class="AsBlock [% IF Data.StatisticPreselection == 'Static' %] Active[% END %][% IF !Data.ShowAddStaticButton %] Disabled[% END %]">
+                                <span class="Icons">
+                                    <i class="fa fa-table"></i>
+                                </span>
+                                <span class="Title">
+                                    [% Translate('Static') | html %]
+                                </span>
+                                <span class="Description">
+                                    [% Translate('Non-configurable complex statistics.') | html %]
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="WidgetSimple" id="GeneralSpecifications" [% IF !Data.ShowFormInitially %]style="display: none;"[% END %]>
+                <div class="Header">
+                    <h2>[% Translate("General Specification") | html %]</h2>
+                </div>
+                <div class="Content">
+                    [% IF Data.GeneralSpecificationsWidget %][% Data.GeneralSpecificationsWidget %][% END %]
+                </div>
+            </div>
+
+            <div class="WidgetSimple" id="SaveWidget" [% IF !Data.ShowFormInitially %]style="display: none;"[% END %]>
+                <div class="Header">
+                    <h2>[% Translate("Create Statistic") | html %]</h2>
+                </div>
+                <div class="Content">
+                    <fieldset class="TableLike">
+                        <div class="Field SpacingTop">
+                            <button class="Primary CallForAction" type="submit" value="[% Translate("Save") | html %]">
+                                <span>[% Translate("Save") | html %]</span>
+                            </button>
+                            [% Translate('or') | html %]
+                            <a href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=Overview">
+                                [% Translate('Cancel') | html %]
+                            </a>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

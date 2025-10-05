@@ -1,0 +1,92 @@
+# --
+# Kernel/System/PostMaster/Filter/SMIMEFetchFromCustomer.pm
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: SMIMEFetchFromCustomer.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+package Kernel::System::PostMaster::Filter::SMIMEFetchFromCustomer;
+
+use strict;
+use warnings;
+
+use Kernel::System::EmailParser;
+
+our @ObjectDependencies = (
+    'Kernel::Config',
+    'Kernel::System::Log',
+    'Kernel::System::Crypt::SMIME',
+);
+
+sub new {
+    my ( $Type, %Param ) = @_;
+
+    # Allocate new hash for object.
+    my $Self = {};
+    bless( $Self, $Type );
+
+    # Get parser object.
+    $Self->{ParserObject} = $Param{ParserObject} || die "Got no ParserObject!";
+
+    # Get communication log object.
+    $Self->{CommunicationLogObject} = $Param{CommunicationLogObject} || die "Got no CommunicationLogObject!";
+
+    return $Self;
+}
+
+sub Run {
+    my ( $Self, %Param ) = @_;
+
+    # Check needed stuff.
+    for my $Needed (qw(JobConfig GetParam)) {
+        if ( !$Param{$Needed} ) {
+            $Self->{CommunicationLogObject}->ObjectLog(
+                ObjectLogType => 'Message',
+                Priority      => 'Error',
+                Key           => 'Kernel::System::PostMaster::Filter::SMIMEFetchFromCustomer',
+                Value         => "Need $Needed!",
+            );
+            return;
+        }
+    }
+
+    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+
+    return 1 if !$ConfigObject->Get('SMIME');
+    return 1 if !$ConfigObject->Get('SMIME::FetchFromCustomer');
+
+    my $CryptObject;
+    eval {
+        $CryptObject = $Kernel::OM->Get('Kernel::System::Crypt::SMIME');
+    };
+    return 1 if !$CryptObject;
+
+    my @EmailAddressOnField = $Self->{ParserObject}->SplitAddressLine(
+        Line => $Self->{ParserObject}->GetParam( WHAT => 'From' ),
+    );
+
+    my $IncomingMailAddress;
+
+    for my $EmailAddress (@EmailAddressOnField) {
+        $IncomingMailAddress = $Self->{ParserObject}->GetEmailAddress(
+            Email => $EmailAddress,
+        );
+    }
+
+    return 1 if !$IncomingMailAddress;
+
+    my @Files = $CryptObject->FetchFromCustomer(
+        Search => $IncomingMailAddress,
+    );
+
+    return 1;
+}
+
+1;

@@ -1,0 +1,43 @@
+# --
+# Kernel/Output/HTML/Templates/Standard/AgentTicketZoom/ArticleRender/Invalid.tt
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: Invalid.tt,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<div>
+    <a name="Article[% Data.ArticleID | html %]"></a>
+    <div class="WidgetSimple Expanded [% Data.SenderType | html %] [% IF Data.SenderType == 'customer' %]Incoming[% ELSE %]Outgoing[% END %] [% IF Data.IsVisibleForCustomer %]VisibleForCustomer[% ELSE %]NotVisibleForCustomer[% END %]">
+        <div class="Header">
+            <h2>
+                [% Translate("#%s", Data.ArticleNumber) | html %] &ndash; [% Translate("Missing channel") | html %]
+                &ndash; <span title="[% Translate("Created") | html %]: [% Data.CreateTime | Localize("TimeShort") %]">[% Data.CreateTime | Localize("TimeShort") %]</span> [% Translate("via %s", Translate(Data.CommunicationChannel)) | html %]
+[% IF Data.CreateByUser %]
+                [% Translate("by %s", Data.CreateByUser) | html %]
+[% END %]
+            </h2>
+        </div>
+
+        <div class="Content">
+            <div class="ArticleMailContent">
+
+                [% PROCESS ArticleActionMenu.tt %]
+
+                <div class="Avatar">
+                    <i class="InvalidChannelIcon Warning fa fa-exclamation-triangle"></i>
+                </div>
+
+                <div class="[% IF Data.HTML %]ArticleHTML[% ELSE %]ArticleBody[% END %]">
+[% Data.Body %]
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

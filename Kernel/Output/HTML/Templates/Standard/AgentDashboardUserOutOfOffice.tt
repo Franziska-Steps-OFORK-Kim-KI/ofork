@@ -1,0 +1,33 @@
+# --
+# Kernel/Output/HTML/Templates/Standard/AgentDashboardUserOutOfOffice.tt
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: AgentDashboardUserOutOfOffice.tt,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+[% RenderBlockStart("ContentSmallTicketGenericNavBar") %]
+<span class="Pagination">
+    [% Data.SiteNavBar %]
+</span>
+[% RenderBlockEnd("ContentSmallTicketGenericNavBar") %]
+
+<table class="DataTable DashboardUser">
+    <tbody>
+[% RenderBlockStart("ContentSmallUserOutOfOfficeRow") %]
+        <tr>
+            <td>
+                <p class="UserRow" title="[% Data.UserEmail | html %]">
+                    <span>[% Data.UserFullname | html %] [% Translate("until") | html %] [% Data.OutOfOfficeUntil | Localize("Date") %]</span>
+                </p>
+            </td>
+        </tr>
+[% RenderBlockEnd("ContentSmallUserOutOfOfficeRow") %]
+    </tbody>
+</table>

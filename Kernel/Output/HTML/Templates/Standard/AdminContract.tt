@@ -1,0 +1,310 @@
+# --
+# AdminContract.tt - provides HTML form for AdminSLA
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# --
+# $Id: AdminContract.tt,v 1.2 2017/02/02 10:06:16 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+[% RenderBlockStart("Overview") %]
+<div class="MainBox ARIARoleMain LayoutFixedSidebar SidebarFirst">
+
+    [% BreadcrumbPath = [
+            {
+                Name => Translate('Manage Contract'),
+                Link => Env("Action"),
+            },
+        ]
+    %]
+
+    [% SWITCH Data.Action %]
+        [% CASE 'Add' %]
+            [% BreadcrumbPath.push({ Name => Translate("Add Contract"),}) %]
+        [% CASE 'Change' %]
+            [% USE EditTitle = String(Translate("Edit Contract")) %]
+            [% BreadcrumbPath.push({ Name => EditTitle.append( ': ', Data.Name ) }) %]
+    [% END %]
+
+    [% INCLUDE "Breadcrumb.tt" Path = BreadcrumbPath %]
+
+    <div class="">
+
+[% RenderBlockStart("ActionList") %]
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>[% Translate("Actions") | html %]</h2>
+            </div>
+            <div class="Content">
+                <ul class="ActionList">
+
+[% RenderBlockStart("ActionOverview") %]
+                    <li>
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %]" class="CallForAction"><span>[% Translate("Go to overview") | html %]</span></a>
+                    </li>
+[% RenderBlockEnd("ActionOverview") %]
+
+[% RenderBlockStart("ActionAdd") %]
+                    <li>
+                        <a class="CallForAction Plus" href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=ContractEdit">
+                        <span>[% Translate("Contract add") | html %]</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="CallForAction Plus" href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=Download">
+                        <span>[% Translate("List") | html %][% Translate(" ") | html %][% Translate("Download") | html %]</span>
+                        </a>
+                    </li>
+[% RenderBlockEnd("ActionAdd") %]
+
+                </ul>
+            </div>
+        </div>
+[% RenderBlockEnd("ActionList") %]
+
+    </div>
+    <div class="Clear"></div>
+
+    <div class="ContentColumn">
+        <div class="WidgetSimple">
+[% RenderBlockStart("OverviewList") %]
+            <div class="Header">
+                <h2>[% Translate("List") | html %]</h2>
+            </div>
+            <div class="Content">
+
+                <table class="DataTable">
+                    <thead>
+                        <tr>
+                            <th>[% Translate("Contract number") | html %]</th>
+                            <th>[% Translate("Contract direction") | html %]</th>
+                            <th>[% Translate("Contract type") | html %]</th>
+                            <th>[% Translate("Contractual partner") | html %]</th>
+                            <th>[% Translate("Contract start") | html %]</th>
+                            <th>[% Translate("Contract end") | html %]</th>
+                            <th>[% Translate("Price") | html %]</th>
+                            <th>[% Translate("Payment method") | html %]</th>
+                            <th>[% Translate("Valid") | html %]</th>
+                            <th>[% Translate("Licenses or device") | html %]</th>
+                            <th>[% Translate("Total") | html %]</th>
+                            <th>[% Translate("Used") | html %]</th>
+                            <th>[% Translate("Available") | html %]</th>
+                            <th>[% Translate("Edit") | html %]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+[% RenderBlockStart("NoDataFoundMsg") %]
+                        <tr>
+                            <td colspan="6">
+                                [% Translate("No data found.") | html %]
+                            </td>
+                        </tr>
+[% RenderBlockEnd("NoDataFoundMsg") %]
+[% RenderBlockStart("OverviewListRow") %]
+                        <tr>
+                            <td><a class="AsBlock" href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=ContractEdit;ContractID=[% Data.ContractID | uri %]">[% Data.ContractNumber | html %]</a></td>
+                            <td title="[% Translate(Data.ContractDirection) | html %]">[% Translate(Data.ContractDirection) | html %]</td>
+                            <td title="[% Data.ContractType | html %]">[% Data.ContractType | html %]</td>
+                            <td title="[% Data.ContractualPartner | html %]">[% Data.ContractualPartner | html %]</td>
+                            <td title="[% Data.ContractStart | html %]">[% Data.ContractStart | html %]</td>
+                            <td title="[% Data.ContractEnd | html %]">[% Data.ContractEnd | html %]</td>
+                            <td title="[% Data.Price | html %]">[% Data.Price | html %]</td>
+                            <td title="[% Data.PaymentMethod | html %]">[% Translate(Data.PaymentMethod) | html %]</td>
+                            <td>[% Translate(Data.Valid) | html %]</td>
+[% RenderBlockStart("DeviceValue) %]
+                            <td title="[% Data.DeviceName | html %]">[% Translate(Data.DeviceName) | html %]</td>
+                            <td>[% Data.DeviceNumber | html %]</td>
+                            <td>[% Data.HandoverValue | html %]</td>
+                            <td>[% Data.DeviceNumberDiv | html %]</td>
+                            <td> <a href="[% Env("Baselink") %]Action=AdminContractLicenses;Subaction=LicensesEdit;ContractID=[% Data.ContractID | uri %]"><i class="fa fa-cog"></i></a></td>
+[% RenderBlockEnd("DeviceValue") %]
+
+[% RenderBlockStart("DeviceValueNone) %]
+                            <td>[% Translate("-") | html %]</td>
+                            <td>[% Translate("-") | html %]</td>
+                            <td>[% Translate("-") | html %]</td>
+                            <td>[% Translate("-") | html %]</td>
+                            <td><a href="[% Env("Baselink") %]Action=AdminContractLicenses;Subaction=LicensesEdit;ContractID=[% Data.ContractID | uri %]"><i class="fa fa-cog"></i></a></td>
+[% RenderBlockEnd("DeviceValueNone") %]
+
+                        </tr>
+[% RenderBlockEnd("OverviewListRow") %]
+                    </tbody>
+                </table>
+            </div>
+[% RenderBlockEnd("OverviewList") %]
+
+
+[% RenderBlockStart("ContractEdit") %]
+            <div class="Header">
+[% RenderBlockStart("HeaderAdd") %]
+                <h2>[% Translate("New Contract") | html %]</h2>
+[% RenderBlockEnd("HeaderAdd") %]
+[% RenderBlockStart("HeaderEdit") %]
+                <h2>[% Translate("Contract edit") | html %]</h2>
+[% RenderBlockEnd("HeaderEdit") %]
+            </div>
+            <div class="Content">
+
+                <form action="[% Env("CGIHandle") %]" method="post" class="Validate">
+                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                    <input type="hidden" name="Subaction" value="ContractSave"/>
+                    <input type="hidden" name="ContractID" value="[% Data.ContractID | html %]"/>
+                    <fieldset class="TableLike">
+
+                        <div class="Clear"></div>
+
+                        <label for="ContractualPartnerID">[% Translate("Contractual partner") | html %]:</label>
+                        <div class="Field">
+                            [% Data.ContractualPartnerStrg %]
+                        </div>
+                        <div class="Clear"></div>
+
+#                        <label for="OR">[% Translate(" ") | html %]</label>
+                        <div class="Field">[% Translate("or") | html %]
+                        </div>
+                        <div class="Clear"></div>
+
+	                    <label for="FromCustomer">[% Translate("Customer user") | html %]:</label>
+	                    <div class="Field">
+	                        <input id="FromCustomer" type="text" name="FromCustomer" value="[% Data.FromCustomer | html %]" class="CustomerAutoComplete W75pc [% Data.FromInvalid | html %]" autocomplete="off" />
+[% RenderBlockStart("FromServerErrorMsg") %]
+	                            <p style="color:#b8384e">[% Translate("Please specify a customer for the ticket.") | html %]</p>
+[% RenderBlockEnd("FromServerErrorMsg") %]
+	                        <div id="FromCustomerServerError" class="TooltipErrorMessage">
+	                        </div>
+	                    </div>
+	                    <div class="Clear"></div>
+	
+	                    <div class="Field Hidden">
+	                        <div class="CustomerTicketTemplateFromCustomer SpacingTopSmall Hidden">
+	                            <input name="CustomerSelected" title="[% Translate("Select this customer as the main customer.") | html %]" id="CustomerSelected" class="CustomerTicketRadio" type="radio" value=""/>
+	                            <input name="CustomerKey" id="CustomerKey" class="CustomerKey" type="hidden" value=""/>
+	                            <input class="CustomerTicketText Radio" title="[% Translate("Customer user") | html %]" name="CustomerTicketText" id="CustomerTicketText" type="text" value="" readonly="readonly" />
+	                            <a href="#" id="RemoveCustomerTicket" class="RemoveButton CustomerTicketRemove">
+	                                <i class="fa fa-minus-square-o"></i>
+	                                <span class="InvisibleText">[% Translate("Remove Ticket Customer User") | html %]</span>
+	                            </a>
+	                        </div>
+	                    </div>
+	                    <div class="Clear"></div>
+
+                        [% INCLUDE "CustomerCompany/TicketCustomerIDSelection.tt" Required = 0 Readonly = Config("Ticket::Frontend::AgentTicketPhone::CustomerIDReadOnly") %]
+
+                        <label class="Mandatory" for="ContractDirection"><span class="Marker">*</span>[% Translate("Contract direction") | html %]:</label>
+                        <div class="Field">
+                            [% Data.ContractDirectionStrg %]
+                            <div id="ContractDirectionError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                            <div id="ContractDirectionServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label class="Mandatory" for="ContractTypeID"><span class="Marker">*</span>[% Translate("Contract type") | html %]:</label>
+                        <div class="Field">
+                            [% Data.ContractTypeStrg %]
+                            <div id="ContractTypeIDError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                            <div id="ContractTypeIDServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label class="Mandatory" for="ContractNumber"><span class="Marker">*</span>[% Translate("Contract number") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="ContractNumber" id="ContractNumber" value="[% Data.ContractNumber | html %]" class="W50pc" maxlength="200"/>
+                            <div id="ContractNumberError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                            <div id="ContractNumberServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                        </div>
+                        <div class="Clear"></div>
+
+	                    <label for="RichText">[% Translate("Description") | html %]:</label>
+	                    <div class="RichTextField">
+	                        <textarea id="RichText" class="RichText" rows="20" cols="80" name="Description">[% Data.Description | html %]</textarea>
+	                    </div>
+	                    <div class="Clear"></div>
+
+	                    <label>[% Translate("Start") | html %]:</label>
+	                    <div class="Field">
+	                        [% Data.FromDateString %]
+	                    </div>
+	                    <div class="Clear"></div>
+
+	                    <label>[% Translate("End") | html %]:</label>
+	                    <div class="Field">
+	                        [% Data.ToDateString %]
+	                    </div>
+	                    <div class="Clear"></div>
+
+[% RenderBlockStart("TicketService") %]
+	                    <label>[% Translate("Service") | html %]:</label>
+	                    <div class="Field">
+	                        [% Data.ServiceStrg %]
+	                    </div>
+	                    <div class="Clear"></div>
+[% RenderBlockEnd("TicketService") %]
+
+[% RenderBlockStart("TicketSLA") %]
+	                    <label>[% Translate("SLA") | html %]:</label>
+	                    <div class="Field">
+	                        [% Data.SLAStrg %]
+	                    </div>
+	                    <div class="Clear"></div>
+[% RenderBlockEnd("TicketSLA") %]
+
+                        <label for="Price">[% Translate("Price") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="Price" id="Price" value="[% Data.Price | html %]" class="W5pc" maxlength="20"/>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="PaymentMethod">[% Translate("Payment method") | html %]:</label>
+                        <div class="Field">
+	                        [% Data.PaymentMethodStrg %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="NoticePeriod">[% Translate("Notice period") | html %]: ([% Translate("In days") | html %])</label>
+                        <div class="Field">
+                            <input type="text" name="NoticePeriod" id="NoticePeriod" value="[% Data.NoticePeriod | html %]" class="W5pc" maxlength="20"/>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="Memory">[% Translate("Memory") | html %]: ([% Translate("Before the notice period in days") | html %])</label>
+                        <div class="Field">
+                            <input type="text" name="Memory" id="NoticePeriod" value="[% Data.Memory | html %]" class="W5pc" maxlength="20"/>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="TicketCreate">[% Translate("Ticket create") | html %]:</label>
+                        <div class="Field">
+	                        [% Data.TicketCreateStrg %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="QueueID">[% Translate("Queue") | html %]:</label>
+                        <div class="Field">
+	                        [% Data.QueueIDStrg %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="ValidID">[% Translate("Valid") | html %]:</label>
+                        <div class="Field">
+                            [% Data.ValidOptionStrg %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <div class="Field SpacingTop">
+                            <button class="Primary" type="submit" value="[% Translate("Submit") | html %]">[% Translate("Submit") | html %]</button>
+                            [% Translate("or") | html %]
+                            <a href="[% Env("Baselink") %]Action=[% Env("Action") %]">[% Translate("Cancel") | html %]</a>
+                        </div>
+                        <div class="Clear"></div>
+                    </fieldset>
+                </form>
+            </div>
+[% RenderBlockEnd("ContractEdit") %]
+
+        </div>
+    </div>
+</div>
+[% RenderBlockEnd("Overview") %]

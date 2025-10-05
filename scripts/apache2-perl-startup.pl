@@ -1,0 +1,76 @@
+#!/usr/bin/perl
+# --
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU AFFERO General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+# or see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+use strict;
+use warnings;
+
+# Make sure we are in a sane environment.
+$ENV{MOD_PERL} =~ /mod_perl/ || die "MOD_PERL not used!";
+
+BEGIN {
+
+    $ModPerl::Util::DEFAULT_UNLOAD_METHOD = 'unload_package_xs';
+
+    if ( !-e $0 || -d $0 ) {
+        $0 = '/opt/ofork/bin/cgi-bin/index.pl';
+    }
+}
+
+use Apache2::RequestRec ();
+use ModPerl::Util       ();
+
+use lib "/opt/ofork/";
+use lib "/opt/ofork/Kernel/cpan-lib";
+use lib "/opt/ofork/Custom";
+
+# Preload frequently used modules to speed up client spawning.
+use CGI ();
+CGI->compile(':cgi');
+use CGI::Carp ();
+
+use Apache::DBI ();
+
+# enable this if you use mysql
+#use DBD::mysql ();
+#use Kernel::System::DB::mysql;
+
+# enable this if you use postgresql
+#use DBD::Pg ();
+#use Kernel::System::DB::postgresql;
+
+# enable this if you use oracle
+#use DBD::Oracle ();
+#use Kernel::System::DB::oracle;
+
+# Preload Net::DNS if it is installed. It is important to preload Net::DNS because otherwise loading
+#   could take more than 30 seconds.
+eval { require Net::DNS };
+
+# Preload DateTime, an expensive external dependency.
+use DateTime ();
+
+# Preload dependencies that are always used.
+use Template ();
+use Encode qw(:all);
+
+1;

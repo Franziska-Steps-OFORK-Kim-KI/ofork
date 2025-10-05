@@ -1,0 +1,107 @@
+# --
+# Kernel/Output/JavaScript/Templates/Standard/Agent/AppointmentCalendar/AppointmentTooltip.html.tmpl
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: AppointmentTooltip.html.tmpl,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<div class="AppointmentTooltip Hidden">
+    <div class="Icons">
+    {% if CalEvent.allDay %}
+        <i class="fa fa-sun-o" />
+    {% endif %}
+    {% if CalEvent.recurring %}
+        <i class="fa fa-repeat" />
+    {% endif %}
+    {% if CalEvent.parentId %}
+        <i class="fa fa-link" />
+    {% endif %}
+    {% if CalEvent.notification %}
+        <i class="fa fa-bell" />
+    {% endif %}
+    {% if CalEvent.ticketAppointmentType %}
+        <i class="fa fa-char-{{ TicketAppointmentConfig[CalEvent.ticketAppointmentType].Mark }}" />
+    {% endif %}
+    </div>
+    <fieldset>
+        <legend><span>{{ 'Basic information' | Translate }}</span></legend>
+        <label>{{ 'Title' | Translate }}:</label>
+        <p class="Value">{{ CalEvent.title }}</p>
+        <div class="Clear"></div>
+    {% if CalEvent.description %}
+        <label>{{ 'Description' | Translate }}:</label>
+        <p class="Value">{{ CalEvent.description }}</p>
+        <div class="Clear"></div>
+    {% endif %}
+    {% if CalEvent.location %}
+        <label>{{ 'Location' | Translate }}:</label>
+        <p class="Value">{{ CalEvent.location }}</p>
+        <div class="Clear"></div>
+    {% endif %}
+        <label>{{ 'Calendar' | Translate }}:</label>
+        <p class="Value">
+            <span class="Flag Small">
+                <span class="CalendarColor" style="background-color: {{ CalEvent.calendarColor }}"></span>
+            </span>
+            {{ CalEvent.calendarName }}
+        </p>
+        <div class="Clear"></div>
+    </fieldset>
+{% if TooltipTemplateResource and CalEvent.teamNames %}
+    <fieldset>
+        <legend><span>{{ 'Resource' | Translate }}</span></legend>
+        <label>{{ 'Team' | Translate }}:</label>
+        <p class="Value"> {{ CalEvent.teamNames | escape | replace('\\n', '<br>') | safe }}</p>
+        <div class="Clear"></div>
+    {% if CalEvent.resourceNames %}
+        <label>{{ 'Agent' | Translate }}:</label>
+        <p class="Value">{{ CalEvent.resourceNames | escape | replace('\\n', '<br>') | safe }}</p>
+        <div class="Clear"></div>
+    {% endif %}
+    </fieldset>
+{% endif %}
+    <fieldset>
+        <legend><span>{{ 'Date/Time' | Translate}}</span></legend>
+        <label>{{ 'Start date' | Translate }}:</label>
+        <p class="Value">{{ CalEvent.startDate }}</p>
+        <div class="Clear"></div>
+        <label>{{ 'End date' | Translate }}:</label>
+        <p class="Value">{{ CalEvent.endDate }}</p>
+        <div class="Clear"></div>
+    {% if CalEvent.allDay %}
+        <label>{{ 'All-day' | Translate }}:</label>
+        <p class="Value">{{ 'Yes' | Translate }}</p>
+        <div class="Clear"></div>
+    {% endif %}
+    {% if CalEvent.recurring %}
+        <label>{{ 'Repeat' | Translate }}:</label>
+        <p class="Value">{{ 'Yes' | Translate }}</p>
+        <div class="Clear"></div>
+    {% endif %}
+    </fieldset>
+{% if CalEvent.pluginData %}
+    <fieldset>
+        <legend><span>{{ 'Link' | Translate }}</span></legend>
+    {% for PluginKey, PluginValue in PluginList %}
+        <label>{{ PluginValue.PluginName }}:</label>
+        <p class="Value">{{ CalEvent.pluginData[PluginKey] | escape | replace('\\n', '<br>') | safe }}</p>
+        <div class="Clear"></div>
+    {% endfor %}
+    </fieldset>
+{% endif %}
+{% if CalEvent.notificationDate %}
+    <fieldset>
+        <legend><span>{{ 'Notification' | Translate }}</span></legend>
+        <label>{{ 'Notification' | Translate }}:</label>
+        <p class="Value">{{ CalEvent.notificationDate }}</p>
+        <div class="Clear"></div>
+    </fieldset>
+{% endif %}
+</div>

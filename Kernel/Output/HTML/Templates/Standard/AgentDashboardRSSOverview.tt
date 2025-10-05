@@ -1,0 +1,29 @@
+# --
+# Kernel/Output/HTML/Templates/Standard/AgentDashboardRSSOverview.tt
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: AgentDashboardRSSOverview.tt,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+<table class="DataTable FixedLayout">
+    <tbody>
+[% RenderBlockStart("ContentSmallRSSOverviewRow") %]
+        <tr>
+            <td>
+[% RenderBlockStart("ContentSmallRSS") %]
+                <a href="[% Data.Link %]" class="AsBlock" title="[% Data.Title | html %]" target="_blank">[% Data.Title | html %]</a>
+[% RenderBlockEnd("ContentSmallRSS") %]
+[% RenderBlockStart("ContentSmallRSSTimeStamp") %]
+                <a href="[% Data.Link %]" class="AsBlock" title="[% Data.Title | html %] ([% Translate("Posted %s ago.", Data.Ago) | html %])" target="_blank">[% Data.Title | html %]</a>
+[% RenderBlockEnd("ContentSmallRSSTimeStamp") %]
+            </td>
+        </tr>
+[% RenderBlockEnd("ContentSmallRSSOverviewRow") %]
+    </tbody>
+</table>

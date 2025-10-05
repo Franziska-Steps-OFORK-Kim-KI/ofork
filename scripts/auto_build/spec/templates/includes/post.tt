@@ -1,0 +1,26 @@
+export OFORKUSER=ofork
+if test -e /opt/ofork/Kernel/Config/Files/ZZZAAuto.pm; then
+    su $OFORKUSER -s /bin/bash -c "/opt/ofork/bin/ofork.Console.pl Maint::Config::Rebuild";
+    su $OFORKUSER -s /bin/bash -c "/opt/ofork/bin/ofork.Console.pl Maint::Cache::Delete";
+fi
+
+[% '#' %] note
+HOST=`hostname -f`
+echo ""
+echo "Next steps: "
+echo ""
+echo "[restart web server]"
+echo " systemctl restart [% WebServiceName || 'apache2.service' %]"
+echo ""
+echo "[install the OFORK database]"
+echo " Make sure your database server is running."
+echo " Use a web browser and open this link:"
+echo " http://$HOST/ofork/installer.pl"
+echo ""
+echo "[start OFORK daemon and corresponding watchdog cronjob]"
+echo " /opt/ofork/bin/ofork.Daemon.pl start"
+echo " /opt/ofork/bin/Cron.sh start"
+echo ""
+echo "((enjoy))"
+echo " Your OFORK Team"
+echo ""

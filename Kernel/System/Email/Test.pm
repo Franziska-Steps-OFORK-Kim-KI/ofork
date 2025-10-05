@@ -1,0 +1,118 @@
+# --
+# Kernel/System/Email/Test.pm
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: Test.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+package Kernel::System::Email::Test;
+
+use strict;
+use warnings;
+
+our @ObjectDependencies = (
+    'Kernel::System::Cache',
+    'Kernel::System::CommunicationLog',
+);
+
+sub new {
+    my ( $Type, %Param ) = @_;
+
+    my $Self = {%Param};
+    bless( $Self, $Type );
+
+    $Self->{CacheKey}  = 'Emails';
+    $Self->{CacheType} = 'EmailTest';
+
+    $Self->{Type} = 'Test';
+
+    return $Self;
+}
+
+sub Send {
+    my ( $Self, %Param ) = @_;
+
+    my $Class = ref $Self;
+
+    # Get and delete the communication-log object from the Params because all the
+    # other params will be cached (necessary for the unit tests).
+    my $CommunicationLogObject = delete $Param{CommunicationLogObject};
+
+    $CommunicationLogObject->ObjectLog(
+        ObjectLogType => 'Message',
+        Priority      => 'Debug',
+        Key           => $Class,
+        Value         => 'Received message for emulated sending without real external connections.',
+    );
+
+    # get already stored emails from cache
+    my $Emails = $Kernel::OM->Get('Kernel::System::Cache')->Get(
+        Key  => $Self->{CacheKey},
+        Type => $Self->{CacheType},
+    ) // [];
+
+    # recipient
+    my $ToString = join ', ', @{ $Param{ToArray} };
+
+    $CommunicationLogObject->ObjectLogStart(
+        ObjectLogType => 'Connection',
+    );
+
+    $CommunicationLogObject->ObjectLog(
+        ObjectLogType => 'Connection',
+        Priority      => 'Info',
+        Key           => $Class,
+        Value         => sprintf( "Sending email from '%s' to '%s'.", $Param{From} // '', $ToString ),
+    );
+
+    push @{$Emails}, \%Param;
+
+    $Kernel::OM->Get('Kernel::System::Cache')->Set(
+        Key   => $Self->{CacheKey},
+        Type  => $Self->{CacheType},
+        Value => $Emails,
+        TTL   => 60 * 60 * 24,
+    );
+
+    $CommunicationLogObject->ObjectLog(
+        ObjectLogType => 'Connection',
+        Priority      => 'Info',
+        Key           => $Class,
+        Value         => "Email successfully sent!",
+    );
+
+    $CommunicationLogObject->ObjectLogStop(
+        ObjectLogType => 'Connection',
+        Status        => 'Successful',
+    );
+
+    return {
+        Success => 1,
+    };
+}
+
+sub EmailsGet {
+    my ( $Self, %Param ) = @_;
+
+    return $Kernel::OM->Get('Kernel::System::Cache')->Get(
+        Key  => $Self->{CacheKey},
+        Type => $Self->{CacheType},
+    ) // [];
+}
+
+sub CleanUp {
+    my ( $Self, %Param ) = @_;
+
+    return $Kernel::OM->Get('Kernel::System::Cache')->CleanUp(
+        Type => $Self->{CacheType},
+    );
+}
+
+1;

@@ -1,0 +1,59 @@
+# --
+# Kernel/System/SupportDataCollector/Plugin/OFORK/Ticket/OpenTickets.pm
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: OpenTickets.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+package Kernel::System::SupportDataCollector::Plugin::OFORK::Ticket::OpenTickets;
+
+use strict;
+use warnings;
+
+use parent qw(Kernel::System::SupportDataCollector::PluginBase);
+
+use Kernel::Language qw(Translatable);
+
+our @ObjectDependencies = (
+    'Kernel::System::Ticket',
+);
+
+sub GetDisplayPath {
+    return Translatable('OFORK');
+}
+
+sub Run {
+    my $Self = shift;
+
+    my $OpenTickets = $Kernel::OM->Get('Kernel::System::Ticket')->TicketSearch(
+        Result     => 'COUNT',
+        StateType  => 'Open',
+        UserID     => 1,
+        Permission => 'ro',
+    ) || 0;
+
+    if ( $OpenTickets > 8000 ) {
+        $Self->AddResultWarning(
+            Label   => Translatable('Open Tickets'),
+            Value   => $OpenTickets,
+            Message => Translatable('You should not have more than 8,000 open tickets in your system.'),
+        );
+    }
+    else {
+        $Self->AddResultOk(
+            Label => Translatable('Open Tickets'),
+            Value => $OpenTickets,
+        );
+    }
+
+    return $Self->GetResults();
+}
+
+1;

@@ -1,0 +1,137 @@
+/**
+ * This software is part of the OFORK project, https://ofork.de/
+ *  Modified version of the work: Copyright (C) 2010-2024 OFORK, https://ofork.de/
+ *  based on the original work of:
+ *  Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+ *  --
+ * @project OTRS (http://www.otrs.org) <http://www.otrs.org> - Agent Frontend
+ * @copyright OTRS AG
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/**
+ * @package     Skin "Default"
+ * @section     Application
+ * @subsection  Admin
+ */
+
+@media screen,projection,tv,handheld {
+
+/**
+ * @subsubsection     General
+ */
+
+.Keyword {
+    display: inline-block;
+    background: #ddd;
+    font-size: 10px;
+    color: #666;
+    text-transform: uppercase;
+    padding: 0px 5px 0px 6px;
+    line-height: 16px;
+    text-shadow: 1px 1px 1px #fff;
+    position: relative;
+    margin-right: 15px;
+}
+
+.Keyword:after {
+    right: 100%;
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: rgba(221, 221, 221, 0);
+    border-right-color: #ddd;
+    border-width: 8px;
+    margin-top: -8px;
+}
+
+.Keyword:before {
+    content: '°';
+    font-size: 15px;
+    color: #aaa;
+    position: absolute;
+    left: -2px;
+    top: 2px;
+    z-index: 999;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #fff;
+}
+
+.ItemListGrid > li.IsFavourite > a {
+    box-shadow: 0px 0px 3px #d9f8ea;
+    border-color: #656566;
+}
+
+.ItemListGrid > li > a {
+    overflow: hidden;
+}
+
+.ItemListGrid > li > a > .Favourite {
+    right: -100px;
+    transition: all ease 0.5s;
+    color: #ccc;
+    font-size: 20px;
+    position: absolute;
+    top: 10px;
+}
+
+.ItemListGrid > li.IsFavourite > a > .Favourite {
+    display: none !important;
+}
+
+.ItemListGrid > li > a > .Favourite > .fa {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}
+
+.ItemListGrid > li > a > .Favourite .fa-star {
+    opacity: 0;
+}
+
+.ItemListGrid > li > a:hover > .Favourite,
+.ItemListGrid > li > a > .Favourite.Clicked {
+    right: 10px;
+}
+
+.ItemListGrid > li > a:hover > .Favourite .fa {
+    transition: all ease 0.2s;
+}
+
+.ItemListGrid > li > a:hover > .Favourite:hover .fa {
+    color: #999;
+}
+
+.ItemListGrid > li > a:hover > .Favourite:hover .fa-star-o {
+    opacity: 0;
+}
+
+.ItemListGrid > li > a:hover > .Favourite:hover .fa-star {
+    opacity: 1;
+}
+
+.ItemListGrid > li > a > .Favourite .fa-check {
+    color: green !important;
+}
+
+.ToggleView.Grid .fa:last-child {
+    display: none !important;
+}
+
+.ToggleView.List .fa:first-child {
+    display: none !important;
+}
+
+.FavouriteList p {
+    margin: 0px 5px;
+}
+
+.FavouriteList table {
+    margin-bottom: 7px;
+}
+
+} /* end @media print*/

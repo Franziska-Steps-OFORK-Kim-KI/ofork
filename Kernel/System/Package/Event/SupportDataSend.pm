@@ -1,0 +1,114 @@
+# --
+# Kernel/System/Package/Event/SupportDataSend.pm
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: SupportDataSend.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+package Kernel::System::Package::Event::SupportDataSend;
+
+use strict;
+use warnings;
+
+use Kernel::System::VariableCheck qw(:all);
+
+our @ObjectDependencies = (
+    'Kernel::System::Cache',
+    'Kernel::System::DateTime',
+    'Kernel::System::Log',
+    'Kernel::System::SystemData',
+);
+
+sub new {
+    my ( $Type, %Param ) = @_;
+
+    # allocate new hash for object
+    my $Self = {};
+    bless( $Self, $Type );
+
+    return $Self;
+}
+
+sub Run {
+    my ( $Self, %Param ) = @_;
+
+    # check needed stuff
+    for (qw(Data Event Config)) {
+        if ( !$Param{$_} ) {
+            $Kernel::OM->Get('Kernel::System::Log')->Log(
+                Priority => 'error',
+                Message  => "Need $_!"
+            );
+            return;
+        }
+    }
+
+    # get system data object
+    my $SystemDataObject = $Kernel::OM->Get('Kernel::System::SystemData');
+
+    my $RegistrationState = $SystemDataObject->SystemDataGet(
+        Key => 'Registration::State',
+    ) || '';
+
+    # do nothing if system is not register
+    return 1 if $RegistrationState ne 'registered';
+
+    my $SupportDataSending = $SystemDataObject->SystemDataGet(
+        Key => 'Registration::SupportDataSending',
+    ) || 'No';
+
+    # return if Data Sending is not activated
+    return 1 if $SupportDataSending ne 'Yes';
+
+    # delete cache
+    $Kernel::OM->Get('Kernel::System::Cache')->Delete(
+        Type => 'SupportDataCollector',
+        Key  => 'DataCollect',
+    );
+
+    # get time object
+    my $NewUpdateDateTimeObject = $Kernel::OM->Create('Kernel::System::DateTime');
+    $NewUpdateDateTimeObject->Add( Hours => 1 );
+
+    # get current update time
+    my $CurrentUpdateTime = $SystemDataObject->SystemDataGet(
+        Key => 'Registration::NextUpdateTime',
+    );
+
+    # if there is no update time set it for 1 hour
+    if ( !defined $CurrentUpdateTime ) {
+        $SystemDataObject->SystemDataAdd(
+            Key    => 'Registration::NextUpdateTime',
+            Value  => $NewUpdateDateTimeObject->ToString(),
+            UserID => 1,
+        );
+        return 1;
+    }
+
+    my $CurrentUpdateDateTimeObject = $Kernel::OM->Create(
+        'Kernel::System::DateTime',
+        ObjectParams => {
+            String => $CurrentUpdateTime,
+            }
+    );
+
+    # return success if the next update is schedule in or less than 1 hour
+    return 1 if $CurrentUpdateDateTimeObject <= $NewUpdateDateTimeObject;
+
+    # otherwise update next update for 1 hour
+    $SystemDataObject->SystemDataUpdate(
+        Key    => 'Registration::NextUpdateTime',
+        Value  => $NewUpdateDateTimeObject->ToString(),
+        UserID => 1,
+    );
+    return 1;
+}
+
+1;

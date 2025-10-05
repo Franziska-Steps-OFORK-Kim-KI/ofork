@@ -1,0 +1,96 @@
+# --
+# Kernel/System/Console/Command/Admin/Package/ReinstallAll.pm
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: ReinstallAll.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+package Kernel::System::Console::Command::Admin::Package::ReinstallAll;
+
+use strict;
+use warnings;
+
+use parent qw(Kernel::System::Console::BaseCommand);
+
+our @ObjectDependencies = (
+    'Kernel::System::Package',
+);
+
+sub Configure {
+    my ( $Self, %Param ) = @_;
+
+    $Self->Description('Reinstall all OFORK packages that are not correctly deployed.');
+    $Self->AddOption(
+        Name        => 'force',
+        Description => 'Force package reinstallation even if validation fails.',
+        Required    => 0,
+        HasValue    => 0,
+    );
+
+    $Self->AddOption(
+        Name        => 'hide-deployment-info',
+        Description => 'Hide package and files status (package deployment info).',
+        Required    => 0,
+        HasValue    => 0,
+    );
+
+    return;
+}
+
+sub Run {
+    my ( $Self, %Param ) = @_;
+
+    my $HideDeploymentInfoOption = $Self->GetOption('hide-deployment-info') || 0;
+
+    $Self->Print("<yellow>Reinstalling all OFORK packages that are not correctly deployed...</yellow>\n");
+
+    my @ReinstalledPackages;
+
+    # loop all locally installed packages
+    for my $Package ( $Kernel::OM->Get('Kernel::System::Package')->RepositoryList() ) {
+
+        # do a deploy check to see if reinstallation is needed
+        my $CorrectlyDeployed = $Kernel::OM->Get('Kernel::System::Package')->DeployCheck(
+            Name    => $Package->{Name}->{Content},
+            Version => $Package->{Version}->{Content},
+            Log     => $HideDeploymentInfoOption ? 0 : 1,
+        );
+
+        if ( !$CorrectlyDeployed ) {
+
+            push @ReinstalledPackages, $Package->{Name}->{Content};
+
+            my $FileString = $Kernel::OM->Get('Kernel::System::Package')->RepositoryGet(
+                Name    => $Package->{Name}->{Content},
+                Version => $Package->{Version}->{Content},
+            );
+
+            my $Success = $Kernel::OM->Get('Kernel::System::Package')->PackageReinstall(
+                String => $FileString,
+                Force  => $Self->GetOption('force'),
+            );
+
+            if ( !$Success ) {
+                $Self->PrintError("Package $Package->{Name}->{Content} could not be reinstalled.\n");
+                return $Self->ExitCodeError();
+            }
+        }
+    }
+
+    if (@ReinstalledPackages) {
+        $Self->Print( "<green>" . scalar(@ReinstalledPackages) . " package(s) reinstalled.</green>\n" );
+    }
+    else {
+        $Self->Print("<green>No packages needed reinstallation.</green>\n");
+    }
+    return $Self->ExitCodeOk();
+}
+
+1;

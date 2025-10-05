@@ -1,0 +1,53 @@
+// --
+// Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+// Copyright (C) 2010-2024 OFORK, https://o-fork.de
+// --
+// This software comes with ABSOLUTELY NO WARRANTY. For details, see
+// the enclosed file COPYING for license information (AGPL). If you
+// did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+// --
+
+"use strict";
+
+var Core = Core || {};
+Core.Agent = Core.Agent || {};
+Core.Agent.Admin = Core.Agent.Admin || {};
+
+/**
+ * @namespace Core.Agent.Admin.CustomerGroup
+ * @memberof Core.Agent.Admin
+ * @author OTRS AG
+ * @description
+ *      This namespace contains the special module function for CustomerGroup selection.
+ */
+ Core.Agent.Admin.CustomerGroup = (function (TargetNS) {
+
+    /*
+    * @name Init
+    * @memberof Core.Agent.Admin.CustomerGroup
+    * @function
+    * @description
+    *      This function initializes filter and "SelectAll" actions.
+    */
+    TargetNS.Init = function () {
+        var RelationItems = Core.Config.Get('RelationItems');
+
+        // initialize "SelectAll" checkbox and bind click event on "SelectAll" for each relation item
+        if (RelationItems) {
+            $.each(RelationItems, function (index) {
+                Core.Form.InitSelectAllCheckboxes($('table td input[type="checkbox"][name="' + Core.App.EscapeSelector(RelationItems[index]) + '"]'), $('#SelectAll' + Core.App.EscapeSelector(RelationItems[index])));
+
+                $('input[type="checkbox"][name="' + Core.App.EscapeSelector(RelationItems[index]) + '"]').click(function () {
+                    Core.Form.SelectAllCheckboxes($(this), $('#SelectAll' + Core.App.EscapeSelector(RelationItems[index])));
+                });
+            });
+        }
+
+        // initialize table filter
+        Core.UI.Table.InitTableFilter($("#FilterGroups"), $("#Group"));
+    };
+
+    Core.Init.RegisterNamespace(TargetNS, 'APP_MODULE');
+
+    return TargetNS;
+}(Core.Agent.Admin.CustomerGroup || {}));

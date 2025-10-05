@@ -1,0 +1,229 @@
+# --
+# AdminContractLicenses.tt - provides HTML form for AdminSLA
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# --
+# $Id: AdminContractLicenses.tt,v 1.2 2017/02/02 10:06:16 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+[% RenderBlockStart("Overview") %]
+<div class="MainBox ARIARoleMain LayoutFixedSidebar SidebarFirst">
+
+    [% BreadcrumbPath = [
+            {
+                Name => Translate('Back to overview'),
+                Link => 'AdminContract',
+            },
+        ]
+    %]
+
+    [% SWITCH Data.Action %]
+        [% CASE 'Add' %]
+            [% BreadcrumbPath.push({ Name => Translate("Add Contract"),}) %]
+        [% CASE 'Change' %]
+            [% USE EditTitle = String(Translate("Edit Contract")) %]
+            [% BreadcrumbPath.push({ Name => EditTitle.append( ': ', Data.Name ) }) %]
+    [% END %]
+
+    [% INCLUDE "Breadcrumb.tt" Path = BreadcrumbPath %]
+
+    <div class="SidebarColumn" style="width:450px;">
+
+[% RenderBlockStart("ActionList") %]
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>[% Translate("Contract") | html %]</h2>
+            </div>
+            <div class="Content">
+
+                <fieldset class="TableLike">
+
+                    <div class="Clear"></div>
+
+                    <label for="ContractualPartnerID" style="width:120px;">[% Translate("Contract number") | html %]:</label>
+                    <div class="Field">
+                        [% Data.ContractNumber %]
+                    </div>
+                    <div class="Clear"></div>
+
+                    <label for="ContractualPartnerID" style="width:120px;">[% Translate("Contract type") | html %]:</label>
+                    <div class="Field">
+                        [% Data.ContractType %]
+                    </div>
+                    <div class="Clear"></div>
+
+                    <label for="ContractualPartnerID" style="width:120px;">[% Translate("Contractual partner") | html %]:</label>
+                    <div class="Field">
+                        [% Data.ContractualPartner %]
+                    </div>
+                    <div class="Clear"></div>
+
+                    <label for="ContractualPartnerID" style="width:120px;">[% Translate("Contract start") | html %]:</label>
+                    <div class="Field">
+                        [% Data.ContractStart %]
+                    </div>
+                    <div class="Clear"></div>
+
+                    <label for="ContractualPartnerID" style="width:120px;">[% Translate("Contract end") | html %]:</label>
+                    <div class="Field">
+                        [% Data.ContractEnd %]
+                    </div>
+                    <div class="Clear"></div>
+
+                </fieldset>
+
+            </div>
+        </div>
+[% RenderBlockEnd("ActionList") %]
+
+    </div>
+
+    <div class="ContentColumn">
+        <div class="WidgetSimple">
+
+[% RenderBlockStart("ContractEdit") %]
+            <div class="Header">
+[% RenderBlockStart("HeaderEdit") %]
+                <h2>[% Translate("Number of licenses or devices") | html %]</h2>
+[% RenderBlockEnd("HeaderEdit") %]
+            </div>
+            <div class="Content">
+
+                <form action="[% Env("CGIHandle") %]" method="post" class="Validate">
+                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                    <input type="hidden" name="Subaction" value="ContractDeviceSave"/>
+                    <input type="hidden" name="ContractID" value="[% Data.ContractID | html %]"/>
+                    <input type="hidden" name="DeviceID" value="[% Data.DeviceID | html %]"/>
+                    <fieldset class="TableLike">
+
+                        <div class="Clear"></div>
+
+                        <label for="Price">[% Translate("License or device name") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="DeviceName" id="DeviceName" value="[% Data.DeviceName | html %]" class="W50pc" maxlength="200"/>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="Price">[% Translate("Number of licenses or devices") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="DeviceNumber" id="DeviceNumber" value="[% Data.DeviceNumber | html %]" class="W5pc" maxlength="20"/>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="TicketCreateBy">[% Translate("Create ticket if less than") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="TicketCreateBy" id="TicketCreateBy" value="[% Data.TicketCreateBy | html %]" class="W5pc" maxlength="20"/>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="QueueID">[% Translate("Queue") | html %]:</label>
+                        <div class="Field">
+	                        [% Data.QueueIDStrg %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <div class="Field SpacingTop">
+                            <button class="Primary" type="submit" value="[% Translate("Submit") | html %]">[% Translate("Submit") | html %]</button>
+                            [% Translate("or") | html %]
+                            <a href="[% Env("Baselink") %]Action=[% Env("Action") %]">[% Translate("Cancel") | html %]</a>
+                        </div>
+                        <div class="Clear"></div>
+                    </fieldset>
+                </form>
+            </div>
+[% RenderBlockEnd("ContractEdit") %]
+
+        </div>
+    </div>
+
+    <div class="SidebarColumn" style="width:450px;">
+        <div class="WidgetSimple">
+
+[% RenderBlockStart("LicenseEdit") %]
+            <div class="Header">
+                <h2>[% Translate("Enter handover") | html %]</h2>
+            </div>
+            <div class="Content">
+
+                <form action="[% Env("CGIHandle") %]" method="post" class="Validate">
+                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                    <input type="hidden" name="Subaction" value="HandoverAdd"/>
+                    <input type="hidden" name="ContractID" value="[% Data.ContractID | html %]"/>
+                    <input type="hidden" name="DeviceID" value="[% Data.DeviceID | html %]"/>
+                    <fieldset class="TableLike">
+
+                        <div class="Clear"></div>
+
+                        <label for="Handover" style="width:120px;">[% Translate("Handover to") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="Handover" id="Handover" value="[% Data.Handover | html %]" class="W50pc" maxlength="200"/>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="HandoverDate" style="width:120px;">[% Translate("Date") | html %]:</label>
+                        <div class="Field">
+	                        [% Data.HandoverDateString %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <div class="Field SpacingTop">
+                            <button class="Primary" type="submit" value="[% Translate("Submit") | html %]">[% Translate("Submit") | html %]</button>
+                            [% Translate("or") | html %]
+                            <a href="[% Env("Baselink") %]Action=[% Env("Action") %]">[% Translate("Cancel") | html %]</a>
+                        </div>
+                        <div class="Clear"></div>
+                    </fieldset>
+                </form>
+            </div>
+[% RenderBlockEnd("LicenseEdit") %]
+
+        </div>
+    </div>
+
+
+    <div class="ContentColumn">
+        <div class="WidgetSimple">
+
+[% RenderBlockStart("LicenseOverview") %]
+            <div class="Header">
+                <h2>[% Data.HandoverValue | html %] [% Translate("from") | html %] [% Data.DeviceNumber | html %] [% Translate("consumed") | html %] | [% Data.DeviceNumberDiv | html %] [% Translate("available") | html %]</h2>
+            </div>
+            <div class="Content">
+
+                <table class="DataTable">
+                    <thead>
+                        <tr>
+                            <th>[% Translate("Handover to") | html %]</th>
+                            <th>[% Translate("Date") | html %]</th>
+                            <th>[% Translate("Created") | html %]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+[% RenderBlockStart("NoDataFoundMsg") %]
+                        <tr>
+                            <td colspan="6">
+                                [% Translate("No data found.") | html %]
+                            </td>
+                        </tr>
+[% RenderBlockEnd("NoDataFoundMsg") %]
+[% RenderBlockStart("OverviewListRow") %]
+                        <tr>
+                            <td title="[% Data.Handover | html %]">[% Data.Handover | html %]</td>
+                            <td title="[% Data.HandoverDate | html %]">[% Data.HandoverDate | html %]</td>
+                            <td title="[% Data.CreateTime | html %]">[% Data.CreateTime | html %]</td>
+                        </tr>
+[% RenderBlockEnd("OverviewListRow") %]
+                    </tbody>
+                </table>
+
+            </div>
+[% RenderBlockEnd("LicenseOverview") %]
+
+        </div>
+    </div>
+
+</div>
+[% RenderBlockEnd("Overview") %]

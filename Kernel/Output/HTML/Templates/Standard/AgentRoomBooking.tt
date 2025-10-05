@@ -1,0 +1,270 @@
+# --
+# Kernel/Output/HTML/Templates/Standard/AgentRoomBooking.tt
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# --
+# $Id: AgentRoomBooking.tt,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+
+<h1 style="margin-left: 10px; margin-top: 20px;">[% Translate("Room booking management") | html %]</h1>
+
+<div class="OverviewControlAgentBookingOFORK" id="OverviewControl">
+
+[% RenderBlockStart("Filled") %]
+    <div class="ControlRow" style="margin-top:10px;background-color:#ffffff;">
+        <ul class="Tabs">
+[% RenderBlockStart("FilterHeader") %]
+            <li class="[% Data.ClassA | html %]" style="margin-left:5px;margin-right:5px;border-radius:3px;">
+                <a href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=[% Env("Subaction") %];Filter=[% Data.Filter | uri %];SortBy=[% Data.SortBy | uri %];OrderBy=[% Data.OrderBy | uri %];CustomerUserID=[% Data.CustomerUserID | uri %]">
+                    [% Translate("Room bookings") | html %] [% Translate(Data.Name) | html %] ([% Data.Count | html %])
+                </a>
+            </li>
+[% RenderBlockEnd("FilterHeader") %]
+            <li style="background-color:#ffffff;">
+				<form title="[% Translate("Customer") | html %]" action="[% Env("CGIHandle") | html %]" method="post">
+				    <input type="hidden" name="Action" value="AgentRoomBooking"/>
+				    <input type="hidden" name="Subaction" value="AllRooms"/>
+				    <input type="hidden" name="SortBy" value="FromSystemTime"/>
+				    <input type="hidden" name="OrderBy" value="Up"/>
+				    <input type="hidden" name="Filter" value="Open"/>
+				    <label for="CustomerUserID" style="font-size: 11px;">[% Translate("Customer Users") | html %]:</label>
+				    [% Data.CustomerStrg %]
+				</form>
+            </li>
+        </ul>
+    </div>
+     </div>
+ 
+	<div class="Tabs Pagination" style="margin-right:20px;">
+	    [% Data.SiteNavBar %]
+	</div>
+    <div class="Clear"></div>
+
+    <div id="OverviewBody" class="TicketList">
+        <table class="TableSmall NoCellspacing">
+            <thead>
+                <tr>
+                    <th class="OverviewHeader">
+                    <a href="#"></a>
+                    </th>
+                    <th class="OverviewHeader Room [% Data.SubjectSort | uri %]">
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=[% Env("Subaction") %];SortBy=Subject;OrderBy=[% Data.OrderBy | uri %];Filter=[% Data.Filter | uri %];CustomerUserID=[% Data.CustomerUserID | uri %]">
+                            [% Translate("Subject") | html %]
+                        </a>
+                    </th>
+                    <th class="OverviewHeader Category [% Data.ParticipantSort | uri %]">
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=[% Env("Subaction") %];SortBy=Participant;OrderBy=[% Data.OrderBy | uri %];Filter=[% Data.Filter | uri %];CustomerUserID=[% Data.CustomerUserID | uri %]">
+                            [% Translate("Participant") | html %]
+                        </a>
+                    </th>
+                    <th class="OverviewHeader FromSystemTime [% Data.FromSystemTimeSort | uri %]">
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=[% Env("Subaction") %];SortBy=FromSystemTime;OrderBy=[% Data.OrderBy | uri %];Filter=[% Data.Filter | uri %];CustomerUserID=[% Data.CustomerUserID | uri %]">
+                            [% Translate("Start date") | html %]
+                        </a>
+                    </th>
+                    <th class="OverviewHeader ToSystemTime [% Data.ToSystemTimeSort | uri %]">
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=[% Env("Subaction") %];SortBy=ToSystemTime;OrderBy=[% Data.OrderBy | uri %];Filter=[% Data.Filter | uri %];CustomerUserID=[% Data.CustomerUserID | uri %]">
+                            [% Translate("End date") | html %]
+                        </a>
+                    </th>
+                     <th class="OverviewHeader PostCode">
+                            <a href="#">[% Translate("PostCode") | html %]</a>
+                      </th>
+                     <th class="OverviewHeader City">
+                            <a href="#">[% Translate("City") | html %]</a>
+                      </th>
+                    <th class="OverviewHeader Category [% Data.RoomIDSort | uri %]">
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=[% Env("Subaction") %];SortBy=RoomID;OrderBy=[% Data.OrderBy | uri %];Filter=[% Data.Filter | uri %];CustomerUserID=[% Data.CustomerUserID | uri %]">
+                            [% Translate("Room") | html %]
+                        </a>
+                    </th>
+                    <th class="OverviewHeader Customer [% Data.CustomerSort | uri %]">
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=[% Env("Subaction") %];SortBy=Customer;OrderBy=[% Data.OrderBy | uri %];Filter=[% Data.Filter | uri %];CustomerUserID=[% Data.CustomerUserID | uri %]">
+                            [% Translate("Customer") | html %]
+                        </a>
+                    </th>
+                 </tr>
+            </thead>
+            <tbody>
+[% RenderBlockStart("Record") %]
+                <tr class="">
+[% RenderBlockStart("RoomIcon") %]
+                    <td class="Image">
+						<img src="data:image/png;base64,[% Data.Image | html %]" width="65px">
+					</td>
+[% RenderBlockEnd("RoomIcon") %]
+[% RenderBlockStart("NoRoomIcon") %]
+                    <td class="Image">
+						<img src="[% Config("Frontend::ImagePath") %]meeting-room.png" border="0" width="40px"/>
+					</td>
+[% RenderBlockEnd("NoRoomIcon") %]
+                    <td class="Subject">
+                        [% Data.Subject | html %]
+                    </td>
+                    <td class="Participant">[% Data.Participant | html %]</td>
+                    <td class="FromSystemTime">[% Data.FromSystemTime | html %]</td>
+                    <td class="ToSystemTime">[% Data.ToSystemTime | html %]</td>
+                    <td class="PostCode">[% Data.PostCode | html %]</td>
+                    <td class="City">[% Data.City | html %]</td>
+                    <td class="Room">[% Data.Room | html %]</td>
+                    <td class="Room">[% Data.Customer | html %]</td>
+                </tr>
+[% RenderBlockEnd("Record") %]
+            </tbody>
+        </table>
+    </div>
+[% RenderBlockStart("FilterFooter") %]
+<div class="OverviewControl" id="OverviewControl">
+
+    <div class="ControlRow" style="margin-top:10px;margin-bottom:10px;background-color:#ffffff;">
+        <ul class="Tabs">
+[% RenderBlockStart("FilterFooterItem") %]
+            <li class="[% Data.ClassA | html %]">
+                <a href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=[% Env("Subaction") %];Filter=[% Data.Filter | uri %];SortBy=[% Data.SortBy | uri %];OrderBy=[% Data.OrderBy | uri %];CustomerUserID=[% Data.CustomerUserID | uri %]">
+                    [% Translate("Room bookings") | html %] [% Translate(Data.Name) | html %] ([% Data.Count | html %])
+                </a>
+            </li>
+[% RenderBlockEnd("FilterFooterItem") %]
+            <li class="Clear"></li>
+        </ul>
+        <div class="Tabs Pagination" style="margin-right:5px;">
+            [% Data.SiteNavBar %]
+        </div>
+        <div class="Clear"></div>
+    </div>
+</div>
+
+[% RenderBlockEnd("FilterFooter") %]
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">
+
+	 // event on change queue
+	$('#CustomerUserID').on('change', function () {
+	    if ($('#CustomerUserID option:selected').val()) {
+	        $(this).closest('form').submit();
+	    }
+	});
+
+    $('#CustomerIDs').on('change.CustomerIDs', function (Event) {
+        var QueryString = '[% Env("Baselink") %]Action=[% Env("Action") %];[% Data.Link %]';
+
+        // Include customer selection
+        if ($(this).val()) {
+            $.each($(this).val(), function (Key, Value) {
+                QueryString += 'CustomerIDs=' + encodeURIComponent(Value) + ';';
+            })
+        }
+
+        // Redirect
+        window.location.href = QueryString;
+
+        return false;
+    });
+</script>
+[% END %]
+[% RenderBlockEnd("Filled") %]
+
+[% RenderBlockStart("Empty") %]
+    <div class="Placeholder">
+[% RenderBlockStart("EmptyDefault") %]
+        <h2>[% Translate("There are no bookings available") | html %]</h2>
+[% RenderBlockEnd("EmptyDefault") %]
+    </div>
+[% RenderBlockEnd("Empty") %]
+</div>
+
+<style>
+
+  #calendar {
+    max-width: 90%;
+    margin: 0 auto;
+    padding:0px;
+  }
+
+  #Land {
+	background: #d9f8ea;
+	border-bottom: 1px solid #02a543;
+	padding-left: 88px;
+	line-height: 30px;
+	font-size: 12px;
+	margin-bottom: 10px;
+  }
+
+</style>
+
+<script type="text/javascript">//<![CDATA[
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var initialLocaleCode = 'de';
+    var localeSelectorEl = document.getElementById('locale-selector');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+	  schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+      plugins: [ 'dayGrid', 'timeGrid', 'list', 'interaction', 'resourceTimeline' ],
+      locale: initialLocaleCode,
+      defaultView: 'dayGridMonth',
+      timeZone: 'local',
+      header: {
+        left: 'today, prev, next',
+        center: 'title',
+        right: 'resourceTimelineDay,resourceTimelineThreeDays,timeGridWeek,dayGridMonth'
+      },
+
+      weekNumbers: true,
+      weekNumbersWithinDays: true,
+      weekNumberCalculation: 'ISO',
+
+      navLinks: true, // can click day/week names to navigate views
+      editable: false,
+      eventLimit: true, // allow "more" link when too many events
+      resourceLabelText: '[% Translate("Rooms") | html %]',
+      resources: [
+
+[% RenderBlockStart("CalendarResources") %]
+        [% Data.CalendarResources %]
+[% RenderBlockEnd("CalendarResources") %]
+
+      ],
+      events: [
+
+[% RenderBlockStart("CalendarEvents") %]
+        [% Data.CalendarEvents %]
+[% RenderBlockEnd("CalendarEvents") %]
+
+      ]
+    });
+
+    calendar.render();
+
+    // build the locale selector's options
+    calendar.getAvailableLocaleCodes().forEach(function(localeCode) {
+      var optionEl = document.createElement('option');
+      optionEl.value = localeCode;
+      optionEl.selected = localeCode == initialLocaleCode;
+      optionEl.innerText = localeCode;
+      localeSelectorEl.appendChild(optionEl);
+    });
+
+    // when the selected option changes, dynamically change the calendar option
+    localeSelectorEl.addEventListener('change', function() {
+      if (this.value) {
+        calendar.setOption('locale', this.value);
+      }
+    });
+
+  });
+
+//]]></script>
+
+  <div id='Land'>
+
+    [% Translate("Calendar language") | html %]: <select id='locale-selector'></select>
+
+  </div>
+<div id="calendar"></div>
+

@@ -1,0 +1,117 @@
+# --
+# Kernel/System/SupportDataCollector/Plugin/Database/mysql/Charset.pm
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: Charset.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+package Kernel::System::SupportDataCollector::Plugin::Database::mysql::Charset;
+
+use strict;
+use warnings;
+
+use parent qw(Kernel::System::SupportDataCollector::PluginBase);
+
+use Kernel::Language qw(Translatable);
+
+our @ObjectDependencies = (
+    'Kernel::System::DB',
+);
+
+sub GetDisplayPath {
+    return Translatable('Database');
+}
+
+sub Run {
+    my $Self = shift;
+
+    # get database object
+    my $DBObject = $Kernel::OM->Get('Kernel::System::DB');
+
+    if ( $DBObject->GetDatabaseFunction('Type') ne 'mysql' ) {
+        return $Self->GetResults();
+    }
+
+    $DBObject->Prepare( SQL => "show variables like 'character_set_client'" );
+    while ( my @Row = $DBObject->FetchrowArray() ) {
+        if ( $Row[1] =~ /utf8/i ) {
+            $Self->AddResultOk(
+                Identifier => 'ClientEncoding',
+                Label      => Translatable('Client Connection Charset'),
+                Value      => $Row[1],
+            );
+        }
+        else {
+            $Self->AddResultProblem(
+                Identifier => 'ClientEncoding',
+                Label      => Translatable('Client Connection Charset'),
+                Value      => $Row[1],
+                Message    => Translatable('Setting character_set_client needs to be utf8.'),
+            );
+        }
+    }
+
+    $DBObject->Prepare( SQL => "show variables like 'character_set_database'" );
+    while ( my @Row = $DBObject->FetchrowArray() ) {
+        if ( $Row[1] =~ /utf8mb4/i ) {
+            $Self->AddResultProblem(
+                Identifier => 'ServerEncoding',
+                Label      => Translatable('Server Database Charset'),
+                Value      => $Row[1],
+                Message =>
+                    "This character set is not yet supported. Please convert your database to the character set 'utf8'.",
+            );
+        }
+        elsif ( $Row[1] =~ /utf8/i ) {
+            $Self->AddResultOk(
+                Identifier => 'ServerEncoding',
+                Label      => Translatable('Server Database Charset'),
+                Value      => $Row[1],
+            );
+        }
+        else {
+            $Self->AddResultProblem(
+                Identifier => 'ServerEncoding',
+                Label      => Translatable('Server Database Charset'),
+                Value      => $Row[1],
+                Message    => Translatable("The setting character_set_database needs to be 'utf8'."),
+            );
+        }
+    }
+
+    my @TablesWithInvalidCharset;
+
+    # Views have engine == null, ignore those.
+    $DBObject->Prepare( SQL => 'show table status where engine is not null' );
+    while ( my @Row = $DBObject->FetchrowArray() ) {
+        if ( $Row[14] =~ /^utf8mb4/i || $Row[14] !~ /^utf8/i ) {
+            push @TablesWithInvalidCharset, $Row[0];
+        }
+    }
+    if (@TablesWithInvalidCharset) {
+        $Self->AddResultProblem(
+            Identifier => 'TableEncoding',
+            Label      => Translatable('Table Charset'),
+            Value      => join( ', ', @TablesWithInvalidCharset ),
+            Message    => Translatable("There were tables found which do not have 'utf8' as charset."),
+        );
+    }
+    else {
+        $Self->AddResultOk(
+            Identifier => 'TableEncoding',
+            Label      => Translatable('Table Charset'),
+            Value      => '',
+        );
+    }
+
+    return $Self->GetResults();
+}
+
+1;

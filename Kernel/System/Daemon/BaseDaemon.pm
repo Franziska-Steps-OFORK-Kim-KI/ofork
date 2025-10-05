@@ -1,0 +1,138 @@
+# --
+# Kernel/System/Daemon/BaseDaemon.pm
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: BaseDaemon.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+package Kernel::System::Daemon::BaseDaemon;
+
+use strict;
+use warnings;
+
+=head1 NAME
+
+Kernel::System::Daemon::BaseDaemon - daemon base class
+
+=head1 DESCRIPTION
+
+Base class for daemon modules.
+
+=head1 PUBLIC INTERFACE
+
+=head2 PreRun()
+
+Perform additional validations/preparations and wait times before Run().
+
+Override this method in your daemons.
+
+If this method returns true, execution will be continued. If it returns false,
+the main daemon aborts at this point, and Run() will not be called and the complete
+daemon module dies waiting to be recreated again in the next loop.
+
+=cut
+
+sub PreRun {
+    my ( $Self, %Param ) = @_;
+
+    return 1;
+}
+
+=head2 Run()
+
+Runs the daemon.
+
+Override this method in your daemons.
+
+If this method returns true, execution will be continued. If it returns false, the
+main daemon aborts at this point, and PostRun() will not be called and the complete
+daemon module dies waiting to be recreated again in the next loop.
+
+=cut
+
+sub Run {
+    my ( $Self, %Param ) = @_;
+
+    return 1;
+}
+
+=head2 PostRun()
+
+Perform additional clean-ups and wait times after Run().
+
+Override this method in your daemons.
+
+If this method returns true, execution will be continued. If it returns false, the
+main daemon aborts at this point, and PreRun() will not be called again and the
+complete daemon module dies waiting to be recreated again in the next loop.
+
+=cut
+
+sub PostRun {
+    my ( $Self, %Param ) = @_;
+
+    sleep 1;
+
+    return 1;
+}
+
+=head2 Summary()
+
+Provides a summary of what is the daemon doing in the current time, the summary is in form of tabular
+data and it must contain a header, the definition of the columns, the data, and a message if there
+was no data.
+
+    my @Summary = $DaemonObject->Summary();
+
+returns
+
+    @Summary = (
+        {
+            Header => 'Header Message',
+            Column => [
+                {
+                    Name        => 'somename',
+                    DisplayName => 'some name',
+                    Size        => 40,
+                },
+                # ...
+            ],
+            Data => [
+                {
+                    somename => $ScalarValue,
+                    # ...
+                },
+                # ...
+            ],
+            NoDataMessage => "Show this message if there is no data.",
+        },
+    );
+
+Override this method in your daemons.
+
+=cut
+
+sub Summary {
+    my ( $Self, %Param ) = @_;
+
+    return ();
+}
+
+1;
+
+=head1 TERMS AND CONDITIONS
+
+This software is part of the OFORK project (L<https://o-fork.de/>).
+
+This software comes with ABSOLUTELY NO WARRANTY. For details, see
+the enclosed file COPYING for license information (AGPL). If you
+did not receive this file, see L<http://www.gnu.org/licenses/agpl.txt>.
+
+=cut

@@ -1,0 +1,36 @@
+# --
+# Kernel/Output/HTML/Templates/Standard/ProcessManagement/Priority.tt
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: Priority.tt,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+[% RenderBlockStart("rw:Priority") %]
+<label for="[% Data.FieldID | html %]" class="[% Data.MandatoryClass | html %]">
+[% RenderBlockStart("LabelSpan") %]
+    <span class="Marker">*</span>
+[% RenderBlockEnd("LabelSpan") %]
+[% RenderBlockStart("rw:Priority:DescriptionLong") %]
+    <span class="FieldHelpContainer">
+        <i class="fa fa-question-circle FieldHelpTrigger"></i>
+        <span>[% Data.DescriptionLong | html %]</span>
+    </span>
+[% RenderBlockEnd("rw:Priority:DescriptionLong") %]
+    [% Data.Label | html %]:
+</label>
+<div class="Field">
+    [% Data.Content %]
+    <div id="[% Data.FieldID | html %]Error" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+    <div id="[% Data.FieldID | html %]ServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+[% RenderBlockStart("rw:Priority:DescriptionShort") %]
+    <div class="FieldExplanation">[% Data.DescriptionShort | html %]</div>
+[% RenderBlockEnd("rw:Priority:DescriptionShort") %]
+</div>
+<div class="Clear"></div>
+[% RenderBlockEnd("rw:Priority") %]

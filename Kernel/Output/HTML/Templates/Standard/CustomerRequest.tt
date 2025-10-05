@@ -1,0 +1,187 @@
+# --
+# CustomerRequest.tt - provides HTML form for customer message
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# --
+# $Id: CustomerRequest.tt,v 1.2 2016/11/20 19:32:27 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<style type="text/css">
+.post-item {
+  outline: 0px solid transparent;
+  border: 2px solid #fff;
+  border-radius: 5px;
+}
+
+.post-item:hover {
+  outline: 0px solid transparent;
+  border: 2px solid #02a543;
+  border-radius: 5px;
+}
+</style>
+
+<div id="MainBox" class="TicketCompose ARIARoleMain">
+    <div class="Content">
+        <form action="[% Env("CGIHandle") %]" method="post" name="compose" enctype="multipart/form-data" class="Validate PreventMultipleSubmits">
+            <input type="hidden" name="Action" value="[% Env("Action") %]" />
+            <input type="hidden" name="Subaction" value="StoreNew" />
+            <input type="hidden" name="FormID" value="[% Data.FormID | html %]" />
+
+[% RenderBlockStart("NewTicket") %]
+                <div id="NewTicket" style="padding:4px;margin:4px;float:left;">
+                    <div id="NewTicketIcons" class="post-item" style="text-align:center;padding:6px;">
+                        <a href="[% Env("Baselink") %]Action=CustomerTicketMessage" class="CallForAction Fullsize Center">
+                        <img src="[% Config("Frontend::WebPath") %]skins/Customer/default/img/write.png" border="0" width="50px" height="50px"/>
+                        <br>[% Translate("New standard Ticket") | html %]
+                        </a>
+                    </div>
+                </div>
+                <div class="Clear"></div>
+[% RenderBlockEnd("NewTicket") %]
+
+[% RenderBlockStart("RequestImage") %]
+                <div class="OFORKRequestImage">
+                 <h3><strong>[% Translate("Categories") | html %]</strong></h3>
+                </div>
+
+[% RenderBlockStart("CategoryIcons") %]
+                <div id="CategoryIconsRahmen_[% Data.RequestCategoriesID %]" class="OFORKIcons">
+                    <div id="CategoryIcons_[% Data.RequestCategoriesID %]" class="post-item OFORKPostItemBorder" style="[% Data.IfSetCategoriesID %]">
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %];RequestCategoriesID=[% Data.RequestCategoriesID %];SetRequestCategoriesID=[% Data.RequestCategoriesID %]" class="CallForAction Fullsize Center">
+                        <img src="data:image/png;base64,[% Data.Content | html %]" width="50px" height="50px">
+                        <br>[% Translate(Data.Name) | html %]
+                        </a>
+                    </div>
+                </div>
+[% RenderBlockEnd("CategoryIcons") %]
+[% RenderBlockStart("CategoryNoImageIcons") %]
+                <div id="CategoryIconsRahmen_[% Data.RequestCategoriesID %]" class="OFORKNoIcons">
+                    <div id="CategoryIcons_[% Data.RequestCategoriesID %]" class="post-item OFORKPostItemBorder" style="[% Data.IfSetCategoriesID %]">
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %];RequestCategoriesID=[% Data.RequestCategoriesID %];SetRequestCategoriesID=[% Data.RequestCategoriesID %]" class="CallForAction Fullsize Center">
+                        <img src="[% Config("Frontend::ImagePath") %]ProgressBarArrowRequest.png" border="0" width="50px" height="50px"/>
+                        <br>[% Translate(Data.Name) | html %]
+                        </a>
+                    </div>
+                </div>
+[% RenderBlockEnd("CategoryNoImageIcons") %]
+                <div class="Clear"></div>
+
+[% RenderBlockStart("SubCategory") %]
+                <div class="OFORKSubCategory">
+                    <h3><strong>[% Translate("Subcategories") | html %]</strong></h3>
+                </div>
+[% RenderBlockEnd("SubCategory") %]
+
+[% RenderBlockStart("SubCategoryIcons") %]
+                <div id="CategoryIconsRahmen_[% Data.RequestCategoriesID %]" class="OFORKSubCategoryIcons">
+                    <div id="CategoryIcons_[% Data.RequestCategoriesID %]" class="post-item OFORKPostItem" style="[% Data.IfSetCategoriesID %]">
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %];RequestCategoriesID=[% Data.RequestCategoriesID %];SetRequestCategoriesIDToRequest=[% Data.RequestCategoriesID %];SetRequestCategoriesID=[% Data.RequestCategoriesIDOld %]" class="CallForAction Fullsize Center">
+                        <img src="data:image/png;base64,[% Data.Content | html %]" width="50px" height="50px">
+                        <br>[% Translate(Data.Name) | html %]
+                        </a>
+                    </div>
+                </div>
+[% RenderBlockEnd("SubCategoryIcons") %]
+[% RenderBlockStart("SubCategoryNoImageIcons") %]
+                <div id="CategoryIconsRahmen_[% Data.RequestCategoriesID %]" class="OFORKSubCategoryNoImageIcons">
+                    <div id="CategoryIcons_[% Data.RequestCategoriesID %]" class="post-item OFORKPostItem" style="[% Data.IfSetCategoriesID %]">
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %];RequestCategoriesID=[% Data.RequestCategoriesID %];SetRequestCategoriesIDToRequest=[% Data.RequestCategoriesID %];SetRequestCategoriesID=[% Data.RequestCategoriesIDOld %]" class="CallForAction Fullsize Center">
+                        <img src="[% Config("Frontend::ImagePath") %]ProgressBarArrowRequest.png" border="0" width="50px" height="50px"/>
+                        <br>[% Translate(Data.Name) | html %]
+                        </a>
+                    </div>
+                </div>
+[% RenderBlockEnd("SubCategoryNoImageIcons") %]
+                <div class="Clear"></div>
+
+[% RenderBlockStart("SubCategoryIconsNoItems") %]
+                <div id="CategoryIconsRahmenNoItem" class="OFORKSubCategoryIconsNoItems">
+                    <div id="NoItems">
+                    [% Translate("No subcategories available") | html %]
+                    </div>
+                </div>
+                <div class="Clear"></div>
+[% RenderBlockEnd("SubCategoryIconsNoItems") %]
+
+
+[% RenderBlockStart("SetRequest") %]
+                <div class="OFORKSetRequest">
+                    <h3><strong>[% Translate("Request") | html %]</strong></h3>
+                </div>
+[% RenderBlockEnd("SetRequest") %]
+
+[% RenderBlockStart("SetRequestIcons") %]
+                <div id="RequestsIconsRahmen_[% Data.RequestID %]" class="OFORKSetRequestIcons">
+                    <div id="RequestsIcons_[% Data.RequestID %]" class="post-item OFORKPostItem">
+                        <a href="[% Env("Baselink") %]Action=RequestCustomerTicketMessage;RequestID=[% Data.RequestID %]" class="CallForAction Fullsize Center">
+                        <img src="data:image/png;base64,[% Data.Content | html %]" width="50px" height="50px">
+                        <br>[% Translate(Data.Name) | html %]
+                        </a>
+                    </div>
+                </div>
+[% RenderBlockEnd("SetRequestIcons") %]
+[% RenderBlockStart("SetRequestNoImageIcons") %]
+                <div id="RequestsIconsRahmen_[% Data.RequestID %]" class="OFORKSetRequestNoImageIcons">
+                    <div id="RequestsIcons_[% Data.RequestID %]" class="post-item OFORKPostItem">
+                        <a href="[% Env("Baselink") %]Action=RequestCustomerTicketMessage;RequestID=[% Data.RequestID %]" class="CallForAction Fullsize Center">
+                        <img src="[% Config("Frontend::ImagePath") %]ProgressBarArrowRequest.png" border="0" width="50px" height="50px"/>
+                        <br>[% Translate(Data.Name) | html %]
+                        </a>
+                    </div>
+                </div>
+[% RenderBlockEnd("SetRequestNoImageIcons") %]
+
+                <div class="Clear"></div>
+
+[% RenderBlockStart("SetRequestNoItems") %]
+                <div id="CategoryIconsRahmenNoItem" class="OFORKCategoryIconsRahmenNoItem">
+                    <div id="NoItems">
+                    [% Translate("No requests available") | html %]
+                    </div>
+                </div>
+                <div class="Clear"></div>
+[% RenderBlockEnd("SetRequestNoItems") %]
+
+[% RenderBlockEnd("RequestImage") %]
+
+[% RenderBlockStart("Request") %]
+            <fieldset>
+                <div>
+                    <label for="AntragID">[% Translate("Categories") | html %]:</label>
+                    [% Data.RequestCategoriesStrg %]
+                    <div class="Clear"></div>
+                </div>
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+    $('#RequestCategoriesID').bind('change', function (Event) {
+        // make sure the ticket is not yet created on queue change
+        $('input#Expand').val(1);
+        Core.Form.Validate.DisableValidation($(this).closest('form'));
+        $(this).closest('form').submit();
+    });
+//]]></script>
+[% END %]
+                <div>
+                    <label for="RequestID">[% Translate("Requests") | html %]:</label>
+                    [% Data.RequestStrg %]
+                    <div class="Clear"></div>
+                </div>
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+    $('#RequestID').bind('change', function (Event) {
+        // make sure the ticket is not yet created on queue change
+        $('input#Expand').val(1);
+        Core.Form.Validate.DisableValidation($(this).closest('form'));
+        $(this).closest('form').submit();
+    });
+//]]></script>
+[% END %]
+            </fieldset>
+[% RenderBlockEnd("Request") %]
+
+        </form>
+    </div>
+</div>

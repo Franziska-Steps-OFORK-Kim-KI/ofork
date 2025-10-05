@@ -1,0 +1,82 @@
+# --
+# Kernel/System/Console/Command/Dev/Tools/RPMSpecGenerate.pm
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: RPMSpecGenerate.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+package Kernel::System::Console::Command::Dev::Tools::RPMSpecGenerate;
+
+use strict;
+use warnings;
+
+use parent qw(Kernel::System::Console::BaseCommand);
+
+our @ObjectDependencies = (
+    'Kernel::Config',
+    'Kernel::System::Main',
+    'Kernel::Output::HTML::Layout',
+);
+
+sub Configure {
+    my ( $Self, %Param ) = @_;
+
+    $Self->Description('Generate RPM spec files.');
+
+    return;
+}
+
+sub Run {
+    my ( $Self, %Param ) = @_;
+
+    $Self->Print("<yellow>Starting...</yellow>\n\n");
+
+    my $Home = $Kernel::OM->Get('Kernel::Config')->Get('Home');
+
+    my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
+
+    # Call Output() once so that the TT objects are created.
+    $LayoutObject->Output( Template => '' );
+    $LayoutObject->{TemplateProviderObject}->include_path(
+        ["$Home/scripts/auto_build/spec/templates"]
+    );
+
+    my @SpecFileTemplates = $Kernel::OM->Get('Kernel::System::Main')->DirectoryRead(
+        Directory => "$Home/scripts/auto_build/spec/templates",
+        Filter    => "*.spec.tt",
+    );
+
+    for my $SpecFileTemplate (@SpecFileTemplates) {
+        my $SpecFileName = $SpecFileTemplate;
+        $SpecFileName =~ s{^.*/spec/templates/}{};
+        $SpecFileName = substr( $SpecFileName, 0, -3 );    # cut off .tt
+
+        my $Output = $Kernel::OM->Get('Kernel::Output::HTML::Layout')->Output(
+            TemplateFile => $SpecFileName,
+        );
+        my $TargetPath = "$Home/scripts/auto_build/spec/$SpecFileName";
+        my $Written    = $Kernel::OM->Get('Kernel::System::Main')->FileWrite(
+            Location => $TargetPath,
+            Mode     => 'utf8',
+            Content  => \$Output,
+        );
+        if ( !$Written ) {
+            $Self->PrintError("Could not write $TargetPath.");
+            return $Self->ExitCodeError();
+        }
+        $Self->Print("  <yellow>$SpecFileTemplate -> $TargetPath</yellow>\n");
+    }
+
+    $Self->Print("\n<green>Done.</green>\n");
+
+    return $Self->ExitCodeOk();
+}
+
+1;

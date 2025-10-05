@@ -1,0 +1,31 @@
+# --
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+# Note: Continue lines with whitespace at the beginning of each newline
+# --
+
+#-----------------#
+# simple example:
+#-----------------#
+
+#poll <MAIL_SERVER> protocol POP3 user <MAIL_USERNAME> pass <MAIL_PASSWORD> is <LOCAL_OFORK_USERNAME> here
+
+#-------------------------------------------------#
+# example for polling from an IMAP-Server via SSL.
+#-------------------------------------------------#
+
+#poll <MAIL_SERVER> protocol IMAP port 993 plugin "openssl s_client -connect %h:%p" user <MAIL_USERNAME> pass <MAIL_PASSWORD> is <LOCAL_OFORK_USERNAME> here
+
+#--------------------------------------------------------#
+# The openssl command has to be installed and accessible
+# for the ofork user.
+# If the ofork user cannot find openssl, try:
+#  plugin "/path/to/openssl s_client -connect %h:%p"
+#--------------------------------------------------------#

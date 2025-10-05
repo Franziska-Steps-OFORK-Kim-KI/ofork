@@ -1,0 +1,90 @@
+# --
+# Kernel/System/SupportDataCollector/Plugin/Database/TablePresence.pm
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: TablePresence.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+package Kernel::System::SupportDataCollector::Plugin::Database::TablePresence;
+
+use strict;
+use warnings;
+
+use parent qw(Kernel::System::SupportDataCollector::PluginBase);
+
+use Kernel::Language qw(Translatable);
+
+our @ObjectDependencies = (
+    'Kernel::Config',
+    'Kernel::System::DB',
+    'Kernel::System::Main',
+    'Kernel::System::XML',
+);
+
+sub GetDisplayPath {
+    return Translatable('Database');
+}
+
+sub Run {
+    my $Self = shift;
+
+    # table check
+    my $File = $Kernel::OM->Get('Kernel::Config')->Get('Home') . '/scripts/database/ofork-schema.xml';
+    if ( !-f $File ) {
+        $Self->AddResultProblem(
+            Label   => Translatable('Table Presence'),
+            Value   => '',
+            Message => Translatable("Internal Error: Could not open file."),
+        );
+    }
+
+    my $ContentRef = $Kernel::OM->Get('Kernel::System::Main')->FileRead(
+        Location => $File,
+        Mode     => 'utf8',
+    );
+    if ( !ref $ContentRef && !${$ContentRef} ) {
+        $Self->AddResultProblem(
+            Label   => Translatable('Table Check'),
+            Value   => '',
+            Message => Translatable("Internal Error: Could not read file."),
+        );
+    }
+
+    my @XMLHash = $Kernel::OM->Get('Kernel::System::XML')->XMLParse2XMLHash( String => ${$ContentRef} );
+
+    my %ExistingTables = map { lc($_) => 1 } $Kernel::OM->Get('Kernel::System::DB')->ListTables();
+
+    my @MissingTables;
+    TABLE:
+    for my $Table ( @{ $XMLHash[1]->{database}->[1]->{Table} } ) {
+        next TABLE if !$Table;
+
+        if ( !$ExistingTables{ lc( $Table->{Name} ) } ) {
+            push( @MissingTables, $Table->{Name} );
+        }
+    }
+    if ( !@MissingTables ) {
+        $Self->AddResultOk(
+            Label => Translatable('Table Presence'),
+            Value => '',
+        );
+    }
+    else {
+        $Self->AddResultProblem(
+            Label   => Translatable('Table Presence'),
+            Value   => join( ', ', @MissingTables ),
+            Message => Translatable("Tables found which are not present in the database."),
+        );
+    }
+
+    return $Self->GetResults();
+}
+
+1;

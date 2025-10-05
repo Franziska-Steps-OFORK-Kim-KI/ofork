@@ -1,0 +1,34 @@
+# --
+# Kernel/Output/HTML/Templates/Standard/Statistics/StatsResultRender/D3.tt
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: D3.tt,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<div class="MainBox AriaRoleMain">
+    <h1 class="Center SpacingBottom">
+        [% Config("Stats::StatsHook") | html %][% Data.StatNumber | html %]
+        [% IF Data.TimeZone %] ([% Translate("Time Zone") | html %] [% Data.TimeZone | html %])[% END %]
+        — [% Data.Title | html %]
+    </h1>
+
+    <div id="svg-container">
+        <svg id="ChartContent" xmlns="http://www.w3.org/2000/svg" version="1.1" style="min-height: 500px"></svg>
+    </div>
+
+    <div class="Center SpacingTop">
+        <a id="download-svg" class="CallForAction" download="[% Data.Title | replace('\s+', '_') | html %][% IF Data.TimeZone %]_TimeZone_[% Data.TimeZone %][% END %].svg">
+            <span>[% Translate('Download SVG') | html %]</span>
+        </a>
+        <a id="download-png" class="CallForAction" download="[% Data.Title | replace('\s+', '_') | html %][% IF Data.TimeZone %]_TimeZone_[% Data.TimeZone %][% END %].png">
+            <span>[% Translate('Download PNG') | html %]</span>
+        </a>
+    </div>
+</div>

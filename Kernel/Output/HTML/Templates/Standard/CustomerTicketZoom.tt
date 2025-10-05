@@ -1,0 +1,569 @@
+# --
+# Kernel/Output/HTML/Templates/Standard/CustomerTicketZoom.tt
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: CustomerTicketZoom.tt,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+<div id="MainBox" class="TicketZoom ARIARoleMain">
+[% RenderBlockStart("Back") %]
+    <div class="ActionRow">
+        <ul class="Tabs">
+            <li><a href="[% Env("Baselink") %][% Env("LastScreenOverview") %]">&larr; [% Translate("Back") | html %]</a></li>
+        </ul>
+        <div class="Clear"></div>
+    </div>
+[% RenderBlockEnd("Back") %]
+    <div class="Content">
+        <div class="TicketHeader">
+            <h2 title="[% Data.Title | html %]">
+[% RenderBlockStart("PriorityFlag") %]
+                <div class="Flag" title="[% Translate(Data.Priority) | html %]"><span class="PriorityID-[% Data.PriorityID | html %]">[% Translate(Data.Priority) | html %]</span></div>
+[% RenderBlockEnd("PriorityFlag") %]
+                [% Data.Title | html %]
+            </h2>
+            <ul id="TicketOptions">
+[% RenderBlockStart("Chat") %]
+                <li>
+                    <a target="_blank" href="[% Env("Baselink") %]Action=CustomerChat;Subaction=CreateChatRequest;TicketID=[% Data.TicketID | uri %];" class="Print" title="[% Translate("Start a chat from this ticket") | html %]">
+                        <i class="fa fa-comments-o"></i>
+                        <span class="InvisibleText">[% Translate("Start a chat from this ticket") | html %]</span>
+                    </a>
+                </li>
+[% RenderBlockEnd("Chat") %]
+[% RenderBlockStart("Print") %]
+                <li>
+                    <a href="[% Env("Baselink") %]Action=CustomerTicketPrint;TicketID=[% Data.TicketID | uri %]" class="Print AsPopup" title="[% Translate("Print") | html %]">
+                        <i class="fa fa-print"></i>
+                        <span class="InvisibleText">[% Translate("Print") | html %]</span>
+                    </a>
+                </li>
+[% RenderBlockEnd("Print") %]
+
+[% RenderBlockStart("Expand") %]
+                <li>
+                    <a href="[% Env("Baselink") %]Action=CustomerTicketZoom;TicketID=[% Data.TicketID | uri %];ZoomExpand=[% Data.ZoomExpand | uri %]" class="ZoomExpand Expand[% Data.ExpandOption %]" title="[% Translate(Data.ExpandText) | html %]">
+                        <i class="fa fa-bars"></i>
+                        <i class="fa fa-minus"></i>
+                        <span class="InvisibleText">[% Translate(Data.ExpandText) | html %]</span>
+                    </a>
+                    <input type="hidden" name="ZoomExpand" id="ZoomExpand" value="[% Data.ZoomExpand | html %]" />
+                </li>
+[% RenderBlockEnd("Expand") %]
+            </ul>
+            <div class="Clear"></div>
+        </div>
+
+
+[% RenderBlockStart("ProcessTicket") %]
+
+<style type="text/css">
+
+.DiagramDeleteLink,
+.DiagramEditLink {
+    position: absolute;
+}
+
+.DiagramDeleteLink a,
+.DiagramEditLink a {
+    background:#FFFFFF;
+    border: 1px solid#353434;
+    border-radius: 5px;
+    display: block;
+    font-family: tahoma;
+    font-size: 13px;
+    line-height: 21px;
+    vertical-align: middle;
+    font-weight: bold;
+    height: 20px;
+    width: 20px;
+    text-align: center;
+    color:#353434;
+}
+
+.DiagramDeleteLink a:hover,
+.DiagramEditLink a:hover {
+    color: #02a543;
+}
+
+</style>
+
+            <div class="WidgetSimple [% Data.ProcessListWidget | html %]">
+                <div class="Header">
+                    <div class="WidgetAction Toggle"><a href="#" title="[% Translate("Show or hide the content") | html %]"><i class="fa fa-caret-right"></i><i class="fa fa-caret-down"></i></a></div>
+                    <h2>
+                        [% Translate("Process") | html %]: [% Data.Name | html %]
+
+[% RenderBlockStart("ProcessEndReady") %]
+                        [% Translate(" - Ready ") | html %]<i class="fa fa-check" style="color:green;"></i>
+[% RenderBlockEnd("ProcessEndReady") %]
+
+[% RenderBlockStart("ProcessError") %]
+                        <br><span style="color:red;">[% Translate("Error") | html %][% Translate(": The process step ") | html %][% Data.Name | html %][% Translate(" is not complete. Please inform your admin.") | html %]</span>
+[% RenderBlockEnd("ProcessError") %]
+
+                    </h2>
+
+                    <input type="hidden" name="SessionName" id="SessionName" value="[% Env("SessionName") | html %]"/>
+                    <input type="hidden" name="SessionID" id="SessionID" value="[% Env("SessionID") | html %]"/>
+                    <input type="hidden" name="TicketID" id="TicketID" value="[% Env("TicketID") | html %]"/>
+
+                </div>
+
+                <div class="Content">
+#                    <fieldset class="TableLike TableLikeRequestOFORK AdminRequestFormResultingOFORK">
+
+                    <div id="Description" style="padding:5px;margin-left:1%;">[% Data.Description | html %]</div>
+
+[% RenderBlockStart("Process") %]
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>[% Translate("Process step ") | html %] [% Data.StepValue | html %]</h2>
+            </div>
+            <div class="Content">
+
+[% RenderBlockStart("ProcessStep") %]
+            <div style="float:left;margin-right:5px;opacity: [% Data.ProcessOpacity | uri %];">
+ 
+[% RenderBlockStart("ProcessActive") %]
+                 <div id="WorkStepToForm[% Data.StepValue | html %][% Data.ProcessStepID | uri %]" class="DiagramEditLink">
+#                    <a href="#" id="[% Data.ProcessStepID | uri %]" title="[% Translate("Edit this Activity") | html %]"><i class="fa fa-edit"></i></a>
+                </div>
+[% RenderBlockEnd("ProcessActive") %]
+
+                <div id="Process" style="border: 3px solid [% Data.Color | html %];margin:3px;border-radius: 5px;display: inline-block;">
+                    <div id="ProcessFieldColor" style="background-color:[% Data.Color | html %];width:20px;height:55px;float:left;display: inline-block;color:yellow;font-size:20px;font-weight: bold;">
+                        <br>
+                        <i class="fa fa-angle-down" aria-hidden="true"style="background-color:#737272;border-radius: 9px;font-weight: bold;padding-left: 2px;padding-right: 3px;"></i>
+                    </div>
+                    <div style="padding:5px;float:left;line-height: 15px;">
+                        <b>[% Data.Name | html %]</b><br>
+                        [% Translate("type of work step: ") | html %][% Translate(Data.ProcessStepArt) | html %]
+                    </div>
+                </div>
+
+[% RenderBlockStart("Ready") %]
+                <div id="DiagramDeleteLink[% Data.ID | html %]" class="DiagramDeleteLink" style="margin-top: -20px;">
+                    <a href="#" title="[% Translate("This step is done") | html %]"><i class="fa fa-check" style="color:green;"></i></a>
+                </div>
+[% RenderBlockEnd("Ready") %]
+
+            </div>
+
+[% RenderBlockStart("ProcessStepNext") %]
+            <div style="float:left;margin-left: -7px;font-size:23px;color:green;">
+            <br>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </div>
+
+            <div style="float:left;margin-left: -1px;opacity: 0.6;">
+                <div id="Process" style="border: 3px solid [% Data.Color | html %];margin:3px;border-radius: 5px;display: inline-block;">
+                    <div id="ProcessFieldColor" style="background-color:[% Data.Color | html %];width:20px;height:55px;float:left;display: inline-block;color:yellow;font-size:20px;font-weight: bold;">
+                        <br>
+                        <i class="fa fa-angle-down" aria-hidden="true"style="background-color:#737272;border-radius: 9px;font-weight: bold;padding-left: 2px;padding-right: 3px;"></i>
+                    </div>
+                    <div style="padding:5px;float:left;line-height: 15px;">
+                        <b>[% Data.Name | html %]</b><br>
+                        [% Translate("type of work step: ") | html %][% Translate(Data.ProcessStepArt) | html %]<br>
+                        [% Translate("Next at not approved") | html %]<br>
+                    </div>
+                </div>
+            </div>
+[% RenderBlockEnd("ProcessStepNext") %]
+
+[% RenderBlockStart("ProcessStepNextDown") %]
+            <div style="float:left;margin-left: -7px;font-size:23px;color:green;">
+            <br>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </div>
+
+            <div style="float:left;margin-left: -1px;opacity: 0.6;">
+                <div id="Process" style="border: 3px solid [% Data.Color | html %];margin:3px;border-radius: 5px;display: inline-block;">
+                    <div id="ProcessFieldColor" style="background-color:[% Data.Color | html %];width:20px;height:55px;float:left;display: inline-block;color:yellow;font-size:20px;font-weight: bold;">
+                        <br>
+                        <i class="fa fa-angle-up" aria-hidden="true"style="background-color:#737272;border-radius: 9px;font-weight: bold;padding-left: 2px;padding-right: 3px;"></i>
+                    </div>
+                    <div style="padding:5px;float:left;line-height: 15px;">
+                        <b>[% Data.Name | html %]</b><br>
+                        [% Translate("type of work step: ") | html %][% Translate(Data.ProcessStepArt) | html %]<br>
+                        [% Translate("Next step") | html %]<br>
+                    </div>
+                </div>
+            </div>
+[% RenderBlockEnd("ProcessStepNextDown") %]
+[% RenderBlockStart("ProcessStepNextDownNoTwo") %]
+            <div style="float:left;margin-left: -7px;font-size:23px;color:green;">
+            <br>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </div>
+
+            <div style="float:left;margin-left: -1px;opacity: 0.6;">
+                <div id="Process" style="border: 3px solid [% Data.Color | html %];margin:3px;border-radius: 5px;display: inline-block;">
+                    <div id="ProcessFieldColor" style="background-color:[% Data.Color | html %];width:20px;height:55px;float:left;display: inline-block;color:yellow;font-size:20px;font-weight: bold;">
+                        <br>
+                        <i class="fa fa-angle-up" aria-hidden="true"style="background-color:#737272;border-radius: 9px;font-weight: bold;padding-left: 2px;padding-right: 3px;"></i>
+                    </div>
+                    <div style="padding:5px;float:left;line-height: 15px;">
+                        <b>[% Data.Name | html %]</b><br>
+                        [% Translate("type of work step: ") | html %][% Translate(Data.ProcessStepArt) | html %]<br>
+                        [% Translate("Next step with conditions") | html %]<br>
+                    </div>
+                </div>
+            </div>
+[% RenderBlockEnd("ProcessStepNextDownNoTwo") %]
+
+[% RenderBlockStart("ProcessStepNextUp") %]
+            <div style="float:left;margin-left: -7px;font-size:23px;color:green;">
+            <br>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </div>
+
+            <div style="float:left;margin-left: -1px;opacity: 0.6;">
+                <div id="Process" style="border: 3px solid [% Data.Color | html %];margin:3px;border-radius: 5px;display: inline-block;">
+                    <div id="ProcessFieldColor" style="background-color:[% Data.Color | html %];width:20px;height:55px;float:left;display: inline-block;color:yellow;font-size:20px;font-weight: bold;">
+                        <br>
+                        <i class="fa fa-angle-down" aria-hidden="true"style="background-color:#737272;border-radius: 9px;font-weight: bold;padding-left: 2px;padding-right: 3px;"></i>
+                    </div>
+                    <div style="padding:5px;float:left;line-height: 15px;">
+                        <b>[% Data.Name | html %]</b><br>
+                        [% Translate("type of work step: ") | html %][% Translate(Data.ProcessStepArt) | html %]<br>
+                        [% Translate("Next step") | html %]<br>
+                    </div>
+                </div>
+            </div>
+[% RenderBlockEnd("ProcessStepNextUp") %]
+[% RenderBlockStart("ProcessStepNextUpNoTwo") %]
+            <div style="float:left;margin-left: -7px;font-size:23px;color:green;">
+            <br>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </div>
+
+            <div style="float:left;margin-left: -1px;opacity: 0.6;">
+                <div id="Process" style="border: 3px solid [% Data.Color | html %];margin:3px;border-radius: 5px;display: inline-block;">
+                    <div id="ProcessFieldColor" style="background-color:[% Data.Color | html %];width:20px;height:55px;float:left;display: inline-block;color:yellow;font-size:20px;font-weight: bold;">
+                        <br>
+                        <i class="fa fa-angle-down" aria-hidden="true"style="background-color:#737272;border-radius: 9px;font-weight: bold;padding-left: 2px;padding-right: 3px;"></i>
+                    </div>
+                    <div style="padding:5px;float:left;line-height: 15px;">
+                        <b>[% Data.Name | html %]</b><br>
+                        [% Translate("type of work step: ") | html %][% Translate(Data.ProcessStepArt) | html %]<br>
+                        [% Translate("With conditions") | html %]<br>
+                    </div>
+                </div>
+            </div>
+[% RenderBlockEnd("ProcessStepNextUpNoTwo") %]
+
+[% RenderBlockStart("ProcessStepEnd") %]
+            <div style="float:left;margin-left: -7px;font-size:23px;color:red;">
+            <br>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </div>
+
+            <div style="float:left;margin-left: -1px;opacity: 0.6;">
+                <div id="Process" style="border: 3px solid [% Data.Color | html %];box-shadow: 0 0 0px 1px red;margin:3px;border-radius: 5px;display: inline-block;">
+                    <div id="ProcessFieldColor" style="background-color:[% Data.Color | html %];width:0px;height:55px;float:left;display: inline-block;">
+                        [% Translate(" ") | html %]<br>
+                    </div>
+                    <div style="padding:5px;float:left;line-height: 15px;">
+                        <b>[% Data.Name | html %]</b><br>
+                        [% Translate("type of work step: ") | html %][% Translate(Data.ProcessStepArt) | html %]<br>
+                        [% Translate("Ends at not approved") | html %]<br>
+                    </div>
+                </div>
+            </div>
+[% RenderBlockEnd("ProcessStepEnd") %]
+
+[% RenderBlockStart("ProcessStepNextWithConditions") %]
+            <div style="float:left;margin-left: -7px;font-size:23px;color:green;">
+            <br>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </div>
+
+            <div style="float:left;margin-left: -1px;opacity: 0.6;">
+                <div id="Process" style="border: 3px solid [% Data.Color | html %];margin:3px;border-radius: 5px;display: inline-block;">
+                    <div id="ProcessFieldColor" style="background-color:[% Data.Color | html %];width:20px;height:55px;float:left;display: inline-block;color:yellow;font-size:20px;font-weight: bold;">
+                        <br>
+                        <i class="fa fa-angle-down" aria-hidden="true"style="background-color:#737272;border-radius: 9px;font-weight: bold;padding-left: 2px;padding-right: 3px;"></i>
+                    </div>
+                    <div style="padding:5px;float:left;line-height: 15px;">
+                        <b>[% Data.Name | html %]</b><br>
+                        [% Translate("type of work step: ") | html %][% Translate(Data.ProcessStepArt) | html %]<br>
+                        [% Translate("Next step with conditions") | html %]<br>
+                    </div>
+                </div>
+            </div>
+[% RenderBlockEnd("ProcessStepNextWithConditions") %]
+
+[% RenderBlockStart("ProcessStepEndWithoutConditions") %]
+            <div style="float:left;margin-left: -7px;font-size:23px;color:red;">
+            <br>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </div>
+
+            <div style="float:left;margin-left: -1px;opacity: 0.6;">
+                <div id="Process" style="border: 3px solid [% Data.Color | html %];box-shadow: 0 0 0px 1px red;margin:3px;border-radius: 5px;display: inline-block;">
+                    <div id="ProcessFieldColor" style="background-color:[% Data.Color | html %];width:0px;height:55px;float:left;display: inline-block;">
+                        [% Translate(" ") | html %]<br>
+                    </div>
+                    <div style="padding:5px;float:left;line-height: 15px;">
+                        <b>[% Data.Name | html %]</b><br>
+                        [% Translate("type of work step: ") | html %][% Translate(Data.ProcessStepArt) | html %]<br>
+                        [% Translate("Work step ends here without conditions") | html %]<br>
+                    </div>
+                </div>
+            </div>
+[% RenderBlockEnd("ProcessStepEndWithoutConditions") %]
+
+[% RenderBlockStart("ProcessEnd") %]
+            <div style="float:left;margin-left: -7px;font-size:23px;color:red;">
+            <br>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </div>
+
+            <div style="float:left;margin-left: -1px;opacity: 0.6;">
+                <div id="Process" style="border: 3px solid [% Data.Color | html %];box-shadow: 0 0 0px 1px red;margin:3px;border-radius: 5px;display: inline-block;">
+                    <div id="ProcessFieldColor" style="background-color:[% Data.Color | html %];width:0px;height:55px;float:left;display: inline-block;">
+                        [% Translate(" ") | html %]<br>
+                    </div>
+                    <div style="padding:5px;float:left;line-height: 15px;">
+                        <b>[% Data.Name | html %]</b><br>
+                        [% Translate("type of work step: ") | html %][% Translate(Data.ProcessStepArt) | html %]<br>
+                        [% Translate("Process end") | html %]<br>
+                    </div>
+                </div>
+            </div>
+[% RenderBlockEnd("ProcessEnd") %]
+
+        <div id="WorkStepFormClose[% Data.StepValue | html %]" style="padding:15px;visibility:hidden;display:none;">
+            <a href="#" id="[% Data.ProcessStepID | uri %]" title="[% Translate("Close this Activity") | html %]" style="background:#FFFFFF;border: 1px solid#353434;border-radius: 5px;display: block;font-family: tahoma;font-size: 15px;line-height: 17px;vertical-align: middle;font-weight: bold;height: 20px;width: 20px;text-align: center;color:#353434;color:red;"><i class="fa fa-close"></i></a>
+
+			<div id="WorkStepForm[% Data.StepValue | html %]" style="padding:15px;visibility:hidden;display:none;">
+			</div>
+
+        </div>
+[% RenderBlockEnd("ProcessStep") %]
+            <div class="Clear"></div>
+
+        </div>
+    </div>
+[% RenderBlockEnd("Process") %]
+
+            <div class="Clear"></div>
+
+                    </fieldset>
+                </div>
+            </div>
+[% RenderBlockEnd("ProcessTicket") %]
+
+
+        <form action="[% Env("CGIHandle") %]#FollowUp" method="post" enctype="multipart/form-data" name="compose" id="ReplyCustomerTicket" class="Validate PreventMultipleSubmits">
+            <input type="hidden" name="Action" value="CustomerTicketZoom" />
+            <input type="hidden" name="Subaction" value="Store" />
+            <input type="hidden" name="TicketID" value="[% Data.TicketID | html %]" />
+            <input type="hidden" name="ArticleID" value="[% Data.ArticleID | html %]" />
+            <input type="hidden" name="FormID" value="[% Data.FormID | html %]" />
+            <input type="hidden" name="FromChatID" value="[% Data.FromChatID | html %]" />
+            <ul id="Messages">
+                [% Data.Articles %]
+            </ul>
+[% IF Data.NoArticles %]
+            <ul id="NoArticles">
+                <li>
+                    [% Translate("This item has no articles yet.") | html %]
+                </li>
+            </ul>
+[% END %]
+            <div id="ZoomSidebar">
+                <ul id="Metadata">
+                    <li class="Header">
+                        <div class="MessageHeader">
+                            <h3>[% Translate("Information") | html %]</h3>
+                            <div class="Clear"></div>
+                        </div>
+                    </li>
+                    <li><span class="Key">[% Data.Hook | html %]:</span> <span>[% Data.TicketNumber | html %]</span></li>
+
+[% RenderBlockStart("Type") %]
+                    <li><span class="Key">[% Translate("Type") | html %]:</span> <span title="[% Data.Type | html %]">[% Data.Type | html %]</span></li>
+[% RenderBlockEnd("Type") %]
+[% RenderBlockStart("Service") %]
+                    <li><span class="Key">[% Translate("Service") | html %]:</span> <span title="[% Translate(Data.Service) | html %]">[% Translate(Data.Service) | html %]</span></li>
+[% RenderBlockEnd("Service") %]
+[% RenderBlockStart("SLA") %]
+                    <li><span class="Key">[% Translate("SLA") | html %]:</span> <span title="[% Translate(Data.SLA) | html %]">[% Translate(Data.SLA) | html %]</span></li>
+[% RenderBlockEnd("SLA") %]
+[% RenderBlockStart("State") %]
+                    <li><span class="Key">[% Translate("State") | html %]:</span> <span title="[% Translate(Data.State) | html %]">[% Translate(Data.State) | html %]</span></li>
+[% RenderBlockEnd("State") %]
+[% RenderBlockStart("Priority") %]
+                    <li><span class="Key">[% Translate("Priority") | html %]:</span> <span title="[% Translate(Data.Priority) | html %]">[% Translate(Data.Priority) | html %]</span></li>
+[% RenderBlockEnd("Priority") %]
+[% RenderBlockStart("Queue") %]
+                    <li><span class="Key">[% Translate("Queue") | html %]:</span> <span title="[% Data.Queue | html %]">[% Data.Queue | html | replace('::', '<wbr>::<wbr>') %]</span></li>
+[% RenderBlockEnd("Queue") %]
+[% RenderBlockStart("TicketTimeUnits") %]
+                    <li><span class="Key">[% Translate("Accounted time") | html %]:</span> <span title="[% Data.TicketTimeUnits | html %]">[% Data.TicketTimeUnits %]</span></li>
+[% RenderBlockEnd("TicketTimeUnits") %]
+
+[% RenderBlockStart("CustomerTimeUnits") %]
+                    <li><span class="Key">[% Translate("Accounted time") | html %]:</span> <span title="[% Data.CustomerTimeUnits | html %]">[% Data.CustomerTimeUnits %]</span></li>
+[% RenderBlockEnd("CustomerTimeUnits") %]
+
+[% RenderBlockStart("Owner") %]
+                    <li><span class="Key">[% Translate("Owner") | html %]:</span> [% Data.OwnerName | html %]</li>
+[% RenderBlockEnd("Owner") %]
+[% RenderBlockStart("Responsible") %]
+                    <li><span class="Key">[% Translate("Responsible") | html %]:</span> [% Data.ResponsibleName | html %]</li>
+[% RenderBlockEnd("Responsible") %]
+[% RenderBlockStart("ProcessData") %]
+                    <li><span class="Key">[% Translate("Process") | html %]:</span> <span title="[% Data.Process | html %]">[% Data.Process | html %]</span></li>
+                    <li><span class="Key">[% Translate("Activity") | html %]:</span> <span title="[% Data.Activity | html %]">[% Data.Activity | html %]</span></li>
+[% RenderBlockEnd("ProcessData") %]
+
+# show ticket dynamic fields
+[% RenderBlockStart("TicketDynamicField") %]
+                    <li>
+                        <span class="Key">[% Translate(Data.Label) | html %]:</span>
+[% RenderBlockStart("TicketDynamicFieldLink") %]
+                        <span title="[% Data.Title | html %]"><a href="[% Data.Link | Interpolate %]" class="DynamicFieldLink" [% IF Data.LinkPreview %] data-trigger="floater" data-floater-url="[% Data.LinkPreview | Interpolate %]"[% END %] target="_blank">[% Data.Value %]</a></span>
+[% RenderBlockEnd("TicketDynamicFieldLink") %]
+[% RenderBlockStart("TicketDynamicFieldPlain") %]
+                        <span title="[% Data.Title | html %]">[% Data.Value %]</span>
+[% RenderBlockEnd("TicketDynamicFieldPlain") %]
+                    </li>
+[% RenderBlockEnd("TicketDynamicField") %]
+# example of how to use fixed dynamic field blocks for customizations
+# Note: Field1 and Field2 are the names of the fields and had to be replaced with the actual
+# field names
+#[% RenderBlockStart("TicketDynamicField_Field1") %]
+#                    <li>
+#                        <span class="Key">[% Translate(Data.Label) | html %]:</span>
+#                        <span title="[% Data.Title1 | html %]">[% Data.Value %]</span>
+#                    </li>
+#[% RenderBlockEnd("TicketDynamicField_Field1") %]
+#[% RenderBlockStart("TicketDynamicField_Field2") %]
+#                    <li>
+#                        <span class="Key">[% Translate(Data.Label) | html %]:</span>
+#                        <span title="[% Data.Title2 | html %]">[% Data.Value %]</span>
+#                    </li>
+#[% RenderBlockEnd("TicketDynamicField_Field2") %]
+
+                </ul>
+[% RenderBlockStart("NextActivities") %]
+                <ul id="Activities">
+                    <li class="Header">
+                        <div class="MessageHeader">
+                            <h3>[% Translate("Next Steps") | html %]</h3>
+                            <div class="Clear"></div>
+                        </div>
+                    </li>
+[% RenderBlockStart("ActivityDialog") %]
+                    <li><a title="[% Data.Name | html %]" class="AsPopup PopupType_TicketAction" href="[% Env("Baselink") %]Action=CustomerTicketProcess;Subaction=DisplayActivityDialog;TicketID=[% Data.TicketID | uri %];ProcessEntityID=[% Data.ProcessEntityID | uri %];ActivityDialogEntityID=[% Data.ActivityDialogEntityID | uri %]">[% Data.Name | html %]</a></li>
+[% RenderBlockEnd("ActivityDialog") %]
+[% RenderBlockStart("NoActivityDialog") %]
+                    <li>[% Translate("There are no dialogs available at this point in the process.") | html %]</li>
+[% RenderBlockEnd("NoActivityDialog") %]
+                </ul>
+[% RenderBlockEnd("NextActivities") %]
+            </div>
+[% RenderBlockStart("FollowUp") %]
+            <div id="FollowUp" class="[% Data.FollowUpVisible | html %]">
+                <div id="Messenger">
+                    <fieldset class="DontPrint">
+                        <div>
+                            <label for="Subject">
+                                [% Translate("Subject") | html %]:
+                            </label>
+                            <input class="DontPrint" type="text" name="Subject" id="Subject" title="[% Translate("Subject") | html %]" value="[% Data.Subject | html %]" />
+                            <div class="Clear"></div>
+                        </div>
+                        <div>
+                            <label for="RichText" class="Mandatory">
+                                <span class="Marker">*</span>
+                                [% Translate("Text") | html %]:
+                            </label>
+                            <textarea title="[% Translate("Reply") | html %]" id="RichText" class="RichText DontPrint Validate_RequiredRichText [% Data.RichTextInvalid | html %]" name="Body" rows="15" cols="[% Config("Ticket::Frontend::TextAreaNote") | html %]">[% Data.Body | html %]</textarea>
+                            <div id="RichTextError" class="TooltipErrorMessage">
+                                <p>[% Translate("This field is required.") | html %]</p>
+                            </div>
+                            <div id="RichTextServerError" class="TooltipErrorMessage NoJavaScriptMessage[% Data.RichTextInvalid | html %]">
+                                <p>[% Translate("This field is required.") | html %]</p>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="DontPrint">
+
+                        <div id="AttachmentHolder">
+
+                    <label>[% Translate("Attachments") | html %]:</label>
+                        <div class="Field">
+                            <div class="DnDUploadBox">
+[% INCLUDE "FormElements/AttachmentList.tt" %]
+                            </div>
+                        </div>
+                        <div class="Clear"></div>
+
+                        </div>
+[% RenderBlockStart("FollowUpState") %]
+                        <div>
+                            <label for="StateID">[% Translate("Next state") | html %]:</label> [% Data.NextStatesStrg %]
+                        </div>
+[% RenderBlockEnd("FollowUpState") %]
+[% RenderBlockStart("FollowUpPriority") %]
+                        <div>
+                            <label for="PriorityID">[% Translate("Priority") | html %]:</label> [% Data.PriorityStrg %]
+                        </div>
+[% RenderBlockEnd("FollowUpPriority") %]
+
+[% RenderBlockStart("FollowUpDynamicField") %]
+                        <div class="Row Row_DynamicField_[% Data.Name | html %]">
+                            [% Data.Label %]
+                            <div class="Field">
+                                [% Data.Field %]
+                            </div>
+                            <div class="Clear"></div>
+                        </div>
+[% RenderBlockEnd("FollowUpDynamicField") %]
+
+# example of how to use fixed dynamic field blocks for customizations
+# Note: Field1 and Field2 are the names of the fields and had to be replaced with the actual
+# field names
+#[% RenderBlockStart("FollowUpDynamicField_Field1") %]
+#                <div class="Row Row_DynamicField_[% Data.Name | html %]">
+#                    [% Data.Label %]
+#                    <div class="Field">
+#                        [% Data.Field %]
+#                    </div>
+#                    <div class="Clear"></div>
+#                </div>
+#[% RenderBlockEnd("FollowUpDynamicField_Field1") %]
+#[% RenderBlockStart("FollowUpDynamicField_Field2") %]
+#                <div class="Row Row_DynamicField_[% Data.Name | html %]">
+#                    [% Data.Label %]
+#                    <div class="Field">
+#                        [% Data.Field %]
+#                    </div>
+#                    <div class="Clear"></div>
+#                </div>
+#[% RenderBlockEnd("FollowUpDynamicField_Field2") %]
+
+                    </fieldset>
+                    <div class="ActionRowOFORK">
+                        <button type="submit" value="[% Translate("Submit") | html %]">[% Translate("Submit") | html %]</button>
+                        <span style="margin-left:15px;">[% Translate("or") | html %]</span>
+                        <a id="CloseButton" href=""><button type="button" style="margin-left:15px;" value="[% Translate("Cancel") | html %]">[% Translate("Cancel") | html %]</button></a>
+                    </div>
+                </div>
+                <a id="ReplyButton" class="DontPrint" href=""><i class="fa fa-reply"></i> [% Translate("Reply") | html %]</a>
+            </div>
+[% RenderBlockEnd("FollowUp") %]
+            <div class="Clear"></div>
+        </form>
+    </div>
+</div>

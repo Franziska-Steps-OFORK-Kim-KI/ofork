@@ -1,0 +1,142 @@
+# --
+# AgentTicketRequestBlock.tt - provides HTML form for customer message
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# --
+# $Id: AgentTicketRequestBlock.tt,v 1.2 2016/11/20 19:31:54 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+<fieldset class="TableLike AgentTicketRequestInternalOFORK">
+
+[% RenderBlockStart("OverviewFelderList") %]
+<hr style="background:#000000;height:1px;" />
+
+[% RenderBlockStart("OverviewListFelderRow") %]
+
+[% RenderBlockStart("OverviewListFelderMultiselectRequired") %]
+    <label class="Mandatory" for="[% Data.FeldName | html %]" style="width:20%;font-size:12px;"><span class="Marker">*</span> <span title="[% Data.ToolTip | html %]">[% Data.FeldLabeling | html %]:</span><span style="color:#6e6b6b;"><br>[% Data.ToolTipUnder %]</span></label>
+    <div class="Field">
+    [% Data.FeldNameStrg %]
+    <div id="[% Data.FeldName | html %]Error" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+    <div id="[% Data.FeldName | html %]ServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+    </div>
+    <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFelderMultiselectRequired") %]
+[% RenderBlockStart("OverviewListFelderMultiselect") %]
+    <label for="[% Data.FeldName | html %]" style="width:20%;font-size:12px;"><span title="[% Data.ToolTip | html %]">[% Data.FeldLabeling | html %]:</span><span style="color:#6e6b6b;"><br>[% Data.ToolTipUnder %]</span></label>
+    <div class="Field">
+    [% Data.FeldNameStrg %]
+    </div>
+    <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFelderMultiselect") %]
+
+[% RenderBlockStart("OverviewListFelderDropdownRequired") %]
+    <label class="Mandatory" for="[% Data.FeldName | html %]" style="width:20%;font-size:12px;"><span class="Marker">*</span> <span title="[% Data.ToolTip | html %]">[% Data.FeldLabeling | html %]:</span><span style="color:#6e6b6b;"><br>[% Data.ToolTipUnder %]</span></label>
+    <div class="Field">
+    [% Data.FeldNameStrg %]
+    <div id="[% Data.FeldName | html %]Error" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+    <div id="[% Data.FeldName | html %]ServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+    </div>
+    <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFelderDropdownRequired") %]
+[% RenderBlockStart("OverviewListFelderDropdown") %]
+    <label for="[% Data.FeldName | html %]" style="width:20%;font-size:12px;"><span title="[% Data.ToolTip | html %]">[% Data.FeldLabeling | html %]:</span><span style="color:#6e6b6b;"><br>[% Data.ToolTipUnder %]</span></label>
+    <div class="Field">
+    [% Data.FeldNameStrg %]
+    </div>
+    <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFelderDropdown") %]
+
+[% RenderBlockStart("OverviewListFelderTextRequired") %]
+    <label class="Mandatory" for="[% Data.FeldName | html %]" style="width:20%;font-size:12px;"><span class="Marker">*</span> <span title="[% Data.ToolTip | html %]">[% Data.FeldLabeling | html %]:</span><span style="color:#6e6b6b;"><br>[% Data.ToolTipUnder %]</span></label>
+    <div class="Field">
+    <input type="text" name="[% Data.FeldName | html %]" class="Validate_Required" style="width:50%;margin-top:5px;" id="[% Data.FeldName | html %]" value="[% Data.FeldDefaultvalue | html %]">
+    <div id="[% Data.FeldName | html %]Error" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+    <div id="[% Data.FeldName | html %]ServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+    </div>
+    <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFelderTextRequired") %]
+[% RenderBlockStart("OverviewListFelderText") %]
+    <label for="[% Data.FeldName | html %]" style="width:20%;font-size:12px;"><span title="[% Data.ToolTip | html %]">[% Data.FeldLabeling | html %]:</span><span style="color:#6e6b6b;"><br>[% Data.ToolTipUnder %]</span></label>
+    <div class="Field">
+    <input type="text" name="[% Data.FeldName | html %]" style="width:50%,margin-top:5px;" id="[% Data.FeldName | html %]" value="[% Data.FeldDefaultvalue | html %]"/>
+    </div>
+    <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFelderText") %]
+
+[% RenderBlockStart("OverviewListFelderTextAreaRequired") %]
+    <label class="Mandatory" for="[% Data.FeldName | html %]" style="width:20%;font-size:12px;"><span class="Marker">*</span> <span title="[% Data.ToolTip | html %]">[% Data.FeldLabeling | html %]:</span><span style="color:#6e6b6b;"><br>[% Data.ToolTipUnder %]</span></label>
+    <div class="Field">
+    <textarea id="[% Data.FeldName | html %]" class="Validate_Required" rows="[% Data.FeldRows | html %]" cols="[% Data.FeldCols | html %]" name="[% Data.FeldName | html %]">[% Data.FeldDefaultvalue | html %]</textarea>
+    <div id="[% Data.FeldName | html %]Error" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+    <div id="[% Data.FeldName | html %]ServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+    </div>
+    <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFelderTextAreaRequired") %]
+[% RenderBlockStart("OverviewListFelderTextArea") %]
+    <label for="[% Data.FeldName | html %]" style="width:20%;font-size:12px;"><span title="[% Data.ToolTip | html %]">[% Data.FeldLabeling | html %]:</span><span style="color:#6e6b6b;"><br>[% Data.ToolTipUnder %]</span></label>
+    <div class="Field">
+    <textarea id="[% Data.FeldName | html %]" rows="[% Data.FeldRows | html %]" cols="[% Data.FeldCols | html %]" name="[% Data.FeldName | html %]">[% Data.FeldDefaultvalue | html %]</textarea>
+    </div>
+    <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFelderTextArea") %]
+
+[% RenderBlockStart("OverviewListFelderCheckboxRequired") %]
+    <label class="Mandatory" for="[% Data.FeldName | html %]" style="width:20%;font-size:12px;"><span class="Marker">*</span> <span title="[% Data.ToolTip | html %]">[% Data.FeldLabeling | html %]:</span><span style="color:#6e6b6b;"><br>[% Data.ToolTipUnder %]</span></label>
+    <div class="Field">
+    <input type="checkbox" class="Validate_Required" name="[% Data.FeldName | html %]" id="[% Data.FeldName | html %]" value="[% Data.FeldDefaultvalue | html %]" [% Data.FeldChecked | html %]/>
+    <div id="[% Data.FeldName | html %]Error" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+    <div id="[% Data.FeldName | html %]ServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+    </div>
+    <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFelderCheckboxRequired") %]
+[% RenderBlockStart("OverviewListFelderCheckbox") %]
+    <label for="[% Data.FeldName | html %]" style="width:20%;font-size:12px;"><span title="[% Data.ToolTip | html %]">[% Data.FeldLabeling | html %]:</span><span style="color:#6e6b6b;"><br>[% Data.ToolTipUnder %]</span></label>
+    <div class="Field">
+        <input type="checkbox" name="[% Data.FeldName | html %]" id="[% Data.FeldName | html %]" value="[% Data.FeldDefaultvalue | html %]" [% Data.FeldChecked | html %]/>
+        <div class="Clear"></div>
+    </div>
+    <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFelderCheckbox") %]
+
+[% RenderBlockStart("OverviewListFelderDateRequired") %]
+    <label class="Mandatory" for="[% Data.FeldName | html %]" style="width:20%;font-size:12px;"><span class="Marker">*</span> <span title="[% Data.ToolTip | html %]">[% Data.FeldLabeling | html %]:</span><span style="color:#6e6b6b;"><br>[% Data.ToolTipUnder %]</span></label>
+    <div class="Field" style="margin-top:3px;">
+    [% Data.FeldNameString %]
+    <div id="[% Data.FeldName | html %]Error" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+    <div id="[% Data.FeldName | html %]ServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+    </div>
+    <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFelderDateRequired") %]
+[% RenderBlockStart("OverviewListFelderDate") %]
+    <div>
+        <label for="[% Data.FeldName | html %]" style="width:20%;font-size:12px;"><span title="[% Data.ToolTip | html %]">[% Data.FeldLabeling | html %]:</span><span style="color:#6e6b6b;"><br>[% Data.ToolTipUnder %]</span></label>
+        [% Data.FeldNameString %]
+        <div class="Clear"></div>
+    </div>
+[% RenderBlockEnd("OverviewListFelderDate") %]
+
+[% RenderBlockStart("OverviewListFelderHeadline") %]
+
+    <br />
+    <div class="Clear"></div>
+
+    <div class="LightRowHeadlineAgentRequestFormOFORK Header">
+        [% Data.Headline%]
+        <div style="padding-left:10px;padding-bottom:10px;">[% Data.Description %]</div>
+        <input type="hidden" name="[% Data.FeldNameHeadline | html %]" style="width:50%;margin-top:5px;" id="[% Data.FeldNameHeadline | html %]" value="[% Data.Headline | html %]"/>
+    </div>
+    <div class="Clear"></div>
+[% RenderBlockEnd("OverviewListFelderHeadline") %]
+
+[% RenderBlockEnd("OverviewListFelderRow") %]
+
+[% RenderBlockStart("OverviewListFelderRequestFormIDs") %]
+    <input type="hidden" name="RequestFormBlockIDs[% Data.RequestFormID | html %]" id="RequestFormBlockIDs[% Data.RequestFormID | html %]" value="[% Data.RequestFormBlockIDs | html %]"/>
+[% RenderBlockEnd("OverviewListFelderRequestFormIDs") %]
+
+    <hr style="background:#000000;height:1px;" />
+[% RenderBlockEnd("OverviewFelderList") %]
+</fieldset>

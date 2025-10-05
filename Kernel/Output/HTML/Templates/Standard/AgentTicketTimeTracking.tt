@@ -1,0 +1,154 @@
+# --
+# AgentTicketTimeTracking.tt - html for configurtion item overview table
+# Copyright (C) 2010-2018 einraumwerk, http://einraumwerk.de/
+# --
+# $Id: AgentTicketTimeTracking.tt,v 1.1 2018/12/02 08:07:36 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<form action="[% Env("CGIHandle") %]" method="post" enctype="multipart/form-data" name="compose" id="Compose" class="Validate PreventMultipleSubmits">
+    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+    <input type="hidden" name="Subaction" value="[% Data.ActionType | html %]"/>
+    <input type="hidden" name="TicketID" value="[% Data.TicketID | html %]"/>
+    <input type="hidden" name="ID" value="[% Data.ID | html %]"/>
+
+    <div class="LayoutPopup ARIARoleMain">
+        <div class="Header">
+            <h1>
+                [% Translate("Time tracking") | html %]
+            </h1>
+            <p class="AsteriskExplanation">[% Translate("All fields marked with an asterisk (*) are mandatory.") | html %]</p>
+
+            <p>
+                <a class="CancelClosePopup" href="#">[% Translate("Finish & close") | html %]</a>
+            </p>
+        </div>
+        <div class="Content">
+            <div class="WidgetSimple Expanded">
+                <div class="Header">
+                    <h2>[% Translate("Time tracking") | html %]</h2>
+                </div>
+                <div class="Content">
+                    <fieldset class="TableLike FixedLabel">
+
+                        <label class="Mandatory" for="TimeTrackingID"><span class="Marker">*</span>[% Translate("Category") | html %]:</label>
+                        <div class="Field">
+                            [% Data.TimeTrackingStrg %]
+                            <div id="TimeTrackingIDError" class="TooltipErrorMessage"><p>[% Translate("Please set Category!") | html %]</p></div>
+                            <div id="TimeTrackingIDServerError" class="TooltipErrorMessage"><p>[% Translate("Category invalid.") | html %]</p></div>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label class="Mandatory" for="TimeTrackingTime"><span class="Marker">*</span>[% Translate("Time unit") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" id="TimeTrackingTime" name="TimeTrackingTime" value="[% Data.TimeTrackingTime | html %]" class="W5pc Validate [% Data.TimeTrackingTimeInvalid %] [% Data.TimeTrackingTimeRequired %]"/>
+                            <div id="TimeTrackingTimeError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                            <div id="TimeTrackingTimeServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+[% RenderBlockStart("TimeTrackingTimeErrorNumbers") %]
+                            <div id="TimeTrackingTimeErrorNumbers"><p style="color:red">[% Translate("Only numbers are allowed.") | html %]</p></div>
+[% RenderBlockEnd("TimeTrackingTimeErrorNumbers") %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label class="Mandatory" for="Subject"><span class="Marker">*</span>[% Translate("Activity") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" id="Subject" name="Subject" value="[% Data.Subject | html %]" class="W75pc Validate [% Data.SubjectInvalid %] [% Data.SubjectRequired %]"/>
+                            <div id="SubjectError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                            <div id="SubjectServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="Subject">[% Translate("Date") | html %]:</label>
+                        <div class="Field">
+                            [% Data.DateString %]
+                        </div>
+                        <div class="Clear"></div>
+
+
+                        <div class="Field">
+                            <button class="CallForAction Primary" id="submitRichText" accesskey="g" title="[% Translate("Submit") | html %] (g)" type="submit" value="[% Translate("Submit") | html %]">
+                                <span><i class="fa fa-check-square-o"></i> [% Translate("Submit") | html %]</span>
+                            </button>
+                        </div>
+                        <div class="Clear"></div>
+
+                    </fieldset>
+                </div>
+
+                <div class="Header">
+                    <h2>[% Translate("Overview") | html %]</h2>
+                </div>
+                <div class="Content">
+    
+                    <table class="DataTable" id="Types">
+                        <thead>
+                            <tr>
+                                <th>[% Translate("Category") | html %]</th>
+                                <th>[% Translate("Time unit") | html %]</th>
+                                <th>[% Translate("Activity") | html %]</th>
+                                <th>[% Translate("Created") | html %]</th>
+                                <th>[% Translate("Agent") | html %]</th>
+                                <th>[% Translate("Customer signature") | html %]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+[% RenderBlockStart("OverviewResultRow") %]
+                            <tr>
+                                <td><a class="AsBlock" href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=Change;ID=[% Data.ID | uri %];TicketID=[% Data.TicketID | uri %]">[% Data.TimeTracking | html %]</a></td>
+                                <td>[% Translate(Data.TimeTrackingTime) | html %]</td>
+                                <td>[% Translate(Data.Subject) | html %]</td>
+                                <td>[% Data.CreateTime | Localize("TimeShort") %]</td>
+                                <td>[% Data.CreateBy | html %]</td>
+
+[% RenderBlockStart("OverviewResultRowSignature") %]
+                                <td>[% Data.Signature %]</td>
+[% RenderBlockEnd("OverviewResultRowSignature") %]
+
+[% RenderBlockStart("OverviewResultRowImage") %]
+                                <td>
+                                <img src="[% Data.Content | html %]" style="max-width:200px;max-height:160px;border: 1px solid #000000;">[% Translate("  ") | html %]
+                                <a class="TrashCan AttachmentDelete" href="#" data-id="[% Data.ID %]" data-ticketid="[% Data.TicketID %]" title="[% Translate("Delete this icon") | html %]">
+                                    <i class="fa fa-trash-o"></i>
+                                </a>
+                                </td>
+[% RenderBlockEnd("OverviewResultRowImage") %]
+
+                            </tr>
+[% RenderBlockEnd("OverviewResultRow") %]
+                        </tbody>
+                    </table>
+            <div class="Hidden" id="DeleteAttachmentDialogContainer">
+                <div id ="DeleteAttachmentDialog" class="InnerContent">
+                    <p class="Center Spacing">[% Translate("Do you really want to delete this icon?") | html %]</p>
+                    <div class="SpacingTop"></div>
+                </div>
+            </div>
+					<div id="Space"><br>[% Translate("Summary") | html %]</div>
+
+                    <table class="DataTable" id="Types">
+                        <thead>
+                            <tr>
+                                <th>[% Translate("Amount") | html %]</th>
+                                <th>[% Translate("Total time units") | html %]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+[% RenderBlockStart("OverviewResultRowAdded") %]
+                            <tr>
+                                <td>[% Data.TimeTrackingValue | html %]</td>
+                                <td>[% Translate(Data.TimeTrackingTimeValue) | html %]</td>
+                            </tr>
+[% RenderBlockEnd("OverviewResultRowAdded") %]
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</form>

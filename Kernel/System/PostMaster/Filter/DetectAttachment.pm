@@ -1,0 +1,75 @@
+# --
+# Kernel/System/PostMaster/Filter/DetectAttachment.pm
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: DetectAttachment.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+package Kernel::System::PostMaster::Filter::DetectAttachment;
+
+use strict;
+use warnings;
+
+our @ObjectDependencies = (
+    'Kernel::System::Log',
+);
+
+sub new {
+    my ( $Type, %Param ) = @_;
+
+    # Allocate new hash for object.
+    my $Self = {};
+    bless( $Self, $Type );
+
+    $Self->{ParserObject} = $Param{ParserObject} || die "Got no ParserObject";
+
+    # Get communication log object and MessageID.
+    $Self->{CommunicationLogObject} = $Param{CommunicationLogObject} || die "Got no CommunicationLogObject!";
+
+    return $Self;
+}
+
+sub Run {
+    my ( $Self, %Param ) = @_;
+
+    # Check needed stuff.
+    for my $Needed (qw(JobConfig GetParam)) {
+        if ( !$Param{$Needed} ) {
+            $Self->{CommunicationLogObject}->ObjectLog(
+                ObjectLogType => 'Message',
+                Priority      => 'Error',
+                Key           => 'Kernel::System::PostMaster::Filter::DetectAttachment',
+                Value         => "Need $Needed!",
+            );
+            return;
+        }
+    }
+
+    # Get attachments.
+    my @Attachments = $Self->{ParserObject}->GetAttachments();
+
+    my $AttachmentCount = 0;
+    for my $Attachment (@Attachments) {
+        if (
+            defined $Attachment->{ContentDisposition}
+            && length $Attachment->{ContentDisposition}
+            )
+        {
+            $AttachmentCount++;
+        }
+    }
+
+    $Param{GetParam}->{'X-OFORK-AttachmentExists'} = ( $AttachmentCount ? 'yes' : 'no' );
+    $Param{GetParam}->{'X-OFORK-AttachmentCount'} = $AttachmentCount;
+
+    return 1;
+}
+
+1;

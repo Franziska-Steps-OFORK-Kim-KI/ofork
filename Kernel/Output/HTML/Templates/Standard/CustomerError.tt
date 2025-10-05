@@ -1,0 +1,32 @@
+# --
+# Kernel/Output/HTML/Templates/Standard/CustomerError.tt
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: CustomerError.tt,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<div id="MainBox">
+    <div class="Content Error">
+        <h1>[% Translate("An Error Occurred") | html %]</h1>
+        <p>[% Translate(Data.Message) | truncate(200) | html %]</p>
+    [% IF Data.Comment %]
+        <p>[% Translate(Data.Comment) | html %]</p>
+    [% END %]
+    [% IF Data.BackendTraceback %]
+        <p><a href="#" class="TriggerFullErrorDetails">[% Translate("Error Details") | html %]</a></p>
+    [% END %]
+    </div>
+    [% IF Data.BackendTraceback %]
+    <div class="Content Error Hidden ErrorDetails">
+        <h2>[% Translate("Traceback") | html %]</h2>
+        <pre>[% Data.BackendTraceback | html %]</pre>
+    </div>
+    [% END %]
+</div>

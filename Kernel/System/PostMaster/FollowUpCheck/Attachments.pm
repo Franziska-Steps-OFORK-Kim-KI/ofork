@@ -1,0 +1,81 @@
+# --
+# Kernel/System/PostMaster/FollowUpCheck/Attachments.pm
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: Attachments.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+package Kernel::System::PostMaster::FollowUpCheck::Attachments;
+
+use strict;
+use warnings;
+
+our @ObjectDependencies = (
+    'Kernel::Config',
+    'Kernel::System::Ticket',
+);
+
+sub new {
+    my ( $Type, %Param ) = @_;
+
+    # allocate new hash for object
+    my $Self = {};
+    bless( $Self, $Type );
+
+    $Self->{ParserObject} = $Param{ParserObject} || die "Got no ParserObject";
+
+    # Get communication log object.
+    $Self->{CommunicationLogObject} = $Param{CommunicationLogObject} || die "Got no CommunicationLogObject!";
+
+    return $Self;
+}
+
+sub Run {
+    my ( $Self, %Param ) = @_;
+
+    my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');
+
+    # Ignore all inline parts as these are actually part of the email body.
+    my @Attachments = $Self->{ParserObject}->GetAttachments();
+    @Attachments = grep { defined $_->{ContentDisposition} && $_->{ContentDisposition} ne 'inline' } @Attachments;
+
+    $Self->{CommunicationLogObject}->ObjectLog(
+        ObjectLogType => 'Message',
+        Priority      => 'Debug',
+        Key           => 'Kernel::System::PostMaster::FollowUpCheck::Attachments',
+        Value         => 'Searching for TicketNumber in email attachments.',
+    );
+
+    ATTACHMENT:
+    for my $Attachment (@Attachments) {
+
+        my $Tn = $TicketObject->GetTNByString( $Attachment->{Content} );
+        next ATTACHMENT if !$Tn;
+
+        my $TicketID = $TicketObject->TicketCheckNumber( Tn => $Tn );
+
+        if ($TicketID) {
+
+            $Self->{CommunicationLogObject}->ObjectLog(
+                ObjectLogType => 'Message',
+                Priority      => 'Debug',
+                Key           => 'Kernel::System::PostMaster::FollowUpCheck::Attachments',
+                Value =>
+                    "Found valid TicketNumber '$Tn' (TicketID '$TicketID') in email attachment '$Attachment->{Filename}'.",
+            );
+
+            return $TicketID;
+        }
+    }
+
+    return;
+}
+
+1;

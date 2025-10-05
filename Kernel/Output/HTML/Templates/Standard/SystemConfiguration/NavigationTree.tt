@@ -1,0 +1,28 @@
+# --
+# Kernel/Output/HTML/Templates/Standard/SystemConfiguration/NavigationTree.tt
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: NavigationTree.tt,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+[% BLOCK Recurse %]
+<ul style="display: none;">
+    [% FOREACH Item IN RecursionData.keys.sort %]
+        [% Matches = Item.match('[:]*(\w+)$'); %]
+        <li id="[% Item | html %]" [% IF RecursionData.$Item.Count == 0 %]data-jstree='{"disabled":true}'[% END %]>
+            [% Matches.0 | html %][% IF RecursionData.$Item.Count != 0 %] ([% RecursionData.$Item.Count | html %])[% END %]
+            [% IF RecursionData.$Item.size %]
+                [% INCLUDE Recurse RecursionData = RecursionData.$Item.Subitems %]
+            [% END %]
+        </li>
+    [% END %]
+</ul>
+[% END %]
+[% PROCESS Recurse RecursionData = Data.Tree %]

@@ -1,0 +1,53 @@
+# --
+# AdminRequestFieldsContentList.tt - provides HTML form for AdminSLA
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# --
+# $Id: AdminRequestFieldsContentList.tt,v 1.1 2016/09/20 13:40:23 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+[% Translate("Database value: ") | html %]<input type="text" name="Schluessel[% Data.WerteID | html %]" id="Schluessel[% Data.WerteID | html %]" value="[% Data.Schluessel | html %]" class="W20pc" maxlength="200"/>
+[% Translate("Value shown: ") | html %]<input type="text" name="Inhalt[% Data.WerteID | html %]" id="Inhalt[% Data.WerteID | html %]" value="[% Data.Inhalt | html %]" class="W20pc" maxlength="200"/>
+<input type="hidden" name="WertID[% Data.WerteID | html %]" id="WertID[% Data.WerteID | html %]" value="[% Data.WerteID | html %]">
+<input type="hidden" name="SessionName" id="SessionName" value="[% Env("SessionName") | html %]"/>
+<input type="hidden" name="SessionID" id="SessionID" value="[% Env("SessionID") | html %]"/>
+<button id="RemoveValue_[% Data.WerteID | html %]" value="Remove value" type="button" name="RemoveValue_[% Data.WerteID | html %]">[% Translate("Delete value") | html %]</button><br>
+    <script type="text/javascript">//<![CDATA[
+
+    //bind click function
+    $('#RemoveValue_[% Data.WerteID | html %]').bind('click', function () {
+        RemoveValue_[% Data.WerteID | html %]();
+        return false;
+    });
+
+    function RemoveValue_[% Data.WerteID | html %](){
+
+    var SessionName = $('input#SessionName').val();
+    var SessionID = $('input#SessionID').val();
+    var new_names = SessionName + "=" + SessionID;
+
+        $.ajax({
+            type: 'Post',
+            url:  'index.pl?' + new_names,
+            data:
+            {
+                Action:    'AdminRequestFieldsContent',
+                Subaction: 'RemoveWert',
+                WertID:     $('input#WertID[% Data.WerteID | html %]').val(),
+                Schluessel: $('input#Schluessel[% Data.WerteID | html %]').val(),
+                Inhalt:     $('input#Inhalt[% Data.WerteID | html %]').val(),
+                FeldID:     $('input#ID').val()
+            },
+            async: false,
+            dataType: 'html',
+            success: function(Response) {
+                $('#WertListe').html(Response);
+            }
+        });
+        DropDownList();
+    }
+
+    //]]></script>

@@ -1,0 +1,34 @@
+# --
+# Kernel/Output/HTML/Templates/Standard/ProcessManagement/CustomerActivityDialogFooter.tt
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: CustomerActivityDialogFooter.tt,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+                    </fieldset>
+                </div>
+[% RenderBlockStart("Footer") %]
+                <div class="PopupFooter">
+                    <button class="Primary" id="[% Data.ButtonID | html %]" accesskey="g" title="[% Translate(Data.ButtonTitle) | html %] (g)" type="submit" value="[% Translate(Data.ButtonText) | html %]">[% Translate(Data.ButtonText) | html %]</button>
+[% RenderBlockStart("SubmitAdviceText") %]
+                    <span class="AdviceText">[% Data.AdviceText | html %]</span>
+[% RenderBlockEnd("SubmitAdviceText") %]
+                </div>
+[% RenderBlockEnd("Footer") %]
+            </div>
+        </form>
+    </div>
+</div>
+
+[% RenderBlockStart("FooterJS") %]
+<script type="text/javascript">
+[% PROCESS JSDataInsert %]
+[% PROCESS JSOnDocumentCompleteInsert %]
+</script>
+[% RenderBlockEnd("FooterJS") %]

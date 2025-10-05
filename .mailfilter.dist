@@ -1,0 +1,77 @@
+# --
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+#SYS_HOME=/opt/ofork
+SYS_HOME=$HOME
+
+import DEFAULT
+LOCALDEFAULT=$DEFAULT
+DEFAULT=${SYS_HOME}/var/spool/`date +%s`${FROM}${SIZE}
+MONTHFOLDER=`date +%Y-%m`
+YEARFOLDER=`date +%Y`
+
+
+# Remove all X-OFORK Header (allow this only for trusted email)
+# e. g. from *@example.com
+
+if (/^To:.*@example.com/)
+{
+    xfilter "grep -vi '^X-OFORK-'"
+}
+
+# or just no emails with "X-OFORK-Ident: ahfiw2Fw32r230dddl2foeo3r" header!
+#if (/^X-OFORK-Ident: ahfiw2Fw32r230dddl2foeo3r/)
+#{
+#    xfilter "grep -vi '^X-OFORK-'"
+#}
+
+
+
+# Examples for queue presorting.
+
+if (/^To:.*@example.com/)
+{
+    xfilter "formail -I \"X-OFORK-Queue: example\""
+}
+
+if (/^List-Id:.*OpenAntiVirus/)
+{
+    xfilter "formail -I \"X-OFORK-Queue: OpenAntiVirus\""
+}
+
+
+# Example for add free form key and value (max 3).
+
+if (/^To:.*@example.com/)
+{
+    xfilter "formail -I \"X-OFORK-ArticleKey1: Test\""
+    xfilter "formail -I \"X-OFORK-ArticleValue1: True!\""
+}
+
+
+# Backup of all incoming emails.
+# It's always better to have a backup of all incoming emails!
+
+cc ${SYS_HOME}/var/INBOX.Backup.${MONTHFOLDER}
+
+
+# Pipe all email into the PostMaster process.
+
+xfilter "${SYS_HOME}/bin/ofork.Console.pl Maint::PostMaster::Read"
+
+
+# spool all the rest (which the ofork.PostMaster.pl can't process!)
+# If the database is down or the ofork.PostMaster.pl exit was not '0'!
+
+to $DEFAULT
+
+
+# end of .mailfilter

@@ -1,0 +1,78 @@
+# --
+# AdminRequestFieldsContent.tt - provides HTML form for AdminSLA
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# --
+# $Id: AdminRequestFieldsContent.tt,v 1.1 2016/09/20 13:40:23 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<br>[% Translate("Database value: ") | html %]<input type="text" name="Schluessel" id="Schluessel" value="" class="W20pc" maxlength="200"/>
+[% Translate("Value shown: ") | html %]<input type="text" name="Inhalt" id="Inhalt" value="" class="W20pc" maxlength="200"/>
+<button id="AddValueSubmit" value="Add Value" type="button">[% Translate("Add value") | html %]</button><br><br>
+<input type="hidden" name="SessionName" id="SessionName" value="[% Env("SessionName") | html %]"/>
+<input type="hidden" name="SessionID" id="SessionID" value="[% Env("SessionID") | html %]"/>
+
+<script type="text/javascript">//<![CDATA[
+
+//bind click function
+$('#AddValueSubmit').bind('click', function () {
+    NeuerWert();
+    return false;
+});
+
+function NeuerWert(){
+
+
+    var SessionName = $('input#SessionName').val();
+    var SessionID = $('input#SessionID').val();
+    var new_names = SessionName + "=" + SessionID;
+
+    $.ajax({
+        type: 'Post',
+        url:  'index.pl?' + new_names,
+        data:
+        {
+            Action:    'AdminRequestFieldsContent',
+            Subaction: 'NeuerWert',
+            FeldID:     $('input#ID').val(),
+            Schluessel: $('input#Schluessel').val(),
+            Inhalt:     $('input#Inhalt').val(),
+        },
+        async: false,
+        dataType: 'html',
+        success: function(Response) {
+            $('#WertListe').html(Response);
+        }
+    });
+    DropDownList();
+}
+
+function DropDownList(){
+
+    var CheckTyp = $('input#Typ').val();
+
+    var SessionName = $('input#SessionName').val();
+    var SessionID = $('input#SessionID').val();
+    var new_names = SessionName + "=" + SessionID;
+
+    $.ajax({
+        type: 'Post',
+        url:  'index.pl?' + new_names,
+        data:
+        {
+            Action:    'AdminRequestFieldsContent',
+            Subaction: CheckTyp,
+            FeldID:    $('input#ID').val()
+        },
+        async: false,
+        dataType: 'html',
+        success: function(Response) {
+            $('#Defaultvalue').html(Response);
+        }
+    });
+}
+
+//]]></script>

@@ -1,0 +1,200 @@
+# --
+# AdminContractualPartner.tt - provides HTML form for AdminSLA
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# --
+# $Id: AdminContractualPartner.tt,v 1.2 2017/02/02 10:06:16 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+[% RenderBlockStart("Overview") %]
+<div class="MainBox ARIARoleMain LayoutFixedSidebar SidebarFirst">
+
+    [% BreadcrumbPath = [
+            {
+                Name => Translate('Manage contractual partner'),
+                Link => Env("Action"),
+            },
+        ]
+    %]
+
+    [% SWITCH Data.Action %]
+        [% CASE 'Add' %]
+            [% BreadcrumbPath.push({ Name => Translate("Add contractual partner"),}) %]
+        [% CASE 'Change' %]
+            [% USE EditTitle = String(Translate("Edit contractual partner")) %]
+            [% BreadcrumbPath.push({ Name => EditTitle.append( ': ', Data.Name ) }) %]
+    [% END %]
+
+    [% INCLUDE "Breadcrumb.tt" Path = BreadcrumbPath %]
+
+    <div class="SidebarColumn">
+
+[% RenderBlockStart("ActionList") %]
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>[% Translate("Actions") | html %]</h2>
+            </div>
+            <div class="Content">
+                <ul class="ActionList">
+
+[% RenderBlockStart("ActionOverview") %]
+                    <li>
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %]" class="CallForAction"><span>[% Translate("Go to overview") | html %]</span></a>
+                    </li>
+[% RenderBlockEnd("ActionOverview") %]
+
+[% RenderBlockStart("ActionAdd") %]
+                    <li>
+                        <a class="CallForAction Plus" href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=ContractualPartnerEdit">
+                        <span>[% Translate("Contractual partner add") | html %]</span>
+                        </a>
+                    </li>
+[% RenderBlockEnd("ActionAdd") %]
+
+                </ul>
+            </div>
+        </div>
+[% RenderBlockEnd("ActionList") %]
+
+    </div>
+
+    <div class="ContentColumn">
+        <div class="WidgetSimple">
+[% RenderBlockStart("OverviewList") %]
+            <div class="Header">
+                <h2>[% Translate("List") | html %]</h2>
+            </div>
+            <div class="Content">
+
+                <table class="DataTable">
+                    <thead>
+                        <tr>
+                            <th>[% Translate("Company") | html %]</th>
+                            <th>[% Translate("City") | html %]</th>
+                            <th>[% Translate("Description") | html %]</th>
+                            <th>[% Translate("Valid") | html %]</th>
+                            <th>[% Translate("Changed") | html %]</th>
+                            <th>[% Translate("Created") | html %]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+[% RenderBlockStart("NoDataFoundMsg") %]
+                        <tr>
+                            <td colspan="6">
+                                [% Translate("No data found.") | html %]
+                            </td>
+                        </tr>
+[% RenderBlockEnd("NoDataFoundMsg") %]
+[% RenderBlockStart("OverviewListRow") %]
+                        <tr>
+                            <td><a class="AsBlock" href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=ContractualPartnerEdit;ContractualPartnerID=[% Data.ContractualPartnerID | uri %]">[% Data.Company | html %]</a></td>
+                            <td title="[% Data.City | html %]">[% Data.City | html %]</td>
+                            <td title="[% Data.Description | html %]">[% Data.Description | truncate(26) | html %]</td>
+                            <td>[% Translate(Data.Valid) | html %]</td>
+                            <td>[% Data.ChangeTime | Localize("TimeShort") %]</td>
+                            <td>[% Data.CreateTime | Localize("TimeShort") %]</td>
+                        </tr>
+[% RenderBlockEnd("OverviewListRow") %]
+                    </tbody>
+                </table>
+            </div>
+[% RenderBlockEnd("OverviewList") %]
+
+
+[% RenderBlockStart("ContractualPartnerEdit") %]
+            <div class="Header">
+[% RenderBlockStart("HeaderAdd") %]
+                <h2>[% Translate("New contractual partner") | html %]</h2>
+[% RenderBlockEnd("HeaderAdd") %]
+[% RenderBlockStart("HeaderEdit") %]
+                <h2>[% Translate("Contractual partner edit") | html %]</h2>
+[% RenderBlockEnd("HeaderEdit") %]
+            </div>
+            <div class="Content">
+
+                <form action="[% Env("CGIHandle") %]" method="post" class="Validate">
+                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                    <input type="hidden" name="Subaction" value="ContractualPartnerSave"/>
+                    <input type="hidden" name="ContractualPartnerID" value="[% Data.ContractualPartnerID | html %]"/>
+                    <fieldset class="TableLike">
+
+                        <label class="Mandatory" for="Company"><span class="Marker">*</span>[% Translate("Company") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="Company" id="Company" value="[% Data.Company | html %]" class="W50pc Validate_Required [% Data.Companyvalid | html %]" maxlength="200"/>
+                            <div id="CompanyError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                            <div id="CompanyServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="Street">[% Translate("Street") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="Street" id="Street" value="[% Data.Street | html %]" class="W50pc" maxlength="200"/>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="PostCode">[% Translate("Post Code") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="PostCode" id="PostCode" value="[% Data.PostCode | html %]" class="W5pc" maxlength="200"/>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="City">[% Translate("City") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="City" id="City" value="[% Data.City | html %]" class="W50pc" maxlength="200"/>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="Country">[% Translate("Country") | html %]:</label>
+                        <div class="Field">
+                            [% Data.CountryStrg %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="Phone">[% Translate("Phone") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="Phone" id="Phone" value="[% Data.Phone | html %]" class="W50pc" maxlength="200"/>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="ContactPerson">[% Translate("Contact person") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="ContactPerson" id="ContactPerson" value="[% Data.ContactPerson | html %]" class="W50pc" maxlength="200"/>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="eMail">[% Translate("eMail") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="eMail" id="eMail" value="[% Data.eMail | html %]" class="W50pc" maxlength="200"/>
+                        </div>
+                        <div class="Clear"></div>
+
+	                    <label for="RichText">[% Translate("Description") | html %]:</label>
+	                    <div class="RichTextField">
+	                        <textarea id="RichText" class="RichText" rows="20" cols="80" name="Description">[% Data.Description | html %]</textarea>
+	                    </div>
+	                    <div class="Clear"></div>
+
+                        <label for="ValidID">[% Translate("Valid") | html %]:</label>
+                        <div class="Field">
+                            [% Data.ValidOptionStrg %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <div class="Field SpacingTop">
+                            <button class="Primary" type="submit" value="[% Translate("Submit") | html %]">[% Translate("Submit") | html %]</button>
+                            [% Translate("or") | html %]
+                            <a href="[% Env("Baselink") %]Action=[% Env("Action") %]">[% Translate("Cancel") | html %]</a>
+                        </div>
+                        <div class="Clear"></div>
+                    </fieldset>
+                </form>
+            </div>
+[% RenderBlockEnd("ContractualPartnerEdit") %]
+
+        </div>
+    </div>
+</div>
+[% RenderBlockEnd("Overview") %]

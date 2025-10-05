@@ -1,0 +1,33 @@
+# --
+# Kernel/Output/HTML/Templates/Standard/ProcessManagement/PendingTime.tt
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: PendingTime.tt,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+[% RenderBlockStart("rw:PendingTime") %]
+<label>
+[% RenderBlockStart("rw:PendingTime:DescriptionLong") %]
+    <span class="FieldHelpContainer">
+        <i class="fa fa-question-circle FieldHelpTrigger"></i>
+        <span>[% Data.DescriptionLong | html %]</span>
+    </span>
+[% RenderBlockEnd("rw:PendingTime:DescriptionLong") %]
+    [% Data.Label | html %]:
+</label>
+<div class="Field">
+    [% Data.Content %]
+    <div id="PendingTimeDayError" class="TooltipErrorMessage"><p>[% Data.PendingtTimeDayError | html %]</p></div>
+    <div id="PendingTimeHourError" class="TooltipErrorMessage"><p>[% Data.PendingtTimeHourError | html %]</p></div>
+[% RenderBlockStart("rw:PendingTime:DescriptionShort") %]
+    <div class="FieldExplanation">[% Data.DescriptionShort | html %]</div>
+[% RenderBlockEnd("rw:PendingTime:DescriptionShort") %]
+</div>
+<div class="Clear"></div>
+[% RenderBlockEnd("rw:PendingTime") %]

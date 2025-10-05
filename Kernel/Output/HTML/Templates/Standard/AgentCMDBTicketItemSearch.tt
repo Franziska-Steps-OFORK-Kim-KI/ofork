@@ -1,0 +1,23 @@
+# --
+# AgentCMDBTicketItemSearch.tt - provides HTML form for customer message
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# --
+# $Id: AgentCMDBTicketItemSearch.tt,v 1.2 2016/11/20 19:32:10 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+                <fieldset class="TableLike">
+
+[% RenderBlockStart("ConfigItemClass") %]
+                    <label for="[% Data.Class | html %]">[% Data.Class | html %]:</label>
+                    <div class="Field">
+                        [% Data.ConfigItemStrg %]
+                    </div>
+                    <div class="Clear"></div>
+[% RenderBlockEnd("ConfigItemClass") %]
+
+                    </fieldset>
+

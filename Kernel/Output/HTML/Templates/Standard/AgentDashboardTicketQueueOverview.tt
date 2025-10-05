@@ -1,0 +1,53 @@
+# --
+# Kernel/Output/HTML/Templates/Standard/AgentDashboardTicketQueueOverview.tt
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: AgentDashboardTicketQueueOverview.tt,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<table class="DataTable">
+    <thead>
+        <tr>
+[% RenderBlockStart("ContentLargeTicketQueueOverviewHeaderStatus") %]
+            <th>[% Translate(Data.Text) | html %]</th>
+[% RenderBlockEnd("ContentLargeTicketQueueOverviewHeaderStatus") %]
+            <th class="QueueOverviewTotals">[% Translate("Total") | html %]</th>
+        </tr>
+    </thead>
+    <tbody>
+[% RenderBlockStart("ContentLargeTicketQueueOverviewQueueName") %]
+        <tr class="Row">
+            <td><a class="AsBlock" href="[% Env("Baselink") %]Action=AgentTicketQueue;QueueID=[% Data.QueueID | uri %]">[% Data.QueueName | html %]</a></td>
+[% RenderBlockStart("ContentLargeTicketQueueOverviewQueueResults") %]
+            <td><a class="AsBlock" href="[% Env("Baselink") %]Action=AgentTicketSearch;Subaction=Search;[% Env("ChallengeTokenParam") | html %];StateIDs=[% Data.StateID | uri %];QueueIDs=[% Data.QueueID | uri %];[% Data.Sort | html %]">[% Translate(Data.Number) | html %]</a></td>
+[% RenderBlockEnd("ContentLargeTicketQueueOverviewQueueResults") %]
+[% RenderBlockStart("ContentLargeTicketQueueOverviewQueueTotal") %]
+            <td><a class="QueueOverviewTotals AsBlock" href="[% Env("Baselink") %]Action=AgentTicketSearch;Subaction=Search;[% Env("ChallengeTokenParam") | html %];QueueIDs=[% Data.QueueID | uri %];[% Data.StateIDs | html %];[% Data.Sort | html %]">[% Translate(Data.Number) | html %]</a></td>
+[% RenderBlockEnd("ContentLargeTicketQueueOverviewQueueTotal") %]
+        </tr>
+[% RenderBlockEnd("ContentLargeTicketQueueOverviewQueueName") %]
+[% RenderBlockStart("ContentLargeTicketQueueOverviewStatusTotalRow") %]
+        <tr class="Row">
+            <td class="QueueOverviewTotals">[% Translate("Total") | html %]</td>
+[% RenderBlockStart("ContentLargeTicketQueueOverviewStatusTotal") %]
+            <td class="QueueOverviewTotals"><a class="AsBlock" href="[% Env("Baselink") %]Action=AgentTicketSearch;Subaction=Search;[% Env("ChallengeTokenParam") | html %];StateIDs=[% Data.StateID | uri %];[% Data.QueueIDs | html %];[% Data.Sort | html %]">[% Translate(Data.Number) | html %]</a></td>
+[% RenderBlockEnd("ContentLargeTicketQueueOverviewStatusTotal") %]
+            <td class="QueueOverviewTotals"></td>
+        </tr>
+[% RenderBlockEnd("ContentLargeTicketQueueOverviewStatusTotalRow") %]
+[% RenderBlockStart("ContentLargeTicketQueueOverviewNone") %]
+        <tr>
+            <td colspan="[% Data.ColumnCount | html %]">
+                [% Translate("none") | html %]
+            </td>
+        </tr>
+[% RenderBlockEnd("ContentLargeTicketQueueOverviewNone") %]
+    </tbody>
+</table>

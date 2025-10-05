@@ -1,0 +1,77 @@
+# --
+# Kernel/System/Queue/Event/TicketAcceleratorUpdate.pm
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: TicketAcceleratorUpdate.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+package Kernel::System::Queue::Event::TicketAcceleratorUpdate;
+use strict;
+use warnings;
+
+use Kernel::System::VariableCheck qw(:all);
+
+our @ObjectDependencies = (
+    'Kernel::Config',
+    'Kernel::System::Log',
+    'Kernel::System::Ticket::IndexAccelerator::StaticDB',
+);
+
+sub new {
+    my ( $Type, %Param ) = @_;
+
+    # allocate new hash for object
+    my $Self = {};
+    bless( $Self, $Type );
+
+    return $Self;
+}
+
+sub Run {
+    my ( $Self, %Param ) = @_;
+
+    # check needed stuff
+    for my $Needed (qw( Data Event Config UserID )) {
+        if ( !$Param{$Needed} ) {
+            $Kernel::OM->Get('Kernel::System::Log')->Log(
+                Priority => 'error',
+                Message  => "Need $Needed!"
+            );
+
+            return;
+        }
+    }
+
+    # Only run for StaticDB IndexModule.
+    my $IndexModule = $Kernel::OM->Get('Kernel::Config')->Get('Ticket::IndexModule');
+    return 1 if $IndexModule ne 'Kernel::System::Ticket::IndexAccelerator::StaticDB';
+
+    # only run if we have the correct data
+    for my $Needed (qw(Queue OldQueue)) {
+        if ( !IsHashRefWithData( $Param{Data}->{$Needed} ) ) {
+            $Kernel::OM->Get('Kernel::System::Log')->Log(
+                Priority => 'error',
+                Message  => "$Needed in Data is missing or invalid!"
+            );
+
+            return;
+        }
+    }
+
+    # only update if Queue has really changed
+    return 1 if $Param{Data}->{Queue}->{Name} eq $Param{Data}->{OldQueue}->{Name};
+
+    # update ticket_index
+    return $Kernel::OM->Get('Kernel::System::Ticket::IndexAccelerator::StaticDB')->TicketAcceleratorUpdateOnQueueUpdate(
+        NewQueueName => $Param{Data}->{Queue}->{Name},
+        OldQueueName => $Param{Data}->{OldQueue}->{Name},
+    );
+}
+
+1;

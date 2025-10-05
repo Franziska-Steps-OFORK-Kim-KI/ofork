@@ -1,0 +1,63 @@
+# --
+# Kernel/Output/HTML/ArticleAttachment/HTMLViewer.pm
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: HTMLViewer.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+package Kernel::Output::HTML::ArticleAttachment::HTMLViewer;
+
+use parent 'Kernel::Output::HTML::Base';
+
+use strict;
+use warnings;
+
+our @ObjectDependencies = (
+    'Kernel::System::Log',
+    'Kernel::Config',
+    'Kernel::Output::HTML::Layout',
+);
+
+sub Run {
+    my ( $Self, %Param ) = @_;
+
+    # check needed stuff
+    for my $Needed (qw(File Article)) {
+        if ( !$Param{$Needed} ) {
+            $Kernel::OM->Get('Kernel::System::Log')->Log(
+                Priority => 'error',
+                Message  => "Need $Needed!"
+            );
+            return;
+        }
+    }
+
+    # get config object
+    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+
+    # check if config exists
+    if ( $ConfigObject->Get('MIME-Viewer') ) {
+        for ( sort keys %{ $ConfigObject->Get('MIME-Viewer') } ) {
+            if ( $Param{File}->{ContentType} =~ /^$_/i ) {
+                return (
+                    %{ $Param{File} },
+                    Action => 'Viewer',
+                    Link   => $Kernel::OM->Get('Kernel::Output::HTML::Layout')->{Baselink} .
+                        "Action=AgentTicketAttachment;TicketID=$Param{Article}->{TicketID};ArticleID=$Param{Article}->{ArticleID};FileID=$Param{File}->{FileID};Viewer=1",
+                    Target => 'target="attachment"',
+                    Class  => 'ViewAttachment',
+                );
+            }
+        }
+    }
+    return ();
+}
+
+1;

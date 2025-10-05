@@ -1,0 +1,28 @@
+# --
+# Kernel/Output/JavaScript/Templates/Standard/Agent/TicketZoom/FormDraftDeleteDialog.html.tmpl
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: FormDraftDeleteDialog.html.tmpl,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+
+<div>
+    <div class="InnerContent">
+        <p class="Center">{{ 'Do you really want to delete "%s"?' | Translate(Title) }}</p>
+    </div>
+    <div class="ContentFooter Center">
+        <button id="DeleteConfirm" class="Primary CallForAction">
+            <span>{{ "Confirm" | Translate }}</span>
+        </button>
+        <button class="CallForAction CloseDialog" value="{{ "Cancel" | Translate }}">
+            <span>{{ "Cancel" | Translate }}</span>
+        </button>
+    </div>
+</div>

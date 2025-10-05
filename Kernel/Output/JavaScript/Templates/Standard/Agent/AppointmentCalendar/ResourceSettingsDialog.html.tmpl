@@ -1,0 +1,35 @@
+# --
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (GPL). If you
+# did not receive this file, see https://www.gnu.org/licenses/gpl-3.0.txt.
+# --
+
+<div>
+    <form id="ContextSettingsDialogResourceOverview" class="WidgetSettingsForm">
+        <fieldset class="TableLike FixedLabelSmall">
+            <input type="hidden" class="ColumnsEnabledJSON" value="{{ ColumnsEnabled }}" />
+            <input type="hidden" class="ColumnsAvailableJSON" value="{{ ColumnsAvailable }}" />
+            <label class="DontPrint">{{ 'Shown resources' | Translate }}:</label>
+            <div class="Field DontPrint LayoutGrid AllocationListContainer">
+                <div class="Size1of2">
+                    <ul class="Tablelike">
+                        <li class="Header">{{ 'Available Resources' | Translate }}</li>
+                    </ul>
+                    <div class="FilterInputContainer">
+                        <input type="text" class="FilterAvailableFields" value="" title="{{ 'Filter available resources' | Translate }}" placeholder="{{ 'Filter available resources' | Translate }}..." />
+                    </div>
+                    <ul class="AllocationList Tablelike AvailableFields SettingsOverview" id="AvailableField-AgentAppointmentResourceOverview"></ul>
+                </div>
+                <div class="Size1of2">
+                    <ul class="Tablelike">
+                        <li class="Header">{{ 'Visible Resources (order by drag & drop)' | Translate }}</li>
+                    </ul>
+                    <ul class="AllocationList Tablelike AssignedFields OrderNumbers SettingsOverview" id="AssignedFields-AgentAppointmentResourceOverview"></ul>
+                </div>
+            </div>
+            <div class="Clear"></div>
+        </fieldset>
+    </form>
+</div>

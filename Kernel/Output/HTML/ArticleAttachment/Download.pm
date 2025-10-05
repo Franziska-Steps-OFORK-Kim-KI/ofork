@@ -1,0 +1,69 @@
+# --
+# Kernel/Output/HTML/ArticleAttachment/Download.pm
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: Download.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+package Kernel::Output::HTML::ArticleAttachment::Download;
+
+use strict;
+use warnings;
+
+our @ObjectDependencies = (
+    'Kernel::System::Log',
+    'Kernel::Config',
+    'Kernel::Output::HTML::Layout',
+);
+
+sub new {
+    my ( $Type, %Param ) = @_;
+
+    # allocate new hash for object
+    my $Self = {};
+    bless( $Self, $Type );
+
+    return $Self;
+}
+
+sub Run {
+    my ( $Self, %Param ) = @_;
+
+    # check needed stuff
+    for my $Needed (qw(File TicketID Article)) {
+        if ( !$Param{$Needed} ) {
+            $Kernel::OM->Get('Kernel::System::Log')->Log(
+                Priority => 'error',
+                Message  => "Need $Needed!"
+            );
+            return;
+        }
+    }
+
+    # download type
+    my $Type = $Kernel::OM->Get('Kernel::Config')->Get('AttachmentDownloadType') || 'attachment';
+
+    # if attachment will be forced to download, don't open a new download window!
+    my $Target = 'target="AttachmentWindow" ';
+    if ( $Type =~ /inline/i ) {
+        $Target = 'target="attachment" ';
+    }
+
+    return (
+        %{ $Param{File} },
+        Action => 'Download',
+        Link   => $Kernel::OM->Get('Kernel::Output::HTML::Layout')->{Baselink} .
+            "Action=AgentTicketAttachment;TicketID=$Param{TicketID};ArticleID=$Param{Article}->{ArticleID};FileID=$Param{File}->{FileID}",
+        Image  => 'disk-s.png',
+        Target => $Target,
+    );
+}
+
+1;

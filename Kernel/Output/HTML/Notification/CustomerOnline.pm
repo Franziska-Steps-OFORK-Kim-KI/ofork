@@ -1,0 +1,81 @@
+# --
+# Kernel/Output/HTML/Notification/CustomerOnline.pm
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: CustomerOnline.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+package Kernel::Output::HTML::Notification::CustomerOnline;
+
+use parent 'Kernel::Output::HTML::Base';
+
+use strict;
+use warnings;
+
+our @ObjectDependencies = (
+    'Kernel::Config',
+    'Kernel::System::AuthSession',
+    'Kernel::System::DateTime',
+    'Kernel::Output::HTML::Layout',
+);
+
+sub Run {
+    my ( $Self, %Param ) = @_;
+
+    my $SessionObject = $Kernel::OM->Get('Kernel::System::AuthSession');
+
+    my $SessionMaxIdleTime = $Kernel::OM->Get('Kernel::Config')->Get('SessionMaxIdleTime');
+
+    my %Online   = ();
+    my @Sessions = $SessionObject->GetAllSessionIDs();
+
+    for (@Sessions) {
+        my %Data = $SessionObject->GetSessionIDData(
+            SessionID => $_,
+        );
+        if (
+            $Data{UserType} eq 'Customer'
+            && $Data{UserLastRequest}
+            && $Data{UserLastRequest} + $SessionMaxIdleTime
+            > $Kernel::OM->Create('Kernel::System::DateTime')->ToEpoch()
+            && $Data{UserFirstname}
+            && $Data{UserLastname}
+            )
+        {
+            $Online{ $Data{UserID} } = "$Data{UserFullname}";
+            if ( $Param{Config}->{ShowEmail} ) {
+                $Online{ $Data{UserID} } .= " ($Data{UserEmail})";
+            }
+        }
+    }
+    for ( sort { $Online{$a} cmp $Online{$b} } keys %Online ) {
+        if ( $Param{Message} ) {
+            $Param{Message} .= ', ';
+        }
+        $Param{Message} .= "$Online{$_}";
+    }
+    if ( $Param{Message} ) {
+
+        # get layout object
+        my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
+
+        return $LayoutObject->Notify(
+            Info => $LayoutObject->{LanguageObject}->Translate(
+                'Online Customer: %s',
+                $Param{Message},
+            ),
+        );
+    }
+    else {
+        return '';
+    }
+}
+
+1;

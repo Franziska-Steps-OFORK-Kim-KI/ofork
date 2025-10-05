@@ -1,0 +1,398 @@
+# --
+# Kernel/Output/HTML/Templates/Standard/CustomerBookRoom.tt
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# --
+# $Id: CustomerBookRoom.tt,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+<div class="MainBox TicketCompose ARIARoleMain FormScreen">
+    
+    <div class="Content">
+
+                <div id="RoomDetailsImage" style="margin-left:15px;float:left;background-color:#d9f8ea;padding:20px;width:200px;height:200px;margin-bottom:15px;">
+
+                    <div style="width:100%;border-bottom:1px solid #02a543;margin-bottom:15px;">[% Translate("Image") | html %]</div>
+
+[% RenderBlockStart("RoomIcon") %]
+	                <div style="float:left;">
+					    <img src="data:image/png;base64,[% Data.Image | html %]" style="max-width:200px; max-height:170px;"/>
+	                </div>
+[% RenderBlockEnd("RoomIcon") %]
+[% RenderBlockStart("NoRoomIcon") %]
+	                <div style="float:left;">
+				        <img src="[% Config("Frontend::ImagePath") %]meeting-room.png" border="0"  width="70px"/>
+	                </div>
+[% RenderBlockEnd("NoRoomIcon") %]
+
+                    <div class="Clear"></div>
+
+                </div>
+
+                <div id="RoomDetails" style="margin-left:15px;float:left;background-color:#d9f8ea;padding:20px;width:200px;height:200px;margin-bottom:15px;">
+
+                    <div style="width:100%;border-bottom:1px solid #02a543;margin-bottom:15px;">[% Translate("Room informations") | html %]</div>
+
+	                <div>
+	                    <b>[% Data.Room | html %]</b><br><br>
+	                    
+	                    [% Data.Building | html %]<br>
+	                    [% Data.Floor | html %]<br>
+	                    [% Data.Street | html %]<br>
+	                    [% Data.PostCode | html %] [% Data.City | html %]<br><br>
+	                    
+	                    [% Data.Persons | html %] [% Translate("Persons") | html %]<br>
+	                    [% Data.RoomCategories | html %]<br><br>
+
+	                    [% Data.Price | html %] [% Data.Currency | html %]
+
+[% RenderBlockStart("RoomPerHour") %]
+                        / [% Translate("1 hour") | html %]<br>
+[% RenderBlockEnd("RoomPerHour") %]
+[% RenderBlockStart("RoomPerDay") %]
+                        / [% Translate("1 day") | html %]<br>
+[% RenderBlockEnd("RoomPerDay") %]
+
+
+	                </div>
+
+                </div>
+
+                <div id="RoomEquipmentExisting" style="margin-left:15px;float:left;background-color:#d9f8ea;padding:20px;width:200px;height:200px;margin-bottom:15px;">
+
+                    <div style="width:100%;border-bottom:1px solid #02a543;margin-bottom:15px;">[% Translate("Equipment existing") | html %]</div>
+
+	                <div>
+	                    [% Data.EquipmentInventary %]<br>
+	                </div>
+
+                </div>
+
+                <div id="RoomEquipmentBookable" style="margin-left:15px;float:left;background-color:#d9f8ea;padding:20px;width:330px;height:200px;margin-bottom:15px;">
+
+                    <div style="width:100%;border-bottom:1px solid #02a543;margin-bottom:15px;">[% Translate("Equipment bookable") | html %]</div>
+
+[% RenderBlockStart("EquipmentInventaryBookable") %]
+	                <div>
+                        [% Data.EquipmentInventaryBookable %] [% Data.EquipmentBookablePrice %] [% Data.EquipmentBookableCurrency %] 
+
+[% RenderBlockStart("PerHour") %]
+                        / [% Translate("1 hour") | html %]
+[% RenderBlockEnd("PerHour") %]
+[% RenderBlockStart("PerDay") %]
+                        / [% Translate("1 day") | html %]
+[% RenderBlockEnd("PerDay") %]
+[% RenderBlockStart("PerPiece") %]
+                        / [% Translate("1 piece") | html %]
+[% RenderBlockEnd("PerPiece") %]
+[% RenderBlockStart("FlatRate") %]
+                        / [% Translate("flat-rate") | html %]
+[% RenderBlockEnd("FlatRate") %]
+
+	                </div>
+[% RenderBlockEnd("EquipmentInventaryBookable") %]
+
+                </div>
+
+                <div class="Clear"></div>
+
+
+                <div id="RoomDescription" style="margin-left:15px;padding:20px;margin-bottom:15px;">
+
+                    <div style="width:100%;border-bottom:1px solid #02a543;margin-bottom:15px;">[% Translate("Room description") | html %]</div>
+
+	                <div style="font-size: 14px;">
+	                    [% Data.Description %]<br>
+	                </div>
+
+                </div>
+
+[% RenderBlockStart("BookableTimes") %]
+                <div id="BookableTimes" style="margin-left:15px;padding:20px;margin-bottom:15px;">
+
+                    <div style="width:100%;border-bottom:1px solid #02a543;margin-bottom:15px;"><strong>[% Translate("Bookable times") | html %]</strong></div>
+                    [% Data.WorkingTime %]
+
+                </div>
+[% RenderBlockEnd("BookableTimes") %]
+
+[% RenderBlockStart("DateOccupied") %]
+                <div id="DateOccupied" style="margin-left:15px;padding:20px;margin-bottom:15px;">
+
+                    <div style="width:100%;border-bottom:1px solid #e40707;margin-bottom:15px;"><strong>[% Translate("Date already occupied") | html %]</strong></div>
+
+                    [% Translate("Unfortunately, the room is already occupied for this date.") | html %]<br>
+                    [% Translate("In the calendar overview you can see which appointments are possible.") | html %]<br>
+
+                </div>
+[% RenderBlockEnd("DateOccupied") %]
+
+[% RenderBlockStart("DateOccupiedRange") %]
+                <div id="DateOccupiedRange" style="margin-left:15px;padding:20px;margin-bottom:15px;">
+
+                    <div style="width:100%;border-bottom:1px solid #e40707;margin-bottom:15px;"><strong>[% Translate("Date already occupied") | html %]</strong></div>
+
+                    [% Translate("The appointment is unfortunately outside the opening hours.") | html %]<br>
+
+                </div>
+[% RenderBlockEnd("DateOccupiedRange") %]
+
+        <form action="[% Env("CGIHandle") %]" method="post" name="compose" id="NewCustomerRoomBooking" enctype="multipart/form-data" class="Validate PreventMultipleSubmits">
+            <input type="hidden" name="Action" value="[% Env("Action") %]" />
+            <input type="hidden" name="Subaction" value="[% Data.Store | html %]" />
+            <input type="hidden" name="Expand" id="Expand" value="" />
+            <input type="hidden" name="FormID" value="[% Data.FormID | html %]" />
+            <input type="hidden" name="RoomID" value="[% Data.RoomID | html %]" />
+            <input type="hidden" name="ChangeID" value="[% Data.ChangeID | html %]" />
+            <input type="hidden" name="scrollTo" id="scrollTo" value="[% Data.Anker | html %]" />
+
+                <fieldset>
+
+                    <div id="RoomBooking" style="margin-left:15px;padding:20px;margin-bottom:15px;">
+
+[% RenderBlockStart("CancelBooking") %]
+                        <div style="width:100%;border-bottom:1px solid #02a543;margin-bottom:15px;">
+                            <strong>[% Translate("Change booking") | html %]</strong>
+                            <a class="Button" href="[% Env("Baselink") %]Action=CustomerBookRoom;Subaction=Cancel;ChangeID=[% Data.ChangeID | html %]">[% Translate("Cancel booking") | html %]</a>
+                        </div>
+[% RenderBlockEnd("CancelBooking") %]
+
+[% RenderBlockStart("CrateBooking") %]
+                        <div style="width:100%;border-bottom:1px solid #02a543;margin-bottom:15px;">
+                            <strong>[% Translate("Room booking") | html %]</strong>
+                        </div>
+[% RenderBlockEnd("CrateBooking") %]
+
+	                    <label class="Mandatory" for="Subject"><span class="Marker">*</span>[% Translate("Topic") | html %]:</label>
+	                    <div class="Field" style="margin-bottom:7px;">
+	                        <input type="text" id="Subject" name="Subject" value="[% Data.Subject | html %]" class="W50pc Validate [% Data.SubjectInvalid %] [% Data.SubjectRequired %]"/>
+	                        <div id="SubjectError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+	                        <div id="SubjectServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+	                    </div>
+	                    <div class="Clear"></div>
+
+	                    <label class="Mandatory" for="Participant"><span class="Marker">*</span>[% Translate("Number of participants") | html %]:</label>
+	                    <div class="Field" style="margin-bottom:7px;">
+	                        <input type="text" id="Participant" name="Participant" value="[% Data.Participant | html %]" class="Validate [% Data.ParticipantInvalid %] [% Data.ParticipantRequired %]" maxlength="5" style="width: 40px;"/>
+	                        <div id="ParticipantError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+	                        <div id="ParticipantServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+	                    </div>
+	                    <div class="Clear"></div>
+
+	                    <label>[% Translate("From") | html %]:</label>
+	                    <div class="Field" style="margin-bottom:7px;">
+	                        [% Data.FromDateString %]
+	                        <div id="FromDayServerError" class="TooltipErrorMessage"><p>[% Translate("Date invalid!") | html %]</p></div>
+	                        <div id="FromHourServerError" class="TooltipErrorMessage"><p>[% Translate("Date invalid!") | html %]</p></div>
+	                    </div>
+	                    <div class="Clear"></div>
+
+	                    <label>[% Translate("Until") | html %]:</label>
+	                    <div class="Field" style="margin-bottom:7px;">
+	                        [% Data.ToDateString %]
+	                        <div id="ToDayServerError" class="TooltipErrorMessage"><p>[% Translate("Date invalid!") | html %]</p></div>
+	                        <div id="ToHourServerError" class="TooltipErrorMessage"><p>[% Translate("Date invalid!") | html %]</p></div>
+	                    </div>
+	                    <div class="Clear"></div>
+
+[% RenderBlockStart("InventaryBookable") %]
+	                    <label for="BookableValue_[% Data.BookableID | html %]">[% Translate("Number") | html %]:</label>
+	                    <div class="Field" style="margin-bottom:7px;">
+	                        <input type="text" id="BookableValue_[% Data.BookableID | html %]" name="BookableValue_[% Data.BookableID | html %]" value="[% Data.BookableValue | html %]" maxlength="5" style="width: 40px;"/>
+	                        [% Data.EquipmentInventaryBookable | html %] [% Data.EquipmentBookablePrice %] [% Data.EquipmentBookableCurrency %]
+
+[% RenderBlockStart("BookablePerHour") %]
+                        / [% Translate("1 hour") | html %]
+[% RenderBlockEnd("BookablePerHour") %]
+[% RenderBlockStart("BookablePerDay") %]
+                        / [% Translate("1 day") | html %]
+[% RenderBlockEnd("BookablePerDay") %]
+[% RenderBlockStart("BookablePerPiece") %]
+                        / [% Translate("1 piece") | html %]
+[% RenderBlockEnd("BookablePerPiece") %]
+[% RenderBlockStart("BookableFlatRate") %]
+                        / [% Translate("flat-rate") | html %]
+[% RenderBlockEnd("BookableFlatRate") %]
+
+	                    </div>
+	                    <div class="Clear"></div>
+[% RenderBlockEnd("InventaryBookable") %]
+
+                        <div style="width:50%;border-bottom:1px solid #02a543;margin-bottom:15px;">[% Translate("Invite participants") | html %]</div>
+
+	                    <label for="Email" style="margin-bottom:7px;">[% Translate("Email list") | html %]:</label>
+	                    <div id="BookingMailList" class="Field" style="margin-bottom:7px;">[% Data.EmailList | html %]
+	                    </div>
+	                    <div class="Clear"></div>
+
+	                    <label for="Email">[% Translate("Email") | html %]:</label>
+	                    <div class="Field" style="margin-bottom:7px;">
+	                        <input type="hidden" id="EmailList" name="EmailList" value="[% Data.EmailList | html %]">
+	                        <input type="text" id="Email" name="Email" value=""/> 
+	                        <button id="AddValueSubmit" style="margin-left:5px;" value="Add" type="button">[% Translate("Add") | html %]</button>
+	                        <button id="RemoveValueSubmit" style="margin-left:5px;" value="Delete list" type="button">[% Translate("Delete list") | html %]</button><br>
+	                    </div>
+	                    <div class="Clear"></div>
+
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+
+$('#AddValueSubmit').bind('click', function () {
+
+    var EmailListLive = $('input#EmailList').val();
+    var EmailAdd = $('input#Email').val();
+    var Response = '';
+
+    if ( EmailAdd ) {
+        Response = EmailListLive + EmailAdd + '; ';
+    }
+    else {
+        Response = EmailListLive;
+    }
+
+    var SetResponse = Response.replace("; ; ","; ");
+
+    $('#BookingMailList').html(SetResponse);
+    $('input#EmailList').val(SetResponse);
+    $('input#Email').val('');
+
+    return false;
+});
+
+$('#RemoveValueSubmit').bind('click', function () {
+
+    $('#BookingMailList').html('');
+    $('input#EmailList').val('');
+    $('input#Email').val('');
+
+    return false;
+});
+
+scrollTo();
+
+function scrollTo(){
+
+    var scrollTo = $('input#scrollTo').val();
+    
+    if ( scrollTo ) {
+	    $('html,body').animate({scrollTop: $("#"+scrollTo).offset().top},'slow');
+	}
+}
+
+
+//]]></script>
+[% END %]
+
+		                <div class="RichTextHolder">
+		                    <label for="RichText">
+		                        [% Translate("Remarks") | html %]:
+		                    </label>
+		                    <textarea id="RichText" class="RichText" name="Body" rows="15" cols="[% Config("Ticket::Frontend::TextAreaNote") %]">[% Data.Body | html %]</textarea>
+		                    <div class="Clear"></div>
+		                </div>
+
+			            <div id="BottomActionRow" style="margin-left:-1px;width:200px;margin-top:10px;">
+			                <button id="submitRichText" accesskey="g" title="[% Translate("Submit") | html %] (g)" type="submit" value="[% Translate("Submit") | html %]">[% Translate("Submit") | html %]</button>
+			            </div>
+
+                    </div>
+
+                </fieldset>
+        </form>
+
+<style>
+
+  #calendar {
+    max-width: 90%;
+    margin: 0 auto;
+    padding:0px;
+  }
+
+  #Land {
+	background: #d9f8ea;
+	border-bottom: 1px solid #02a543;
+	padding-left: 88px;
+	line-height: 30px;
+	font-size: 12px;
+	margin-bottom: 10px;
+  }
+
+</style>
+
+<script type="text/javascript">//<![CDATA[
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var initialLocaleCode = 'de';
+    var localeSelectorEl = document.getElementById('locale-selector');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+	  schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+      plugins: [ 'dayGrid', 'timeGrid', 'list', 'interaction', 'resourceTimeline' ],
+      locale: initialLocaleCode,
+      defaultView: 'dayGridMonth',
+      timeZone: 'local',
+      header: {
+        left: 'today, next',
+        center: 'title',
+        right: 'resourceTimelineDay,resourceTimelineThreeDays,timeGridWeek,dayGridMonth'
+      },
+
+      weekNumbers: true,
+      weekNumbersWithinDays: true,
+      weekNumberCalculation: 'ISO',
+
+      navLinks: true, // can click day/week names to navigate views
+      editable: false,
+      eventLimit: true, // allow "more" link when too many events
+      resourceLabelText: '[% Translate("Rooms") | html %]',
+      resources: [
+
+[% RenderBlockStart("CalendarResources") %]
+        [% Data.CalendarResources %]
+[% RenderBlockEnd("CalendarResources") %]
+
+      ],
+      events: [
+
+[% RenderBlockStart("CalendarEvents") %]
+        [% Data.CalendarEvents %]
+[% RenderBlockEnd("CalendarEvents") %]
+
+      ]
+    });
+
+    calendar.render();
+
+    // build the locale selector's options
+    calendar.getAvailableLocaleCodes().forEach(function(localeCode) {
+      var optionEl = document.createElement('option');
+      optionEl.value = localeCode;
+      optionEl.selected = localeCode == initialLocaleCode;
+      optionEl.innerText = localeCode;
+      localeSelectorEl.appendChild(optionEl);
+    });
+
+    // when the selected option changes, dynamically change the calendar option
+    localeSelectorEl.addEventListener('change', function() {
+      if (this.value) {
+        calendar.setOption('locale', this.value);
+      }
+    });
+
+  });
+
+//]]></script>
+
+  <div id='Land'>
+
+    [% Translate("Calendar language") | html %]: <select id='locale-selector'></select>
+
+  </div>
+<div id="calendar"></div>
+
+
+    </div>
+</div>

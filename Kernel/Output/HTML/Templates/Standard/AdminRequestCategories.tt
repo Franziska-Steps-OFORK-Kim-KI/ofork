@@ -1,0 +1,172 @@
+# --
+# AdminRequestCategories.tt - provides HTML form for AdminService
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# --
+# $Id: AdminRequestCategories.tt,v 1.1 2016/09/20 13:40:50 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<div class="MainBox ARIARoleMain LayoutFixedSidebar SidebarFirst">
+    <h1 class="InvisibleText">[% Translate("Request Category Management") | html %]</h1>
+
+    [% BreadcrumbPath = [
+            {
+                Name => Translate('Request Category Management'),
+                Link => Env("Action"),
+            },
+        ]
+    %]
+
+    [% SWITCH Data.Action %]
+        [% CASE 'Add' %]
+            [% BreadcrumbPath.push({ Name => Translate("Add Group"),}) %]
+        [% CASE 'Change' %]
+            [% USE EditTitle = String(Translate("Edit Group")) %]
+            [% BreadcrumbPath.push({ Name => EditTitle.append( ': ', Data.Name ) }) %]
+    [% END %]
+
+    [% INCLUDE "Breadcrumb.tt" Path = BreadcrumbPath %]
+
+</div>
+
+[% RenderBlockStart("Overview") %]
+<div class="MainBox ARIARoleMain LayoutFixedSidebar SidebarFirst">
+    <h1>[% Translate("Request Category Management") | html %]</h1>
+
+    <div class="SidebarColumn">
+        <div class="WidgetSimple">
+[% RenderBlockStart("ActionList") %]
+            <div class="Header">
+                <h2>[% Translate("Actions") | html %]</h2>
+            </div>
+            <div class="Content">
+                <ul class="ActionList">
+[% RenderBlockStart("ActionOverview") %]
+                    <li>
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %]" class="CallForAction"><span>[% Translate("Go to overview") | html %]</span></a>
+                    </li>
+[% RenderBlockEnd("ActionOverview") %]
+[% RenderBlockStart("ActionAdd") %]
+                    <li>
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=RequestCategoriesEdit;RequestCategoriesID=NEW" class="CallForAction Plus"><span>[% Translate("Add RequestCategory") | html %]</span></a>
+                    </li>
+[% RenderBlockEnd("ActionAdd") %]
+                </ul>
+            </div>
+[% RenderBlockEnd("ActionList") %]
+        </div>
+    </div>
+
+    <div class="ContentColumn">
+        <div class="WidgetSimple">
+[% RenderBlockStart("OverviewList") %]
+            <div class="Header">
+                <h2>[% Translate("List") | html %]</h2>
+            </div>
+            <div class="Content">
+
+                <table class="DataTable">
+                    <thead>
+                        <tr>
+                            <th>[% Translate("Request categories") | html %]</th>
+                            <th>[% Translate("Comment") | html %]</th>
+                            <th>[% Translate("Valid") | html %]</th>
+                            <th>[% Translate("Changed") | html %]</th>
+                            <th>[% Translate("Created") | html %]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+[% RenderBlockStart("NoDataFoundMsg") %]
+                        <tr>
+                            <td colspan="5">
+                                [% Translate("No data found.") | html %]
+                            </td>
+                        </tr>
+[% RenderBlockEnd("NoDataFoundMsg") %]
+[% RenderBlockStart("OverviewListRow") %]
+                        <tr>
+                            <td title="[% Data.Name | html %]">[% Data.LevelSpace | html %]<a class="AsBlock" href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=RequestCategoriesEdit;RequestCategoriesID=[% Data.RequestCategoriesID | uri %]">[% Data.Name | truncate(40) | html %]</a></td>
+                            <td title="[% Data.Comment | html %]">[% Data.Comment | truncate(20) | html %]</td>
+                            <td>[% Translate(Data.Valid) | html %]</td>
+                            <td>[% Data.ChangeTime | Localize("TimeShort") %]</td>
+                            <td>[% Data.CreateTime | Localize("TimeShort") %]</td>
+                        </tr>
+[% RenderBlockEnd("OverviewListRow") %]
+                    </tbody>
+                </table>
+            </div>
+[% RenderBlockEnd("OverviewList") %]
+
+[% RenderBlockStart("RequestCategoriesEdit") %]
+            <div class="Header">
+[% RenderBlockStart("HeaderAdd") %]
+                <h2>[% Translate("Add request category") | html %]</h2>
+[% RenderBlockEnd("HeaderAdd") %]
+[% RenderBlockStart("HeaderEdit") %]
+                <h2>[% Translate("Edit request category") | html %]: [% Data.Name | truncate(70) | html %]</h2>
+[% RenderBlockEnd("HeaderEdit") %]
+            </div>
+            <div class="Content">
+
+                <form action="[% Env("CGIHandle") %]" method="post" class="Validate">
+                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                    <input type="hidden" name="Subaction" value="RequestCategoriesSave"/>
+                    <input type="hidden" name="RequestCategoriesID" value="[% Data.RequestCategoriesID | html %]"/>
+
+                    <fieldset class="TableLike">
+
+                        <label for="Name">[% Translate("Request category") | html %]: </label>
+                        <div class="Field">
+                            <input type="text" name="Name" id="Name" value="[% Data.NameShort | html %]" class="W50pc Validate_Required [% Data.NameInvalid | html %]" maxlength="200"/>
+                            <div id="NameError" class="TooltipErrorMessage" ><p>[% Translate("This field is required.") | html %]</p></div>
+                            <div id="NameServerError" class="TooltipErrorMessage" ><p>[% Translate("This field is required.") | html %]</p></div>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="ParentID">[% Translate("Sub request category of") | html %]: </label>
+                        <div class="Field">
+                            [% Data.ParentOptionStrg %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="ValidID">[% Translate("Valid") | html %]: </label>
+                        <div class="Field">
+                            [% Data.ValidOptionStrg %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="Comment">[% Translate("Comment") | html %]: </label>
+                        <div class="Field">
+                            <input type="text" name="Comment" id="Comment" value="[% Data.Comment | html %]" class="W50pc" maxlength="150"/>
+                        </div>
+                        <div class="Clear"></div>
+
+[% RenderBlockStart("CategoryIcons") %]
+                        <div id="CategoryIconsRahmen_[% Data.ID %]" style="float:left;border: [% Data.ColorImageID %];padding:4px;margin:4px;">
+                        <div id="CategoryIcons_[% Data.ID %]">
+                                <img src="data:image/png;base64,[% Data.Content | html %]" width="100px" height="100px">
+                                <input type="radio" id="ImageID" name="ImageID" value="[% Data.ID %]" [% Data.CheckedImageID %]/>
+                            </div>
+                        </div>
+[% RenderBlockEnd("CategoryIcons") %]
+                        <div class="Clear"></div>
+
+                        <div class="Field SpacingTop">
+                            <button class="Primary" type="submit" value="[% Translate("Submit") | html %]">[% Translate("Submit") | html %]</button>
+                            [% Translate("or") | html %]
+                            <a href="[% Env("Baselink") %]Action=[% Env("Action") %]">[% Translate("Cancel") | html %]</a>
+                        </div>
+                        <div class="Clear"></div>
+                    </fieldset>
+
+                </form>
+            </div>
+[% RenderBlockEnd("RequestCategoriesEdit") %]
+        </div>
+    </div>
+    <div class="Clear"></div>
+</div>
+[% RenderBlockEnd("Overview") %]

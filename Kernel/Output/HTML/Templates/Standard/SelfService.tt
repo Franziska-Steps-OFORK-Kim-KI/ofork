@@ -1,0 +1,120 @@
+# --
+# SelfService.tt - provides HTML form for customer message
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# --
+# $Id: SelfService.tt,v 1.2 2016/11/20 19:32:27 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+[% RenderBlockStart("SelfServiceOverview") %]
+
+<div id="MainBox" class="TicketCompose ARIARoleMain">
+    <div style="width:100%;text-align:center;margin-top:20px;">
+    
+        <h1>Self Service</h1>
+
+[% RenderBlockStart("SelfServiceCat") %]
+        <div id="MainBox" style="width:350px;text-align:center;display:inline-block;box-shadow: 1px 1px 5px 3px [% Translate(Data.SelfServiceColor) | html %];margin: 20px;border-radius:7px;background-color:#f6f5f7;background-image: url('data:image/png;base64,[% Data.Content %]');background-size: 50px;background-repeat: no-repeat;background-position: right 10px top 5px;vertical-align:top;">
+            <p style="font-weight:bold;font-size:18px;height:25px;">
+                [% Translate(Data.Name) | html %]
+            </p>
+            <ul style="font-size:13px;text-align:left;margin-left:5px;margin-top:10px;list-style-type: disc;">
+
+[% RenderBlockStart("SelfServiceHead") %]
+                 <li style="padding:5px;margin-left:20px;">
+                    <a href="customer.pl?Action=SelfService&Subaction=More&CategoryID=[% Translate(Data.CategoryID) | html %]&SelfServiceID=[% Translate(Data.SelfServiceID) | html %]">[% Translate(Data.Headline) | html %]</a>
+                </li>
+[% RenderBlockEnd("SelfServiceHead") %]
+
+            </ul>
+
+[% RenderBlockStart("SelfServiceHeadMoreID") %]
+            <p><a href="customer.pl?Action=SelfService&Subaction=More&CategoryID=[% Translate(Data.CategoryID) | html %]" style="font-size:13px;font-weight:bold;">Mehr anzeigen</a></p>
+[% RenderBlockEnd("SelfServiceHeadMoreID") %]
+
+[% RenderBlockStart("SelfServiceHeadNull") %]
+            <p>&nbsp;</p>
+[% RenderBlockEnd("SelfServiceHeadNull") %]
+
+        </div>
+[% RenderBlockEnd("SelfServiceCat") %]
+
+    </div>
+</div>
+[% RenderBlockEnd("SelfServiceOverview") %]
+
+
+
+[% RenderBlockStart("SelfServiceOverviewMore") %]
+
+<div id="MainBox" class="TicketCompose ARIARoleMain">
+    <div style="width:95%;text-align:left;margin:20px;">
+    
+        <p style="margin-left:30px;"><a href="customer.pl?Action=SelfService">[% Translate("Back to overview") | html %]</a></p><br>&nbsp;
+        <h1 style="margin-left:130px;">Self Service</h1>
+
+[% RenderBlockStart("SelfServiceCatMore") %]
+        <div id="MainBox" style="width:400px;text-align:center;display:inline-block;">
+            <div id="MainBox" style="width:350px;text-align:center;display:inline-block;box-shadow: 1px 1px 5px 3px [% Translate(Data.SelfServiceColor) | html %];margin: 20px;border-radius:7px;background-color:#f6f5f7;vertical-align:top">
+                <p style="font-weight:bold;font-size:18px;">
+                    [% Translate(Data.Name) | html %]<br>&nbsp;
+                </p>
+            </div>
+            <br><p>[% Translate("Nicht das passende gefunden?") | html %]<br><br><a href="customer.pl?Action=CustomerRequest">[% Translate("Hier Ticket erstellen") | html %]</a></p>
+        </div>
+[% RenderBlockEnd("SelfServiceCatMore") %]
+
+        <div id="MainBox" style="width:650px;text-align:left;vertical-align:top;display:inline-block;margin-top:10px;">
+
+[% RenderBlockStart("SelfServiceHeadMore") %]
+            <div id="MainBox" style="width:600px;text-align:left;font-weight:normal;font-size:14px;box-shadow: 3px 3px 3px #9d9c9c;margin:10px;padding:10px;border-radius:10px;background-color:#f6f5f7;vertical-align:top">
+                <div style="text-align:left;display:inline-block;"><a href="#[% (Data.LineNum) %]" id="Hopen[% (Data.LineNum) %]">[% Translate(Data.Headline) | html %]</a></div>
+                <div id="plus[% (Data.LineNum) %]" style="text-align:right;margin-right:1px;display:inline-block;float: right;font-weight:bold;font-size:20px;[% Translate(Data.PlusStaus) | html %];"><a href="#[% (Data.LineNum) %]" id="open[% (Data.LineNum) %]">+</a></div>
+                <div id="minus[% (Data.LineNum) %]" style="text-align:right;margin-right:1px;display:inline-block;float: right;font-weight:bold;font-size:30px;margin-top:-8px;[% Translate(Data.MinusStaus) | html %];"><a href="#[% (Data.LineNum) %]" style="color:red;"  id="close[% (Data.LineNum) %]">-</a></div>
+            </div>
+
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+
+    $('#open[% (Data.LineNum) %]').bind('click', function () {
+
+        $("#ServiceText[% (Data.LineNum) %]").show();
+        $("#minus[% (Data.LineNum) %]").show();
+        $("#plus[% (Data.LineNum) %]").hide();
+
+    });
+
+    $('#Hopen[% (Data.LineNum) %]').bind('click', function () {
+
+        $("#ServiceText[% (Data.LineNum) %]").show();
+        $("#minus[% (Data.LineNum) %]").show();
+        $("#plus[% (Data.LineNum) %]").hide();
+
+    });
+
+    $('#close[% (Data.LineNum) %]').bind('click', function () {
+
+        $("#ServiceText[% (Data.LineNum) %]").hide();
+        $("#minus[% (Data.LineNum) %]").hide();
+        $("#plus[% (Data.LineNum) %]").show();
+
+    });
+
+//]]></script>
+[% END %]
+
+            <div id="ServiceText[% (Data.LineNum) %]" style="width:500px;text-align:left;vertical-align:top;margin:20px;[% Translate(Data.ServiceTextStaus) | html %];">
+                [% (Data.SelfServiceText) %]
+            </div>
+[% RenderBlockEnd("SelfServiceHeadMore") %]
+
+        </div>
+
+    </div>
+</div>
+[% RenderBlockEnd("SelfServiceOverviewMore") %]
+
+

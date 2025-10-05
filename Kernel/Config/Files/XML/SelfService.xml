@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ofork_config version="2.0" init="Framework">
+    <CVS>$Id: SelfService.xml,v 1.24 2016/11/20 19:57:26 ud Exp $</CVS>
+
+    <Setting Name="Frontend::Module###AdminSelfServiceCategories" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for the agent interface.</Description>
+        <Navigation>Frontend::Admin::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Group">
+                        <Array>
+                            <Item>admin</Item>
+                        </Array>
+                    </Item>
+                    <Item Key="Description" Translatable="1">This module is part of the admin area of OFORK.</Item>
+                    <Item Key="Title" Translatable="1">SelfService categories GUI</Item>
+                    <Item Key="NavBarName">Admin</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Loader::Module::AdminSelfServiceCategories###002-Ticket" Required="0" Valid="1">
+        <Description Translatable="1">Loader module registration for the agent interface.</Description>
+        <Navigation>Frontend::Admin::ModuleRegistration::Loader</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="CSS">
+                    <Array>
+                        <Item>Core.Agent.Admin.DynamicField.css</Item>
+                    </Array>
+                </Item>
+                <Item Key="JavaScript">
+                    <Array>
+                        <Item>Core.Agent.Admin.DynamicField.js</Item>
+                        <Item>Core.Agent.Admin.SysConfig.Entity.js</Item>
+                    </Array>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Navigation###AdminSelfServiceCategories###002-SelfService" Required="0" Valid="0">
+        <Description Translatable="1">Main menu item registration.</Description>
+        <Navigation>Frontend::Admin::ModuleRegistration::MainMenu</Navigation>
+        <Value>
+            <Array>
+                <DefaultItem ValueType="FrontendNavigation">
+                    <Hash>
+                    </Hash>
+                </DefaultItem>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::NavigationModule###AdminSelfServiceCategories" Required="0" Valid="1">
+        <Description Translatable="1">Admin area navigation for the agent interface.</Description>
+        <Navigation>Frontend::Admin::ModuleRegistration::AdminOverview</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Group">
+                    <Array>
+                        <Item>admin</Item>
+                    </Array>
+                </Item>
+                <Item Key="GroupRo">
+                    <Array>
+                    </Array>
+                </Item>
+                <Item Key="Module">Kernel::Output::HTML::NavBar::ModuleAdmin</Item>
+                <Item Key="Name" Translatable="1">SelfService categories</Item>
+                <Item Key="Block">SelfService</Item>
+                <Item Key="Description" Translatable="1">Create and manage SelfService categories.</Item>
+                <Item Key="IconBig">fa-align-left</Item>
+                <Item Key="IconSmall"></Item>
+            </Hash>
+        </Value>
+    </Setting>
+
+#    <Setting Name="Frontend::Module###AdminSelfServiceCategoriesIcon" Required="0" Valid="1">
+#        <Description Translatable="1">Frontend module registration for the agent interface.</Description>
+#        <Navigation>Frontend::Admin::ModuleRegistration</Navigation>
+#        <Value>
+#            <Item ValueType="FrontendRegistration">
+#                <Hash>
+#                    <Item Key="GroupRo">
+#                        <Array>
+#                        </Array>
+#                    </Item>
+#                    <Item Key="Group">
+#                        <Array>
+#                            <Item>admin</Item>
+#                        </Array>
+#                    </Item>
+#                    <Item Key="Description" Translatable="1">This module is part of the admin area of OFORK.</Item>
+#                    <Item Key="Title" Translatable="1">SelfService Icon</Item>
+#                    <Item Key="NavBarName">Admin</Item>
+#                </Hash>
+#            </Item>
+#        </Value>
+#    </Setting>
+#    <Setting Name="Loader::Module::AdminSelfServiceCategoriesIcon###002-Ticket" Required="0" Valid="1">
+#        <Description Translatable="1">Loader module registration for the agent interface.</Description>
+#        <Navigation>Frontend::Admin::ModuleRegistration::Loader</Navigation>
+#        <Value>
+#            <Hash>
+#                <Item Key="JavaScript">
+#                    <Array>
+#                        <Item>Core.Agent.Admin.SelfServiceCategoriesIcon.js</Item>
+#                    </Array>
+#                </Item>
+#            </Hash>
+#        </Value>
+#    </Setting>
+#    <Setting Name="Frontend::Navigation###AdminSelfServiceCategoriesIcon###002-Ticket" Required="0" Valid="0">
+#        <Description Translatable="1">Main menu item registration.</Description>
+#        <Navigation>Frontend::Admin::ModuleRegistration::MainMenu</Navigation>
+#        <Value>
+#            <Array>
+#                <DefaultItem ValueType="FrontendNavigation">
+#                    <Hash>
+#                    </Hash>
+#                </DefaultItem>
+#            </Array>
+#        </Value>
+#    </Setting>
+#    <Setting Name="Frontend::NavigationModule###AdminSelfServiceCategoriesIcon" Required="0" Valid="1">
+#        <Description Translatable="1">Admin area navigation for the agent interface.</Description>
+#        <Navigation>Frontend::Admin::ModuleRegistration::AdminOverview</Navigation>
+#        <Value>
+#            <Hash>
+#                <Item Key="Group">
+#                    <Array>
+#                        <Item>admin</Item>
+#                    </Array>
+#                </Item>
+#                <Item Key="GroupRo">
+#                    <Array>
+#                    </Array>
+#                </Item>
+#                <Item Key="Module">Kernel::Output::HTML::NavBar::ModuleAdmin</Item>
+#                <Item Key="Name" Translatable="1">SelfService Icon</Item>
+#                <Item Key="Block">SelfService</Item>
+#                <Item Key="Description" Translatable="1">Create and manage SelfService Icon.</Item>
+#                <Item Key="IconBig">fa-paperclip</Item>
+#                <Item Key="IconSmall"></Item>
+#            </Hash>
+#        </Value>
+#    </Setting>
+
+    <Setting Name="Frontend::Module###AdminSelfService" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for the agent interface.</Description>
+        <Navigation>Frontend::Admin::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Group">
+                        <Array>
+                            <Item>admin</Item>
+                        </Array>
+                    </Item>
+                    <Item Key="Description" Translatable="1">This module is part of the admin area of OFORK.</Item>
+                    <Item Key="Title" Translatable="1">SelfService system GUI</Item>
+                    <Item Key="NavBarName">Admin</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Loader::Module::AdminSelfService###002-Request" Required="0" Valid="1">
+        <Description Translatable="1">Loader module registration for the agent interface.</Description>
+        <Navigation>Frontend::Admin::ModuleRegistration::Loader</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="CSS">
+                    <Array>
+                        <Item>Core.Agent.Admin.DynamicField.css</Item>
+                    </Array>
+                </Item>
+                <Item Key="JavaScript">
+                    <Array>
+                        <Item>Core.Agent.Admin.DynamicField.js</Item>
+                        <Item>Core.Agent.Admin.SysConfig.Entity.js</Item>
+                        <Item>Core.Agent.TicketAction.js</Item>
+                    </Array>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Navigation###AdminSelfService###002-Request" Required="0" Valid="1">
+        <Description Translatable="1">Main menu item registration.</Description>
+        <Navigation>Frontend::Admin::ModuleRegistration::MainMenu</Navigation>
+        <Value>
+            <Array>
+                <DefaultItem ValueType="FrontendNavigation">
+                    <Hash>
+                    </Hash>
+                </DefaultItem>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::NavigationModule###AdminSelfService" Required="0" Valid="1">
+        <Description Translatable="1">Admin area navigation for the agent interface.</Description>
+        <Navigation>Frontend::Admin::ModuleRegistration::AdminOverview</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Group">
+                    <Array>
+                        <Item>admin</Item>
+                    </Array>
+                </Item>
+                <Item Key="GroupRo">
+                    <Array>
+                    </Array>
+                </Item>
+                <Item Key="Module">Kernel::Output::HTML::NavBar::ModuleAdmin</Item>
+                <Item Key="Name" Translatable="1">SelfService management</Item>
+                <Item Key="Block">SelfService</Item>
+                <Item Key="Description" Translatable="1">Create and manage SelfService.</Item>
+                <Item Key="IconBig">fa-align-left</Item>
+                <Item Key="IconSmall"></Item>
+            </Hash>
+        </Value>
+    </Setting>
+
+    <Setting Name="CustomerFrontend::Module###SelfService" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for the customer interface.</Description>
+        <Navigation>Frontend::Customer::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="Group">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Description" Translatable="1">Self Service.</Item>
+                    <Item Key="NavBarName">SelfService</Item>
+                    <Item Key="Title" Translatable="1">Self Service</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Loader::Module::SelfService###003-Request" Required="0" Valid="1">
+        <Description Translatable="1">Loader module registration for the agent interface.</Description>
+        <Navigation>Frontend::Customer::ModuleRegistration::Loader</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="JavaScript">
+                    <Array>
+                        <Item>Core.Customer.TicketMessage.js</Item>
+                    </Array>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="CustomerFrontend::Navigation###SelfService###003-SelfService" Required="0" Valid="1">
+        <Description Translatable="1">Main menu item registration.</Description>
+        <Navigation>Frontend::Customer::ModuleRegistration::MainMenu</Navigation>
+        <Value>
+            <Array>
+                <DefaultItem ValueType="FrontendNavigation">
+                    <Hash>
+                    </Hash>
+                </DefaultItem>
+                <Item>
+                    <Hash>
+                        <Item Key="Group">
+                            <Array>
+                            </Array>
+                        </Item>
+                        <Item Key="GroupRo">
+                            <Array>
+                            </Array>
+                        </Item>
+                        <Item Key="Description" Translatable="1">SelfS ervice.</Item>
+                        <Item Key="Name" Translatable="1">Self Service</Item>
+                        <Item Key="Link">Action=SelfService</Item>
+                        <Item Key="LinkOption"></Item>
+                        <Item Key="NavBar">SelfService</Item>
+                        <Item Key="Type">Menu</Item>
+                        <Item Key="Block"></Item>
+                        <Item Key="AccessKey">n</Item>
+                        <Item Key="Prio">9999</Item>
+                        <Item Key="Image">info.png</Item>
+                    </Hash>
+                </Item>
+            </Array>
+        </Value>
+    </Setting>
+
+</ofork_config>

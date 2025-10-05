@@ -1,0 +1,69 @@
+[% INCLUDE 'includes/copyright.tt' -%]
+
+Summary:      OFORK Help Desk.
+Name:         ofork
+Version:      0.0
+Copyright:    GNU AFFERO GENERAL PUBLIC LICENSE Version 3, 19 November 2007
+Group:        Applications/Mail
+Provides:     ofork
+Requires:     [% Requires.join(' ') %]
+AutoReqProv:  no
+Release:      01
+Source0:      ofork-%{version}.tar.bz2
+BuildArch:    noarch
+BuildRoot:    %{_tmppath}/%{name}-%{version}-build
+
+%description
+[% INCLUDE 'includes/description.tt' -%]
+
+%prep
+%setup
+
+%build
+[% INCLUDE 'includes/build.tt' -%]
+
+%install
+[% '#' %] delete old RPM_BUILD_ROOT
+rm -rf $RPM_BUILD_ROOT
+[% '#' %] set DESTROOT
+export DESTROOT="/opt/ofork/"
+[% '#' %] create RPM_BUILD_ROOT DESTROOT
+mkdir -p $RPM_BUILD_ROOT/$DESTROOT/
+[% '#' %] copy files
+cp -R . $RPM_BUILD_ROOT/$DESTROOT
+[% '#' %] configure apache
+install -d -m 755 $RPM_BUILD_ROOT/etc/httpd/conf.d
+install -m 644 scripts/apache2-httpd.include.conf $RPM_BUILD_ROOT/etc/httpd/conf.d/zzz_ofork.conf
+
+[% '#' %] set permission
+export OFORKUSER=ofork
+useradd $OFORKUSER || :
+useradd apache || :
+groupadd apache || :
+$RPM_BUILD_ROOT/opt/ofork/bin/ofork.SetPermissions.pl --web-group=apache
+
+%pre
+[% '#' %] useradd
+export OFORKUSER=ofork
+echo -n "Check OFORK user ... "
+if id $OFORKUSER >/dev/null 2>&1; then
+    echo "$OFORKUSER exists."
+    [% '#' %] update groups
+    usermod -g apache $OFORKUSER
+    [% '#' %] update home dir
+    usermod -d /opt/ofork $OFORKUSER
+else
+    useradd $OFORKUSER -d /opt/ofork/ -s /bin/bash -g apache -c 'OFORK System User' && echo "$OFORKUSER added."
+fi
+
+
+%post
+[% INCLUDE 'includes/post.tt'
+    WebserviceName => 'httpd.service' -%]
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%files
+%config /etc/httpd/conf.d/zzz_ofork.conf
+[% INCLUDE 'includes/files.tt' -%]

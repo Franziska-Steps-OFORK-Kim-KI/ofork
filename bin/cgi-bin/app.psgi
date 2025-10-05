@@ -1,0 +1,118 @@
+#!/usr/bin/perl
+# --
+# bin/cgi-bin/app.psgi
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: app.psgi,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# --
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU AFFERO General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+# or see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+# To profile single requests, install Devel::NYTProf and start this script as
+# PERL5OPT=-d:NYTProf NYTPROF='trace=1:start=no' plackup bin/cgi-bin/app.psgi
+# then append &NYTProf=mymarker to a request.
+# This creates a file called nytprof-mymarker.out, which you can process with
+# nytprofhtml -f nytprof-mymarker.out
+# Then point your browser at nytprof/index.html
+
+use strict;
+use warnings;
+
+# use ../../ as lib location
+use FindBin qw($Bin);
+use lib "$Bin/../..";
+use lib "$Bin/../../Kernel/cpan-lib";
+use lib "$Bin/../../Custom";
+
+# nofilter(TidyAll::Plugin::OFORK::Perl::SyntaxCheck)
+
+use CGI;
+use CGI::Emulate::PSGI;
+use Module::Refresh;
+use Plack::Builder;
+
+# Workaround: some parts of OFORK use exit to interrupt the control flow.
+#   This would kill the Plack server, so just use die instead.
+BEGIN {
+    *CORE::GLOBAL::exit = sub { die "exit called\n"; };
+}
+
+print STDERR "PLEASE NOTE THAT PLACK SUPPORT IS CURRENTLY EXPERIMENTAL AND NOT SUPPORTED!\n";
+
+my $App = CGI::Emulate::PSGI->handler(
+    sub {
+
+        # Cleanup values from previous requests.
+        CGI::initialize_globals();
+
+        # Populate SCRIPT_NAME as OFORK needs it in some places.
+        ( $ENV{SCRIPT_NAME} ) = $ENV{PATH_INFO} =~ m{/([A-Za-z\-_]+\.pl)};
+
+        # Fallback to agent login if we could not determine handle...
+        if ( !defined $ENV{SCRIPT_NAME} || !-e "$Bin/$ENV{SCRIPT_NAME}" ) {
+            $ENV{SCRIPT_NAME} = 'index.pl';
+        }
+
+        eval {
+
+            # Reload files in @INC that have changed since the last request.
+            Module::Refresh->refresh();
+        };
+        warn $@ if $@;
+
+        my $Profile;
+        if ( $ENV{NYTPROF} && $ENV{REQUEST_URI} =~ /NYTProf=([\w-]+)/ ) {
+            $Profile = 1;
+            DB::enable_profile("nytprof-$1.out");
+        }
+
+        # Load the requested script
+        eval {
+            do "$Bin/$ENV{SCRIPT_NAME}";
+        };
+        if ( $@ && $@ ne "exit called\n" ) {
+            warn $@;
+        }
+
+        if ($Profile) {
+            DB::finish_profile();
+        }
+    },
+);
+
+# Small helper function to determine the path to a static file
+my $StaticPath = sub {
+
+    # Everything in ofork-web/js or ofork-web/skins is a static file.
+    return 0 if $_ !~ m{-web/js/|-web/skins/};
+
+    # Return only the relative path.
+    $_ =~ s{^.*?-web/(js/.*|skins/.*)}{$1}smx;
+    return $_;
+};
+
+# Create a Static middleware to serve static files directly without invoking the OFORK
+#   application handler.
+builder {
+    enable "Static",
+        path        => $StaticPath,
+        root        => "$Bin/../../var/httpd/htdocs",
+        pass_trough => 0;
+    $App;
+}

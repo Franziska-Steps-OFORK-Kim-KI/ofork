@@ -1,0 +1,40 @@
+# --
+# Kernel/System/PostMaster/LoopProtectionCommon.pm
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: LoopProtectionCommon.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+package Kernel::System::PostMaster::LoopProtectionCommon;
+
+use strict;
+use warnings;
+use utf8;
+
+our $ObjectManagerDisabled = 1;
+
+sub new {
+    my ( $Type, %Param ) = @_;
+
+    # allocate new hash for object
+    my $Self = {};
+    bless( $Self, $Type );
+
+    # get config options
+    $Self->{PostmasterMaxEmails} = $Kernel::OM->Get('Kernel::Config')->Get('PostmasterMaxEmails') || 40;
+    $Self->{PostmasterMaxEmailsPerAddress} =
+        $Kernel::OM->Get('Kernel::Config')->Get('PostmasterMaxEmailsPerAddress') || {};
+
+    my $DateTimeObject = $Kernel::OM->Create('Kernel::System::DateTime');
+    $Self->{LoopProtectionDate} = $DateTimeObject->Format( Format => '%Y-%m-%d' );
+
+    return $Self;
+}
+
+1;

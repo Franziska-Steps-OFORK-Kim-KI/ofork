@@ -1,0 +1,16 @@
+# --
+# AgentTicketRequestNoValid.tt - provides HTML form for customer message
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# --
+# $Id: AgentTicketRequestNoValid.tt,v 1.1 2016/09/20 12:56:04 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<div style="left:10px;top:130px;position:absolute;width:350px;padding:4px;color:red;">
+    <div id="CustomerInfoText">
+        Dieser Antrag ist nicht gültig!
+    </div>
+</div>

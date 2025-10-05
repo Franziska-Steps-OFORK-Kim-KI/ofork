@@ -1,0 +1,381 @@
+# --
+# Kernel/System/Environment.pm
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: Environment.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+package Kernel::System::Environment;
+
+use strict;
+use warnings;
+
+use POSIX;
+use ExtUtils::MakeMaker;
+use Sys::Hostname::Long;
+
+our @ObjectDependencies = (
+    'Kernel::Config',
+    'Kernel::System::DB',
+    'Kernel::System::Main',
+);
+
+=head1 NAME
+
+Kernel::System::Environment - collect environment info
+
+=head1 DESCRIPTION
+
+Functions to collect environment info
+
+=head1 PUBLIC INTERFACE
+
+=head2 new()
+
+create environment object. Do not use it directly, instead use:
+
+    my $EnvironmentObject = $Kernel::OM->Get('Kernel::System::Environment');
+
+=cut
+
+sub new {
+    my ( $Type, %Param ) = @_;
+
+    # allocate new hash for object
+    my $Self = {};
+    bless( $Self, $Type );
+
+    return $Self;
+}
+
+=head2 OSInfoGet()
+
+collect operating system information
+
+    my %OSInfo = $EnvironmentObject->OSInfoGet();
+
+returns:
+
+    %OSInfo = (
+        Distribution => "debian",
+        Hostname     => "servername.example.com",
+        OS           => "Linux",
+        OSName       => "debian 7.1",
+        Path         => "/home/ofork/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games",
+        POSIX        => [
+                        "Linux",
+                        "servername",
+                        "3.2.0-4-686-pae",
+                        "#1 SMP Debian 3.2.46-1",
+                        "i686",
+                      ],
+        User         => "ofork",
+    );
+
+=cut
+
+sub OSInfoGet {
+    my ( $Self, %Param ) = @_;
+
+    my @Data = POSIX::uname();
+
+    # get main object
+    my $MainObject = $Kernel::OM->Get('Kernel::System::Main');
+
+    my %OSMap = (
+        linux   => 'Linux',
+        freebsd => 'FreeBSD',
+        openbsd => 'OpenBSD',
+        darwin  => 'MacOSX',
+    );
+
+    # If used OS is a linux system
+    my $OSName;
+    my $Distribution;
+    if ( $^O =~ /(linux|unix|netbsd)/i ) {
+
+        if ( $^O eq 'linux' ) {
+
+            $MainObject->Require('Linux::Distribution');
+
+            my $DistributionName = Linux::Distribution::distribution_name();
+
+            $Distribution = $DistributionName || 'unknown';
+
+            if ($DistributionName) {
+
+                my $DistributionVersion = Linux::Distribution::distribution_version() || '';
+
+                $OSName = $DistributionName . ' ' . $DistributionVersion;
+            }
+        }
+        elsif ( -e "/etc/issue" ) {
+
+            my $Content = $MainObject->FileRead(
+                Location => '/etc/issue',
+                Result   => 'ARRAY',
+            );
+
+            if ($Content) {
+                $OSName = $Content->[0];
+            }
+        }
+        }
+    elsif ( $^O eq 'darwin' ) {
+
+        my $MacVersion = `sw_vers -productVersion` || '';
+        chomp $MacVersion;
+
+        $OSName = 'MacOSX ' . $MacVersion;
+    }
+    elsif ( $^O eq 'freebsd' || $^O eq 'openbsd' ) {
+
+        my $BSDVersion = `uname -r` || '';
+        chomp $BSDVersion;
+
+        $OSName = "$OSMap{$^O} $BSDVersion";
+    }
+
+    # collect OS data
+    my %EnvOS = (
+        Hostname     => hostname_long(),
+        OSName       => $OSName || 'Unknown version',
+        Distribution => $Distribution,
+        User         => $ENV{USER} || $ENV{USERNAME},
+        Path         => $ENV{PATH},
+        HostType     => $ENV{HOSTTYPE},
+        LcCtype      => $ENV{LC_CTYPE},
+        Cpu          => $ENV{CPU},
+        MachType     => $ENV{MACHTYPE},
+        POSIX        => \@Data,
+        OS           => $OSMap{$^O} || $^O,
+    );
+
+    return %EnvOS;
+}
+
+=head2 ModuleVersionGet()
+
+Return the version of an installed perl module:
+
+    my $Version = $EnvironmentObject->ModuleVersionGet(
+        Module => 'MIME::Parser',
+    );
+
+returns
+
+    $Version = '5.503';
+
+or undef if the module is not installed.
+
+=cut
+
+sub ModuleVersionGet {
+    my ( $Self, %Param ) = @_;
+
+    my $File = "$Param{Module}.pm";
+    $File =~ s{::}{/}g;
+
+    # traverse @INC to see if the current module is installed in
+    # one of these locations
+    my $Path;
+    PATH:
+    for my $Dir (@INC) {
+
+        my $PossibleLocation = File::Spec->catfile( $Dir, $File );
+
+        next PATH if !-r $PossibleLocation;
+
+        $Path = $PossibleLocation;
+
+        last PATH;
+    }
+
+    # if we have no $Path the module is not installed
+    return if !$Path;
+
+    # determine version number by means of ExtUtils::MakeMaker
+    return MM->parse_version($Path);
+}
+
+=head2 PerlInfoGet()
+
+collect perl information:
+
+    my %PerlInfo = $EnvironmentObject->PerlInfoGet();
+
+you can also specify options:
+
+    my %PerlInfo = $EnvironmentObject->PerlInfoGet(
+        BundledModules => 1,
+    );
+
+returns:
+
+    %PerlInfo = (
+        PerlVersion   => "5.14.2",
+
+    # if you specified 'BundledModules => 1' you'll also get this:
+
+        Modules => {
+            "Algorithm::Diff"  => "1.30",
+            "Apache::DBI"      => 1.62,
+            ......
+        },
+    );
+
+=cut
+
+sub PerlInfoGet {
+    my ( $Self, %Param ) = @_;
+
+    # collect perl data
+    my %EnvPerl = (
+        PerlVersion => sprintf "%vd",
+        $^V,
+    );
+
+    my %Modules;
+    if ( $Param{BundledModules} ) {
+
+        for my $Module (
+            qw(
+            parent
+            Algorithm::Diff
+            Apache::DBI
+            CGI
+            Class::Inspector
+            Crypt::PasswdMD5
+            CSS::Minifier
+            Email::Valid
+            Encode::Locale
+            IO::Interactive
+            JavaScript::Minifier
+            JSON
+            JSON::PP
+            Linux::Distribution
+            Locale::Codes
+            LWP
+            Mail::Address
+            Mail::Internet
+            MIME::Tools
+            Module::Refresh
+            Mozilla::CA
+            Net::IMAP::Simple
+            Net::HTTP
+            Net::SSLGlue
+            PDF::API2
+            SOAP::Lite
+            Sys::Hostname::Long
+            Text::CSV
+            Text::Diff
+            YAML
+            URI
+            )
+            )
+        {
+            $Modules{$Module} = $Self->ModuleVersionGet( Module => $Module );
+        }
+    }
+
+    # add modules list
+    if (%Modules) {
+        $EnvPerl{Modules} = \%Modules;
+    }
+
+    return %EnvPerl;
+}
+
+=head2 DBInfoGet()
+
+collect database information
+
+    my %DBInfo = $EnvironmentObject->DBInfoGet();
+
+returns
+
+    %DBInfo = (
+        Database => "oforkproduction",
+        Host     => "dbserver.example.com",
+        User     => "oforkuser",
+        Type     => "mysql",
+        Version  => "MySQL 5.5.31-0+wheezy1",
+    )
+
+=cut
+
+sub DBInfoGet {
+    my ( $Self, %Param ) = @_;
+
+    # get needed objects
+    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+    my $DBObject     = $Kernel::OM->Get('Kernel::System::DB');
+
+    # collect DB data
+    my %EnvDB = (
+        Host     => $ConfigObject->Get('DatabaseHost'),
+        Database => $ConfigObject->Get('Database'),
+        User     => $ConfigObject->Get('DatabaseUser'),
+        Type     => $ConfigObject->Get('Database::Type') || $DBObject->{'DB::Type'},
+        Version  => $DBObject->Version(),
+    );
+
+    return %EnvDB;
+}
+
+=head2 OFORKInfoGet()
+
+collect OFORK information
+
+    my %OFORKInfo = $EnvironmentObject->OFORKInfoGet();
+
+returns:
+
+    %OFORKInfo = (
+        Product         => "OFORK",
+        Version         => "3.3.1",
+        DefaultLanguage => "en",
+        Home            => "/opt/ofork",
+        Host            => "prod.ofork.com",
+        SystemID        => 70,
+    );
+
+=cut
+
+sub OFORKInfoGet {
+    my ( $Self, %Param ) = @_;
+
+    # get config object
+    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+
+    # collect OFORK data
+    my %EnvOFORK = (
+        Version         => $ConfigObject->Get('Version'),
+        Home            => $ConfigObject->Get('Home'),
+        Host            => $ConfigObject->Get('FQDN'),
+        Product         => $ConfigObject->Get('Product'),
+        SystemID        => $ConfigObject->Get('SystemID'),
+        DefaultLanguage => $ConfigObject->Get('DefaultLanguage'),
+    );
+
+    return %EnvOFORK;
+}
+
+1;
+
+=head1 TERMS AND CONDITIONS
+
+This software is part of the OFORK project (L<https://o-fork.de/>).
+
+This software comes with ABSOLUTELY NO WARRANTY. For details, see
+the enclosed file COPYING for license information (AGPL). If you
+did not receive this file, see L<http://www.gnu.org/licenses/agpl.txt>.
+
+=cut

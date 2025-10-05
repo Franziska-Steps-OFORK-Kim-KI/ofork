@@ -1,0 +1,215 @@
+# --
+# AgentProcessFields.tt - provides HTML form for customer message
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# --
+# $Id: AgentProcessFields.tt,v 1.2 2016/11/20 19:31:54 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<form action="[% Env("CGIHandle") %]" method="post" enctype="multipart/form-data" name="compose[% Data.ProcessStepID | html %]" id="Compose[% Data.ProcessStepID | html %]" class="Validate PreventMultipleSubmits">
+    <input type="hidden" name="Action" value="AgentProcessStep"/>
+    <input type="hidden" name="Subaction" value="Store"/>
+    <input type="hidden" name="ProcessStepID" value="[% Data.ProcessStepID | html %]"/>
+    <input type="hidden" name="ProcessID" value="[% Data.ProcessID | html %]"/>
+    <input type="hidden" name="TicketID" value="[% Data.TicketID | html %]"/>
+
+    <div class="LayoutPopup ARIARoleMain">
+        <div class="Header">
+            <h1>[% Data.Name | html %]</h1>
+            [% Data.Description %]
+        </div>
+        <div class="Content">
+
+    	<fieldset class="TableLike">
+
+            <label class="Mandatory" for="RichText[% Data.ProcessStepID | html %]"><span class="Marker">*</span> [% Translate("Report") | html %]:</label>
+            <div class="Field">
+                <textarea id="RichText[% Data.ProcessStepID | html %]" class="RichText Validate_Required [% Data.RichTextInvalid | html %]" name="Report" title="[% Translate("Message body") | html %]" rows="15" cols="[% Config("Ticket::Frontend::TextAreaNote") | html %]">[% Data.Report | html %]</textarea>
+                <div id="RichText[% Data.ProcessStepID | html %]Error" class="TooltipErrorMessage">
+                    <p>[% Translate("This field is required.") | html %]</p>
+                </div>
+                <div id="RichText[% Data.ProcessStepID | html %]ServerError" class="TooltipErrorMessage">
+                    <p>[% Translate("This field is required.") | html %]</p>
+                </div>
+            </div>
+            <div class="Clear"></div>
+
+[% RenderBlockStart("SetFieldListsResult") %]
+
+[% RenderBlockStart("ConditionFieldTitle") %]
+             <label for="Title">[% Data.FieldIsSetStep | html %]:</label>
+             <div class="Field">
+                <input type="text" class="W75pc " name="StepTitle" id="StepTitle" value="[% Data.StepTitle | html %]"/>
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("ConditionFieldTitle") %]                        
+[% RenderBlockStart("ConditionFieldTitleMandatory") %]
+             <label class="Mandatory" for="Title"><span class="Marker">*</span> [% Data.FieldIsSetStep | html %]:</label>
+             <div class="Field">
+	            <input type="text" class="Validate_Required [% Data.TitleInvalid | html %] W75pc " name="StepTitle" id="StepTitle" value="[% Data.StepTitle | html %]"/>
+	            <div id="StepTitleError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+	            <div id="StepTitleServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("ConditionFieldTitleMandatory") %]       
+
+[% RenderBlockStart("ConditionFieldType") %]
+            <label for="StepTypeID">[% Data.FieldIsSetStep | html %]:</label>
+            <div class="Field">
+                [% Data.TypeOption %]
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("ConditionFieldType") %]  
+[% RenderBlockStart("ConditionFieldTypeMandatory") %]
+            <label class="Mandatory" for="StepTypeID"><span class="Marker">*</span> [% Data.FieldIsSetStep | html %]:</label>
+            <div class="Field">
+                [% Data.TypeOption %]
+                <div id="StepTypeIDError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                <div id="StepTypeIDServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("ConditionFieldTypeMandatory") %]  
+
+[% RenderBlockStart("ConditionFieldQueue") %]
+            <label for="StepQueueID">[% Data.FieldIsSetStep | html %]:</label>
+            <div class="Field">
+                [% Data.QueueOption %]
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("ConditionFieldQueue") %]  
+[% RenderBlockStart("ConditionFieldQueueMandatory") %]
+            <label class="Mandatory" for="StepQueueID"><span class="Marker">*</span> [% Data.FieldIsSetStep | html %]:</label>
+            <div class="Field">
+                [% Data.QueueOption %]
+                <div id="StepQueueIDError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                <div id="StepQueueIDServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("ConditionFieldQueueMandatory") %]  
+
+[% RenderBlockStart("ConditionFieldState") %]
+            <label for="StepStateID">[% Data.FieldIsSetStep | html %]:</label>
+            <div class="Field">
+                [% Data.StateOption %]
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("ConditionFieldState") %]  
+[% RenderBlockStart("ConditionFieldStateMandatory") %]
+            <label class="Mandatory" for="StepStateID"><span class="Marker">*</span> [% Data.FieldIsSetStep | html %]:</label>
+            <div class="Field">
+                [% Data.StateOption %]
+                <div id="StepStateIDError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                <div id="StepStateIDServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("ConditionFieldStateMandatory") %] 
+
+#[% RenderBlockStart("ConditionFieldService") %]
+#            <label for="StepServiceID">[% Data.FieldIsSetStep | html %]:</label>
+#            <div class="Field">
+#                [% Data.ServiceOption %]
+#            </div>
+#            <div class="Clear"></div>
+#[% RenderBlockEnd("ConditionFieldService") %]  
+#[% RenderBlockStart("ConditionFieldServiceMandatory") %]
+#            <label class="Mandatory" for="StepServiceID"><span class="Marker">*</span> [% Data.FieldIsSetStep | html %]:</label>
+#            <div class="Field">
+#                [% Data.ServiceOption %]
+#                <div id="StepServiceIDError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+#                <div id="StepServiceIDServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+#            </div>
+#            <div class="Clear"></div>
+#[% RenderBlockEnd("ConditionFieldServiceMandatory") %] 
+
+#[% RenderBlockStart("ConditionFieldSLA") %]
+#            <label for="StepSLAID">[% Data.FieldIsSetStep | html %]:</label>
+#            <div class="Field">
+#                [% Data.SLAOption %]
+#            </div>
+#            <div class="Clear"></div>
+#[% RenderBlockEnd("ConditionFieldSLA") %]  
+#[% RenderBlockStart("ConditionFieldSLAMandatory") %]
+#            <label class="Mandatory" for="StepSLAID"><span class="Marker">*</span> [% Data.FieldIsSetStep | html %]:</label>
+#            <div class="Field">
+#                [% Data.SLAOption %]
+#                <div id="StepSLAIDError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+#                <div id="StepSLAIDServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+#            </div>
+#            <div class="Clear"></div>
+#[% RenderBlockEnd("ConditionFieldSLAMandatory") %] 
+
+[% RenderBlockStart("ConditionFieldCustomerUser") %]
+             <label for="FromCustomer">[% Data.FieldIsSetStep | html %]:</label>
+             <div class="Field">
+                <input id="FromCustomer" type="text" name="FromCustomer" value="" class="CustomerAutoComplete W75pc [% Data.FromInvalid | html %]" autocomplete="off" />
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("ConditionFieldCustomerUser") %]                        
+[% RenderBlockStart("ConditionFieldCustomerUserMandatory") %]
+             <label class="Mandatory" for="FromCustomer"><span class="Marker">*</span> [% Data.FieldIsSetStep | html %]:</label>
+             <div class="Field">
+                <input id="FromCustomer" type="text" name="FromCustomer" value="" class="Validate_Required CustomerAutoComplete W75pc [% Data.FromInvalid | html %]" autocomplete="off" />
+	            <div id="FromCustomerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+	            <div id="FromCustomerServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("ConditionFieldCustomerUserMandatory") %]  
+
+[% RenderBlockStart("ConditionFieldOwner") %]
+            <label for="User">[% Data.FieldIsSetStep | html %]:</label>
+            <div class="Field">
+                [% Data.OwnerOption %]
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("ConditionFieldOwner") %]  
+[% RenderBlockStart("ConditionFieldOwnerMandatory") %]
+            <label class="Mandatory" for="User"><span class="Marker">*</span> [% Data.FieldIsSetStep | html %]:</label>
+            <div class="Field">
+                [% Data.OwnerOption %]
+                <div id="UserError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                <div id="UserServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("ConditionFieldOwnerMandatory") %] 
+
+[% RenderBlockEnd("SetFieldListsResult") %]
+
+
+[% RenderBlockStart("DynamicSetFieldListsResult") %]
+
+[% RenderBlockStart("DynamicFieldIsSetStep") %]
+            <label for="DynamicField_[% Data.Name | html %]">[% Data.DynamicFieldIsSetStep | html %]:</label>
+            <div class="Field">
+                [% Data.Field %]
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("DynamicFieldIsSetStep") %]                         
+
+[% RenderBlockStart("DynamicFieldIsSetStepRequired") %]
+            <label class="Mandatory" for="DynamicField_[% Data.Name | html %]"><span class="Marker">*</span> [% Data.DynamicFieldIsSetStep | html %]:</label>
+            <div class="Field">
+                [% Data.Field %]
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("DynamicFieldIsSetStepRequired") %]    
+
+[% RenderBlockEnd("DynamicSetFieldListsResult") %]
+
+[% RenderBlockStart("GroupIfSet") %]
+            <div class="Field SpacingTop">
+                <button class="Primary CallForAction" id="submit" accesskey="g" title="[% Translate("Create") | html %] (g)" type="submit" value="[% Translate("Create") | html %]"><span><i class="fa fa-check-square-o"></i> [% Translate("Create") | html %]</span></button>
+            </div>
+[% RenderBlockEnd("GroupIfSet") %]                         
+
+[% RenderBlockStart("GroupIfNotSet") %]
+            <div class="Field SpacingTop" style="color:red;font-weight:bold;">
+                [% Translate("You are not authorized to edit this step.") | html %]
+            </div>
+[% RenderBlockEnd("GroupIfNotSet") %]                         
+
+    </fieldset>
+    </div>
+</div>

@@ -1,0 +1,287 @@
+# --
+# AdminBookingSystemRooms.tt - provides HTML form for AdminSLA
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# --
+# $Id: AdminBookingSystemRooms.tt,v 1.2 2017/02/02 10:06:16 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+[% RenderBlockStart("Overview") %]
+<div class="MainBox ARIARoleMain LayoutFixedSidebar SidebarFirst">
+
+    [% BreadcrumbPath = [
+            {
+                Name => Translate('Manage rooms'),
+                Link => Env("Action"),
+            },
+        ]
+    %]
+
+    [% SWITCH Data.Action %]
+        [% CASE 'Add' %]
+            [% BreadcrumbPath.push({ Name => Translate("Add room"),}) %]
+        [% CASE 'Change' %]
+            [% USE EditTitle = String(Translate("Edit room")) %]
+            [% BreadcrumbPath.push({ Name => EditTitle.append( ': ', Data.Name ) }) %]
+    [% END %]
+
+    [% INCLUDE "Breadcrumb.tt" Path = BreadcrumbPath %]
+
+    <div class="SidebarColumn">
+
+[% RenderBlockStart("ActionList") %]
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>[% Translate("Actions") | html %]</h2>
+            </div>
+            <div class="Content">
+                <ul class="ActionList">
+
+[% RenderBlockStart("ActionOverview") %]
+                    <li>
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %]" class="CallForAction"><span>[% Translate("Go to overview") | html %]</span></a>
+                    </li>
+[% RenderBlockEnd("ActionOverview") %]
+
+[% RenderBlockStart("ActionAdd") %]
+                    <li>
+                        <a class="CallForAction Plus" href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=RoomEdit">
+                        <span>[% Translate("Room add") | html %]</span>
+                        </a>
+                    </li>
+[% RenderBlockEnd("ActionAdd") %]
+
+                </ul>
+            </div>
+        </div>
+[% RenderBlockEnd("ActionList") %]
+
+    </div>
+
+    <div class="ContentColumn">
+        <div class="WidgetSimple">
+[% RenderBlockStart("OverviewList") %]
+            <div class="Header">
+                <h2>[% Translate("List") | html %]</h2>
+            </div>
+            <div class="Content">
+
+                <table class="DataTable">
+                    <thead>
+                        <tr>
+                            <th>[% Translate("Room") | html %]</th>
+                            <th>[% Translate("Building") | html %]</th>
+                            <th>[% Translate("City") | html %]</th>
+                            <th>[% Translate("Comment") | html %]</th>
+                            <th>[% Translate("Valid") | html %]</th>
+                            <th>[% Translate("Changed") | html %]</th>
+                            <th>[% Translate("Created") | html %]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+[% RenderBlockStart("NoDataFoundMsg") %]
+                        <tr>
+                            <td colspan="6">
+                                [% Translate("No data found.") | html %]
+                            </td>
+                        </tr>
+[% RenderBlockEnd("NoDataFoundMsg") %]
+[% RenderBlockStart("OverviewListRow") %]
+                        <tr>
+                            <td><a class="AsBlock" href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=RoomEdit;RoomID=[% Data.RoomID | uri %]">[% Data.Room | html %]</a></td>
+                            <td title="[% Data.Building | html %]">[% Data.Building | html %]</td>
+                            <td title="[% Data.City | html %]">[% Data.City | html %]</td>
+                            <td title="[% Data.Comment | html %]">[% Data.Comment | truncate(26) | html %]</td>
+                            <td>[% Translate(Data.Valid) | html %]</td>
+                            <td>[% Data.ChangeTime | Localize("TimeShort") %]</td>
+                            <td>[% Data.CreateTime | Localize("TimeShort") %]</td>
+                        </tr>
+[% RenderBlockEnd("OverviewListRow") %]
+                    </tbody>
+                </table>
+            </div>
+[% RenderBlockEnd("OverviewList") %]
+
+
+[% RenderBlockStart("RoomEdit") %]
+            <div class="Header">
+[% RenderBlockStart("HeaderAdd") %]
+                <h2>[% Translate("New room") | html %]</h2>
+[% RenderBlockEnd("HeaderAdd") %]
+[% RenderBlockStart("HeaderEdit") %]
+                <h2>[% Translate("Room edit") | html %]</h2>
+[% RenderBlockEnd("HeaderEdit") %]
+            </div>
+            <div class="Content">
+
+                <form action="[% Env("CGIHandle") %]" method="post" class="Validate">
+                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                    <input type="hidden" name="Subaction" value="RoomSave"/>
+                    <input type="hidden" name="RoomID" value="[% Data.RoomID | html %]"/>
+                    <fieldset class="TableLike">
+
+[% RenderBlockStart("RoomIcons") %]
+                        <div id="RoomIconsRahmen_[% Data.ID %]" style="float:left;border: [% Data.ColorImageID %];padding:4px;margin:4px;border: 2px solid #80d2a1; border-radius: 3px;">
+                            <div id="RoomIcons_[% Data.ID %]">
+                                <img src="data:image/png;base64,[% Data.Content | html %]" style="max-width:100px;max-height:100px;">
+                                <input type="radio" id="ImageID" name="ImageID" value="[% Data.ID %]" [% Data.CheckedImageID %]/>
+                            </div>
+                        </div>
+[% RenderBlockEnd("RoomIcons") %]
+                        <div class="Clear"></div>
+
+                        <label class="Mandatory" for="RoomCategoriesID"><span class="Marker">*</span> [% Translate("Room category") | html %]:</label>
+                        <div class="Field">
+                            [% Data.RoomCategoriesStrg %]
+                            <div id="RoomCategoriesIDError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                            <div id="RoomCategoriesIDServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label class="Mandatory" for="Room"><span class="Marker">*</span>[% Translate("Room") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="Room" id="Room" value="[% Data.Room | html %]" class="W50pc Validate_Required [% Data.Roomnvalid | html %]" maxlength="200"/>
+                            <div id="RoomError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                            <div id="RoomServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="Building">[% Translate("Building") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="Building" id="Building" value="[% Data.Building | html %]" class="W50pc" maxlength="200"/>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="Floor">[% Translate("Floor") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="Floor" id="Floor" value="[% Data.Floor | html %]" class="W50pc" maxlength="200"/>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="Street">[% Translate("Street") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="Street" id="Street" value="[% Data.Street | html %]" class="W50pc" maxlength="200"/>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="PostCode">[% Translate("Post Code") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="PostCode" id="PostCode" value="[% Data.PostCode | html %]" class="W5pc" maxlength="200"/>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="City">[% Translate("City") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="City" id="City" value="[% Data.City | html %]" class="W50pc" maxlength="200"/>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="Calendar">[% Translate("Calendar") | html %]:</label>
+                        <div class="Field">
+                            [% Data.CalendarStrg %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="RoomColor">[% Translate("Color") | html %]:</label>
+                        <div class="Field">
+                            <input type="color" name="RoomColor" id="RoomColor" value="[% Data.RoomColor | html %]" class="W5pc"/>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="SetupTime">[% Translate("Set-up time") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="SetupTime" id="SetupTime" value="[% Data.SetupTime | html %]" style="width:25px;" maxlength="4"/> [% Translate("In hours") | html %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="Persons">[% Translate("Persons") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="Persons" id="Persons" value="[% Data.Persons | html %]" class="W50pc" maxlength="200"/>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="Price">[% Translate("Price") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="Price" id="Price" value="[% Data.Price | html %]" class="W5pc" maxlength="200"/>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="PriceFor">[% Translate("Price for") | html %]:</label>
+                        <div class="Field">
+                            [% Data.PriceForStrg %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="Currency">[% Translate("Currency") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="Currency" id="Currency" value="[% Data.Currency | html %]" class="W5pc" maxlength="200"/>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="EquipmentBookable">[% Translate("Equipment bookable") | html %]:</label>
+                        <div class="Field">
+                            [% Data.EquipmentBookableStrg %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="Equipment">[% Translate("Equipment existing") | html %]:</label>
+                        <div class="Field">
+                            [% Data.EquipmentStrg %]
+                        </div>
+                        <div class="Clear"></div>
+
+	                    <label for="RichText">[% Translate("Description") | html %]:</label>
+	                    <div class="RichTextField">
+	                        <textarea id="RichText" class="RichText" rows="20" cols="80" name="Description">[% Data.Description | html %]</textarea>
+	                    </div>
+	                    <div class="Clear"></div>
+
+
+                        <label for="QueueBooking">[% Translate("Booking queue") | html %]:</label>
+                        <div class="Field">
+                            [% Data.QueueBookingStrg %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="QueueDevice">[% Translate("Device queue") | html %]:</label>
+                        <div class="Field">
+                            [% Data.QueueDeviceStrg %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="QueueCatering">[% Translate("Catering queue") | html %]:</label>
+                        <div class="Field">
+                            [% Data.QueueCateringStrg %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="ValidID">[% Translate("Valid") | html %]:</label>
+                        <div class="Field">
+                            [% Data.ValidOptionStrg %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="Comment">[% Translate("Comment") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="Comment" id="Comment" value="[% Data.Comment | html %]" class="W50pc" maxlength="150"/>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <div class="Field SpacingTop">
+                            <button class="Primary" type="submit" value="[% Translate("Submit") | html %]">[% Translate("Submit") | html %]</button>
+                            [% Translate("or") | html %]
+                            <a href="[% Env("Baselink") %]Action=[% Env("Action") %]">[% Translate("Cancel") | html %]</a>
+                        </div>
+                        <div class="Clear"></div>
+                    </fieldset>
+                </form>
+            </div>
+[% RenderBlockEnd("RoomEdit") %]
+
+        </div>
+    </div>
+</div>
+[% RenderBlockEnd("Overview") %]

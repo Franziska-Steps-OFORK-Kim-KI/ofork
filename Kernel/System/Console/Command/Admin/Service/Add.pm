@@ -1,0 +1,113 @@
+# --
+# Kernel/System/Console/Command/Admin/Service/Add.pm
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: Add.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+package Kernel::System::Console::Command::Admin::Service::Add;
+
+use strict;
+use warnings;
+
+use parent qw(Kernel::System::Console::BaseCommand);
+
+our @ObjectDependencies = (
+    'Kernel::System::Service',
+);
+
+sub Configure {
+    my ( $Self, %Param ) = @_;
+
+    $Self->Description('Add new service.');
+    $Self->AddOption(
+        Name        => 'name',
+        Description => "Name of the new service.",
+        Required    => 1,
+        HasValue    => 1,
+        ValueRegex  => qr/.*/smx,
+    );
+    $Self->AddOption(
+        Name        => 'parent-name',
+        Description => "Parent service name. If given, the new service will be a subservice of the given parent.",
+        Required    => 0,
+        HasValue    => 1,
+        ValueRegex  => qr/.*/smx,
+    );
+    $Self->AddOption(
+        Name        => 'comment',
+        Description => "Comment for the new service.",
+        Required    => 0,
+        HasValue    => 1,
+        ValueRegex  => qr/.*/smx,
+    );
+
+    return;
+}
+
+sub PreRun {
+    my ( $Self, %Param ) = @_;
+
+    # Get all services.
+    $Self->{Name} = $Self->GetOption('name');
+    my %ServiceList = $Kernel::OM->Get('Kernel::System::Service')->ServiceList(
+        Valid  => 0,
+        UserID => 1,
+    );
+    my %Reverse = reverse %ServiceList;
+
+    $Self->{ParentName} = $Self->GetOption('parent-name');
+    if ( $Self->{ParentName} ) {
+
+        # Check if Parent service exists.
+        $Self->{ParentID} = $Kernel::OM->Get('Kernel::System::Service')->ServiceLookup(
+            Name   => $Self->{ParentName},
+            UserID => 1,
+        );
+        die "Parent service $Self->{ParentName} does not exist.\n" if !$Self->{ParentID};
+
+        # Check if Parent::Child service combination exists.
+        my $ServiceName = $Self->{ParentName} . '::' . $Self->{Name};
+        die "Service '$ServiceName' already exists!\n" if $Reverse{$ServiceName};
+    }
+    else {
+
+        # Check if service already exists.
+        die "Service '$Self->{Name}' already exists!\n" if $Reverse{ $Self->{Name} };
+    }
+
+    return;
+}
+
+sub Run {
+    my ( $Self, %Param ) = @_;
+
+    $Self->Print("<yellow>Adding a new service...</yellow>\n");
+
+    # add service
+    if (
+        !$Kernel::OM->Get('Kernel::System::Service')->ServiceAdd(
+            UserID   => 1,
+            ValidID  => 1,
+            Name     => $Self->{Name},
+            Comment  => $Self->GetOption('comment'),
+            ParentID => $Self->{ParentID},
+        )
+        )
+    {
+        $Self->PrintError("Can't add service.");
+        return $Self->ExitCodeError();
+    }
+
+    $Self->Print("<green>Done.</green>\n");
+    return $Self->ExitCodeOk();
+}
+
+1;

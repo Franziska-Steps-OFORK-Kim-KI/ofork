@@ -1,0 +1,32 @@
+/**
+ * @project     OFORK (https://o-fork.de) - Agent Frontend
+ * @copyright   OFORK
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+@media screen,projection,tv,handheld {
+
+/**
+ * @package     Skin "default"
+ * @section     General
+ */
+
+.Recomendation a.Button::after {
+    content: "";
+}
+.Recomendation a.Button {
+    color: #FFFFFF;
+    display: inline;
+    padding: 3px 7px;
+    background-color: #3e6c7c;
+}
+
+.Recomendation a.Button:hover {
+    background-color: #4b7c8e;
+    color: #FFFFFF;
+}
+.Recomendation a.Button i {
+    color: #89c6d1;
+}
+
+} /* end @media */

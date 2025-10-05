@@ -1,0 +1,65 @@
+
+%config(noreplace) /opt/ofork/Kernel/Config.pm
+%config(noreplace) /opt/ofork/.procmailrc
+%config(noreplace) /opt/ofork/.fetchmailrc
+%config(noreplace) /opt/ofork/.mailfilter
+
+%dir /opt/ofork/
+/opt/ofork/RELEASE
+/opt/ofork/ARCHIVE
+/opt/ofork/.bash_completion
+/opt/ofork/.procmailrc.dist
+/opt/ofork/.fetchmailrc.dist
+/opt/ofork/.mailfilter.dist
+
+%dir /opt/ofork/Custom/
+/opt/ofork/Custom/README
+
+%dir /opt/ofork/Kernel/
+
+%dir /opt/ofork/Kernel/Config/
+/opt/ofork/Kernel/Config.pm.dist
+/opt/ofork/Kernel/Config.pod
+/opt/ofork/Kernel/Config/Files/
+/opt/ofork/Kernel/Config/Defaults.pm
+
+/opt/ofork/Kernel/GenericInterface*
+
+/opt/ofork/Kernel/Language.pm
+%dir /opt/ofork/Kernel/Language/
+/opt/ofork/Kernel/Language/*.pm
+
+/opt/ofork/bin*
+/opt/ofork/Kernel/Autoload*
+/opt/ofork/Kernel/Modules*
+/opt/ofork/Kernel/Output*
+/opt/ofork/Kernel/System*
+/opt/ofork/scripts*
+
+%dir /opt/ofork/var/
+# TEMPROARILY DEACTIVATED. There are no packages to embed at present.
+#%dir /opt/ofork/var/packages/
+#/opt/ofork/var/packages/*.opm
+%dir /opt/ofork/var/article/
+/opt/ofork/var/fonts/
+/opt/ofork/var/httpd/
+/opt/ofork/var/logo-ofork.png
+%dir /opt/ofork/var/cron/
+%dir /opt/ofork/var/log/
+%dir /opt/ofork/var/sessions/
+%dir /opt/ofork/var/spool/
+/opt/ofork/var/cron/*
+%dir /opt/ofork/var/tmp/
+%dir /opt/ofork/var/stats/
+/opt/ofork/var/stats/*.xml
+%dir /opt/ofork/var/processes/examples/
+/opt/ofork/var/processes/examples/*
+%dir /opt/ofork/var/webservices/examples/
+/opt/ofork/var/webservices/examples/*.pm
+
+/opt/ofork/Kernel/cpan-lib*
+
+%doc /opt/ofork/*.md
+%doc /opt/ofork/COPYING
+%doc /opt/ofork/COPYING-Third-Party
+%doc /opt/ofork/doc*

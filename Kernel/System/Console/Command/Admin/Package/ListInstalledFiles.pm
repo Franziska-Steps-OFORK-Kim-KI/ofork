@@ -1,0 +1,64 @@
+# --
+# Kernel/System/Console/Command/Admin/Package/ListInstalledFiles.pm
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: ListInstalledFiles.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+package Kernel::System::Console::Command::Admin::Package::ListInstalledFiles;
+
+use strict;
+use warnings;
+
+use parent qw(Kernel::System::Console::BaseCommand);
+
+our @ObjectDependencies = (
+    'Kernel::Config',
+    'Kernel::System::Main',
+    'Kernel::System::Package',
+);
+
+sub Configure {
+    my ( $Self, %Param ) = @_;
+
+    $Self->Description('List all installed OFORK package files.');
+
+    return;
+}
+
+sub Run {
+    my ( $Self, %Param ) = @_;
+
+    $Self->Print("<yellow>Listing all installed package files...</yellow>\n");
+
+    my @Packages = $Kernel::OM->Get('Kernel::System::Package')->RepositoryList();
+
+    PACKAGE:
+    for my $Package (@Packages) {
+
+        # Just show if PackageIsVisible flag is enabled.
+        if (
+            defined $Package->{PackageIsVisible}
+            && !$Package->{PackageIsVisible}->{Content}
+            )
+        {
+            next PACKAGE;
+        }
+
+        for my $File ( @{ $Package->{Filelist} } ) {
+            $Self->Print("  $Package->{Name}->{Content}: $File->{Location}\n");
+        }
+    }
+
+    $Self->Print("<green>Done.</green>\n");
+    return $Self->ExitCodeOk();
+}
+
+1;

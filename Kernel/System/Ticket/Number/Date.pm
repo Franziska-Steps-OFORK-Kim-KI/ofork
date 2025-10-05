@@ -1,0 +1,102 @@
+# --
+# Kernel/System/Ticket/Number/Date.pm
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: Date.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+#
+# Generates ticket numbers like yyyymmddss.... (e. g. 200206231010138)
+# --
+
+package Kernel::System::Ticket::Number::Date;
+
+use strict;
+use warnings;
+
+use parent qw(Kernel::System::Ticket::NumberBase);
+
+our @ObjectDependencies = (
+    'Kernel::Config',
+);
+
+sub IsDateBased {
+    return 1;
+}
+
+sub TicketNumberBuild {
+    my ( $Self, $Offset ) = @_;
+
+    $Offset ||= 0;
+
+    my $Counter = $Self->TicketNumberCounterAdd(
+        Offset => 1 + $Offset,
+    );
+
+    return if !$Counter;
+
+    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+
+    my $SystemID = $ConfigObject->Get('SystemID');
+
+    if ( $ConfigObject->Get('Ticket::NumberGenerator::Date::UseFormattedCounter') ) {
+        my $MinSize = $ConfigObject->Get('Ticket::NumberGenerator::MinCounterSize')
+            || 5;
+
+        # Pad ticket number with leading '0' to length $MinSize (config option).
+        $Counter = sprintf "%.*u", $MinSize, $Counter;
+    }
+
+    my $DateTimeObject = $Kernel::OM->Create(
+        'Kernel::System::DateTime'
+    );
+    my $DateTimeSettings = $DateTimeObject->Get();
+
+    # Create new ticket number.
+    my $TicketNumber = $DateTimeSettings->{Year}
+        . sprintf( "%.2u", $DateTimeSettings->{Month} )
+        . sprintf( "%.2u", $DateTimeSettings->{Day} )
+        . $SystemID . $Counter;
+
+    return $TicketNumber;
+}
+
+sub GetTNByString {
+    my ( $Self, $String ) = @_;
+
+    if ( !$String ) {
+        return;
+    }
+
+    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+
+    my $CheckSystemID = $ConfigObject->Get('Ticket::NumberGenerator::CheckSystemID');
+    my $SystemID      = '';
+
+    if ($CheckSystemID) {
+        $SystemID = $ConfigObject->Get('SystemID');
+    }
+
+    my $TicketHook        = $ConfigObject->Get('Ticket::Hook');
+    my $TicketHookDivider = $ConfigObject->Get('Ticket::HookDivider');
+
+    # Check ticket number.
+    if ( $String =~ /\Q$TicketHook$TicketHookDivider\E(\d{8}$SystemID\d{1,40})/i ) {
+        return $1;
+    }
+
+    if ( $String =~ /\Q$TicketHook\E:\s{0,2}(\d{8}$SystemID\d{1,40})/i ) {
+        return $1;
+    }
+
+    return;
+}
+
+1;

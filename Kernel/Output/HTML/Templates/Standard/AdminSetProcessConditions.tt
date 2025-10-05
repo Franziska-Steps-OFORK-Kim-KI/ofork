@@ -1,0 +1,149 @@
+# --
+# AdminSetProcessConditions.tt - provides HTML form for customer message
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# --
+# $Id: AdminSetProcessConditions.tt,v 1.2 2016/11/20 19:31:54 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+[% RenderBlockStart("SetFieldListsResult") %]
+
+<div id="SetFieldListsResult">
+
+    <fieldset class="TableLike">
+
+        <div id="FieldIsSet" style="margin-left:3%;margin-right:5px;padding:5px;margin-bottom:5px;">
+
+[% RenderBlockStart("ConditionFieldTitle") %]
+            <div style="border: 1px solid #d9f8ea;border-radius: 3px;padding:5px;margin:3px;float:left;width:250px;background-color: #eeeeee;">[% Data.FieldIsSetStep | html %]</div>
+            <div style="float:left;padding:7px;width:50px;">
+                [% Translate("= Regex ") | html %]
+            </div>
+            <div style="float:left;width:50%">
+                <input type="text" name="Title" id="Title" value="[% Data.Title | html %]" class="W50pc" maxlength="250"/>
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("ConditionFieldTitle") %]                        
+
+#[% RenderBlockStart("ConditionFieldType") %]
+#            <div style="border: 1px solid #d9f8ea;border-radius: 3px;padding:5px;margin:3px;float:left;width:250px;background-color: #eeeeee;">[% Data.FieldIsSetStep | html %]</div>
+#            <div style="float:left;padding:7px;width:50px;">
+#                [% Translate("= ") | html %]
+#            </div>
+#            <div style="float:left;">
+#                [% Data.TypeOption %]
+#            </div>
+#            <div class="Clear"></div>
+#[% RenderBlockEnd("ConditionFieldType") %]  
+
+[% RenderBlockStart("ConditionFieldQueue") %]
+            <div style="border: 1px solid #d9f8ea;border-radius: 3px;padding:5px;margin:3px;float:left;width:250px;background-color: #eeeeee;">[% Data.FieldIsSetStep | html %]</div>
+            <div style="float:left;padding:7px;width:50px;">
+                [% Translate("= ") | html %]
+            </div>
+            <div style="float:left;">
+                [% Data.QueueOption %]
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("ConditionFieldQueue") %]  
+
+[% RenderBlockStart("ConditionFieldState") %]
+            <div style="border: 1px solid #d9f8ea;border-radius: 3px;padding:5px;margin:3px;float:left;width:250px;background-color: #eeeeee;">[% Data.FieldIsSetStep | html %]</div>
+            <div style="float:left;padding:7px;width:50px;">
+                [% Translate("= ") | html %]
+            </div>
+            <div style="float:left;">
+                [% Data.StateOption %]
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("ConditionFieldState") %]  
+
+#[% RenderBlockStart("ConditionFieldService") %]
+#            <div style="border: 1px solid #d9f8ea;border-radius: 3px;padding:5px;margin:3px;float:left;width:250px;background-color: #eeeeee;">[% Data.FieldIsSetStep | html %]</div>
+#            <div style="float:left;padding:7px;width:50px;">
+#                [% Translate("= ") | html %]
+#            </div>
+#            <div style="float:left;">
+#                [% Data.ServiceOption %]
+#            </div>
+#            <div class="Clear"></div>
+#[% RenderBlockEnd("ConditionFieldService") %]  
+
+#[% RenderBlockStart("ConditionFieldSLA") %]
+#            <div style="border: 1px solid #d9f8ea;border-radius: 3px;padding:5px;margin:3px;float:left;width:250px;background-color: #eeeeee;">[% Data.FieldIsSetStep | html %]</div>
+#            <div style="float:left;padding:7px;width:50px;">
+#                [% Translate("= ") | html %]
+#            </div>
+#            <div style="float:left;">
+#                [% Data.SLAOption %]
+#            </div>
+#            <div class="Clear"></div>
+#[% RenderBlockEnd("ConditionFieldSLA") %]  
+
+[% RenderBlockStart("ConditionFieldCustomerUser") %]
+            <div style="border: 1px solid #d9f8ea;border-radius: 3px;padding:5px;margin:3px;float:left;width:250px;background-color: #eeeeee;">[% Data.FieldIsSetStep | html %]</div>
+            <div style="float:left;padding:7px;width:50px;">
+                [% Translate("= ") | html %]
+            </div>
+            <div style="float:left;width:50%;">
+                <input id="FromCustomer" type="text" name="FromCustomer" value="" class="CustomerAutoComplete W75pc [% Data.FromInvalid | html %]" autocomplete="off" />
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("ConditionFieldCustomerUser") %] 
+
+[% RenderBlockStart("ConditionFieldOwner") %]
+            <div style="border: 1px solid #d9f8ea;border-radius: 3px;padding:5px;margin:3px;float:left;width:250px;background-color: #eeeeee;">[% Data.FieldIsSetStep | html %]</div>
+            <div style="float:left;padding:7px;width:50px;">
+                [% Translate("= ") | html %]
+            </div>
+            <div style="float:left;">
+                [% Data.OwnerOption %]
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("ConditionFieldOwner") %]  
+
+        </div>
+
+    </fieldset>
+</div>
+[% RenderBlockEnd("SetFieldListsResult") %]
+
+
+[% RenderBlockStart("DynamicSetFieldListsResult") %]
+
+<div id="DynamicSetFieldListsResult">
+
+    <fieldset class="TableLike">
+
+        <div id="DynamicFieldIsSet" style="margin-left:3%;margin-right:5px;padding:5px;margin-bottom:5px;">
+
+[% RenderBlockStart("DynamicFieldIsSetStep") %]
+            <div style="border: 1px solid #d9f8ea;border-radius: 3px;padding:5px;margin:3px;float:left;width:250px;background-color: #eeeeee;">[% Data.DynamicFieldIsSetStep | html %]</div>
+
+[% RenderBlockStart("DynamicFieldRegex") %]
+            <div style="float:left;padding:7px;width:50px;">
+                [% Translate("= Regex ") | html %]
+            </div>
+[% RenderBlockEnd("DynamicFieldRegex") %]                        
+
+[% RenderBlockStart("DynamicFieldNoRegex") %]
+            <div style="float:left;padding:7px;width:50px;">
+                [% Translate("= ") | html %]
+            </div>
+[% RenderBlockEnd("DynamicFieldNoRegex") %]                        
+
+
+            <div style="float:left;width:50%;">
+                [% Data.Field %]
+            </div>
+            <div class="Clear"></div>
+[% RenderBlockEnd("DynamicFieldIsSetStep") %]                        
+
+        </div>
+
+    </fieldset>
+</div>
+[% RenderBlockEnd("DynamicSetFieldListsResult") %]

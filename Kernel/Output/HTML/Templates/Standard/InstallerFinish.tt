@@ -1,0 +1,76 @@
+# --
+# Kernel/Output/HTML/Templates/Standard/InstallerFinish.tt
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: InstallerFinish.tt,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+[% RenderBlockStart("Finish") %]
+<div class="W950px SpacingTop SpacingBottom CenterBox">
+    <form action="[% Env("CGIHandle") %]" method="post">
+        <input type="hidden" name="Action"    value="Installer">
+        <input type="hidden" name="Subaction" value="Finish">
+
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>[% Translate(Data.Item) | html %] ([% Data.Step %])</h2>
+            </div>
+
+            <div class="Content">
+                <fieldset class="TableLike InstallerFinishOFORK">
+
+[% RenderBlockStart("Restart") %]
+                    <p>
+                        [% Translate("To be able to use OFORK you have to enter the following line in your command line (Terminal/Shell) as root.") | html %]
+                    </p>
+                    <div class="Clear SpacingTop"></div>
+
+                    <label>[% Translate("Restart your webserver") | html %]:</label>
+                    <div class="Field Error">
+                        [% Data.Webserver %]
+                    </div>
+                    <div class="Clear"></div>
+
+                    <p class="SpacingTop">
+                        [% Translate("After doing so your OFORK is up and running.") | html %]
+                    </p>
+                    <div class="Clear SpacingTop"></div>
+[% RenderBlockEnd("Restart") %]
+                    <label>[% Translate("Start page") | html %]:</label>
+                    <div class="Field">
+                        <a href="http://[% Data.Host | html %]/[% Data.OFORKHandle %]/index.pl">
+                            http://[% Data.Host | html %]/[% Data.OFORKHandle %]/index.pl
+                        </a>
+                    </div>
+                    <div class="Clear"></div>
+
+                    <label>[% Translate("User") | html %]:</label>
+                    <div class="Field">
+                        root@localhost
+                    </div>
+                    <div class="Clear"></div>
+
+                    <label>[% Translate("Password") | html %]:</label>
+                    <div class="Field">
+                        <span class="Emphasis">[% Data.Password | html %]</span>
+                    </div>
+                    <div class="Clear"></div>
+
+                    <div class="Field Center">
+                        <p>((enjoy))</p>
+                        <p>[% Translate("Your OFORK Team") | html %]</p>
+                    </div>
+                    <div class="Clear"></div>
+                </fieldset>
+            </div>
+        </div>
+    </form>
+</div>
+[% RenderBlockEnd("Finish") %]

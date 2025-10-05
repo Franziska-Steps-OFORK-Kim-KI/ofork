@@ -1,0 +1,177 @@
+# --
+# Kernel/Output/HTML/Templates/Standard/AdminUserSignature.tt
+# Copyright (C) 2010-2018 einraumwerk, http://einraumwerk.de/
+# --
+# $Id: AdminUserSignature.tt,v 1.1.1.1 2019/12/18 07:26:04 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+[% RenderBlockStart("Overview") %]
+<div class="MainBox ARIARoleMain LayoutFixedSidebar SidebarFirst">
+    <div class="Header">
+        <h1>[% Translate("Manage Agent-Signature Relations") | html %]</h1>
+    </div>
+
+    <div class="SidebarColumn">
+[% RenderBlockStart("ActionList") %]
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>[% Translate("Actions") | html %]</h2>
+            </div>
+            <div class="Content">
+                <ul class="ActionList">
+[% RenderBlockStart("ActionOverview") %]
+                    <li>
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %];UserSearch=[% Data.UserSearch | uri %]" class="CallForAction"><span>[% Translate("Go to overview") | html %]</span></a>
+                    </li>
+[% RenderBlockEnd("ActionOverview") %]
+
+[% RenderBlockStart("Search") %]
+                    <li>
+                        <form class="SearchBox" action="[% Env("CGIHandle") %]" method="post">
+                            <input type="hidden" name="Action" value="[% Env("Action") %]" />
+                            <input type="text" name="UserSearch" id="UserSearch" value="[% Data.UserSearch | html %]" title="[% Translate("Search") | html %]" />
+[% RenderBlockStart("SearchAllocateSignature") %]
+                            <input type="hidden" name="Subaction" value="[% Data.Subaction | html %]" />
+                            <input type="hidden" name="SignatureID" value="[% Data.SignatureID | html %]" />
+[% RenderBlockEnd("SearchAllocateSignature") %]
+                            <button class="Primary" type="submit" value="[% Translate("Search") | html %]" title="[% Translate("Search") | html %]"><span><i class="fa fa-search"></i></span></button>
+                            <p class="FieldExplanation">
+                                <label for=UserSearch">
+                                    [% Translate("Search for customers.") | html %] [% Translate("Wildcards like '*' are allowed.") | html %]
+                                </label>
+                            </p>
+                        </form>
+                    </li>
+[% RenderBlockEnd("Search") %]
+                </ul>
+            </div>
+        </div>
+[% RenderBlockEnd("ActionList") %]
+    </div>
+    <div class="ContentColumn">
+        <div class="WidgetSimple">
+[% RenderBlockStart("Result") %]
+            <div class="Header">
+                <h2>[% Translate("Search Results") | html %]:</h2>
+            </div>
+            <div class="Content LayoutGrid ColumnsWithSpacing">
+                <div class="Size1of2">
+                    <ul class="Tablelike" id="Users">
+                        <li class="Header">[% Translate("Users") | html %]
+[% RenderBlockStart("ResultUserCount") %]
+                            ([% Data.CustomerUserCount | html %])
+[% RenderBlockEnd("ResultUserCount") %]
+[% RenderBlockStart("ResultUserCountLimit") %]
+                            (<span class='Error'>[% Data.CustomerUserCount | html %]</span>)
+[% RenderBlockEnd("ResultUserCountLimit") %]
+                        </li>
+[% RenderBlockStart("ResultUserRow") %]
+                        <li><a href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=AllocateUser;UserLogin=[% Data.ID | uri %];UserSearch=[% Data.UserSearch | uri %];SignatureSearch=[% Data.SignatureSearch | uri %]" class="AsBlock">[% Data.Name | html %]</a></li>
+[% RenderBlockEnd("ResultUserRow") %]
+[% RenderBlockStart("NoDataFoundMsgList") %]
+                        <li>[% Translate("No data found.") | html %]</li>
+[% RenderBlockEnd("NoDataFoundMsgList") %]
+                    </ul>
+                </div>
+                <div class="Size1of2">
+                    <ul class="Tablelike" id="Vip">
+                        <li class="Header">[% Translate("Vip") | html %]
+                        </li>
+[% RenderBlockStart("ResultSignatureRow") %]
+                        <li class="OneRow"><a title="[% Data.Name | html %]" href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=AllocateSignature;SignatureID=[% Data.ID | uri %];UserSearch=[% Data.UserSearch | uri %]" class="AsBlock">[% Data.Name | html %]</a></li>
+[% RenderBlockEnd("ResultSignatureRow") %]
+                        <li class="FilterMessage Hidden">[% Translate("No matches found.") | html %]</li>
+                    </ul>
+                </div>
+            </div>
+[% RenderBlockEnd("Result") %]
+
+[% RenderBlockStart("AllocateItem") %]
+            <div class="Header">
+                <h2>
+[% RenderBlockStart("AllocateItemHeaderSignature") %]
+                    [% Translate("Allocate Signature to Agent - ") | html %]
+[% RenderBlockEnd("AllocateItemHeaderSignature") %]
+[% RenderBlockStart("AllocateItemHeaderUser") %]
+                    [% Translate("Allocate Agent to Signature - ") | html %]
+[% RenderBlockEnd("AllocateItemHeaderUser") %]
+                    [% Data.Name | html %]
+                </h2>
+            </div>
+            <div class="Content LayoutGrid ColumnsWithSpacing">
+                <form action="[% Env("CGIHandle") %]" method="post" name="matrix">
+                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                    <input type="hidden" name="Subaction" value="Allocate[% Data.Type | html %]Save"/>
+                    <input type="hidden" name="UserSearch" value="[% Data.UserSearch | html %]"/>
+                    <input type="hidden" name="ID" value="[% Data.ID | html %]"/>
+                    <table class="DataTable VariableWidth" id="[% Data.NeType | html %]">
+                        <thead>
+                            <tr>
+                                <th>[% Translate(Data.VisibleNeType) | html %]
+[% RenderBlockStart("AllocateItemCount") %]
+                                    ([% Data.ItemCount | html %])
+[% RenderBlockEnd("AllocateItemCount") %]
+[% RenderBlockStart("AllocateItemCountLimit") %]
+                                    (<span class="Error">[% Data.ItemCount | html %]</span>)
+[% RenderBlockEnd("AllocateItemCountLimit") %]
+                                </th>
+                                <th>
+                                    <input type="checkbox" id="SelectAllItemsSelected" name="ItemsSelected" title="[% Translate("Toggle active state for all") | html %]" value="" />
+                                    [% Translate("Active") | html %]
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+Core.Form.InitSelectAllCheckboxes($('table td input:checkbox[name=ItemsSelected]'), $('#SelectAllItemsSelected'));
+$('input:checkbox[name=ItemsSelected]').bind('click', function () {
+    Core.Form.SelectAllCheckboxes($(this), $('#SelectAllItemsSelected'));
+});
+//]]></script>
+[% END %]
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+[% RenderBlockStart("NoDataFoundMsg") %]
+                            <tr>
+                                <td colspan="[% Data.ColSpan | html %]">
+                                    [% Translate("No data found.") | html %]
+                                </td>
+                            </tr>
+[% RenderBlockEnd("NoDataFoundMsg") %]
+[% RenderBlockStart("AllocateItemRow") %]
+                            <tr>
+                                <td>[% Data.Name | html %]</td>
+                                <td>
+                                    <input type="checkbox" name="ItemsSelected" title="[% Translate("Toggle active state for %s", Data.Name) | html %]" value="[% Data.ID | html %]" [% Data.Checked | html %]/>
+                                    <input type="hidden" name="ItemsAll" value="[% Data.ID | html %]"/>
+                                </td>
+                            </tr>
+[% RenderBlockEnd("AllocateItemRow") %]
+                            <tr class="FilterMessage Hidden">
+                                <td colspan="3">[% Translate("No matches found.") | html %]</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="Field SpacingTop">
+                        <button class="Primary" type="submit" value="[% Translate("Submit") | html %]">[% Translate("Submit") | html %]</button>
+                        [% Translate("or") | html %]
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %]">[% Translate("Cancel") | html %]</a>
+                    </div>
+                </form>
+            </div>
+[% RenderBlockEnd("AllocateItem") %]
+        </div>
+    </div>
+    <div class="Clear"></div>
+</div>
+#[% WRAPPER JSOnDocumentComplete %]
+#<script type="text/javascript">//<![CDATA[
+#    Core.UI.Table.InitTableFilter($('#FilterVip'), $('#Vip'));
+#    Core.Form.HideSelectAllCheckboxes($('#Vip'), '#SelectAllItemsSelected');
+#//]]></script>
+#[% END %]
+[% RenderBlockEnd("Overview") %]
+

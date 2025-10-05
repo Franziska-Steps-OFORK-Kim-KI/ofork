@@ -1,0 +1,297 @@
+# --
+# AgentProcessTicket.tt - provides HTML form for customer message
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# --
+# $Id: AgentProcessTicket.tt,v 1.2 2016/11/20 19:32:10 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<div class="MainBox ARIARoleMain FormScreen">
+
+    <div class="LayoutFixedSidebar SidebarLast">
+
+        <div class="SidebarColumn">
+            <div id="CustomerInfo" class="WidgetSimple">
+                <div class="Header" style="margin-bottom:15px;">
+                    <h2>[% Translate("Customer Information") | html %]</h2>
+                </div>
+                <div class="Content">
+                    [% Data.CustomerTable %]
+                </div>
+            </div>
+        </div>
+
+        <div class="ContentColumn">
+        <form action="[% Env("CGIHandle") %]" method="post" enctype="multipart/form-data" name="compose" id="NewPhoneTicket" class="Validate PreventMultipleSubmits">
+            <input type="hidden" name="Action" value="[% Env("Action") %]" />
+            <input type="hidden" name="Subaction" value="StoreNew" />
+            <input type="hidden" name="Expand" id="Expand" value="" />
+            <input type="hidden" name="FormID" value="[% Data.FormID | html %]" />
+            <input type="hidden" name="ID" id="ID" value="[% Data.ID | html %]" />
+            <input type="hidden" name="IsSubmit" id="IsSubmit" value="0" />
+            <input type="hidden" name="SessionName" id="SessionName" value="[% Env("SessionName") | html %]"/>
+            <input type="hidden" name="SessionID" id="SessionID" value="[% Env("SessionID") | html %]"/>
+            <input type="hidden" name="PreSelectedCustomerUser" id="PreSelectedCustomerUser" value=""/>
+            <input type="hidden" name="SelectedCustomerUser" id="SelectedCustomerUser" value="[% Data.CustomerUser | html %]"/>
+
+            <fieldset class="TableLike">
+
+[% RenderBlockStart("OverviewFelderList") %]
+                <div class="LayoutPopup ARIARoleMain">
+                    <div class="Header" style="margin-bottom:15px;margin-top:15px;">
+                        <h1>
+                        [% Translate("Process: ") | html %][% Data.Name | html %]
+                        </h1>
+                    </div>
+                </div>
+
+                    <label for="FromCustomer" class="Mandatory" style="width:15%;font-size:12px;"><span class="Marker">*</span>[% Translate("Customer user") | html %]:</label>
+                    <div class="Field">
+                        <input id="FromCustomer" type="text" name="FromCustomer" value="" class="CustomerAutoComplete W75pc [% Data.FromInvalid | html %]" autocomplete="off" />
+[% RenderBlockStart("FromServerErrorMsg") %]
+                            <p style="color:#b8384e">[% Translate("Please specify a customer for the ticket.") | html %]</p>
+[% RenderBlockEnd("FromServerErrorMsg") %]
+                        <div id="FromCustomerServerError" class="TooltipErrorMessage">
+                        </div>
+                    </div>
+                    <div class="Clear"></div>
+
+                    <div class="Field Hidden">
+                        <div class="CustomerTicketTemplateFromCustomer SpacingTopSmall Hidden">
+                            <input name="CustomerSelected" title="[% Translate("Select this customer as the main customer.") | html %]" id="CustomerSelected" class="CustomerTicketRadio" type="radio" value=""/>
+                            <input name="CustomerKey" id="CustomerKey" class="CustomerKey" type="hidden" value=""/>
+                            <input class="CustomerTicketText Radio" title="[% Translate("Customer user") | html %]" name="CustomerTicketText" id="CustomerTicketText" type="text" value="" readonly="readonly" />
+                            <a href="#" id="RemoveCustomerTicket" class="RemoveButton CustomerTicketRemove">
+                                <i class="fa fa-minus-square-o"></i>
+                                <span class="InvisibleText">[% Translate("Remove Ticket Customer User") | html %]</span>
+                            </a>
+                        </div>
+
+                        <div id="TicketCustomerContentFromCustomer" class="CustomerContainer" style="margin-left: 1.5%;">
+[% RenderBlockStart("MultipleCustomer") %]
+                            <div class="SpacingTopSmall ">
+                                <input name="CustomerSelected" title="[% Translate("Select this customer as the main customer.") | html %]" id="CustomerSelected" class="CustomerTicketRadio" type="radio" value="[% Data.Count | html %]" [% Data.CustomerSelected | html %]  [% Data.CustomerDisabled | html %] />
+                                <input name="CustomerKey_[% Data.Count | html %]" id="CustomerKey_[% Data.Count | html %]" class="CustomerKey" type="hidden" value="[% Data.CustomerKey | html %]"/>
+                                <input class="CustomerTicketText Radio [% Data.CustomerError | html %]" title="[% Translate("Customer user") | html %]" name="CustomerTicketText_[% Data.Count %]" id="CustomerTicketText_[% Data.Count %]" type="text" value="[% Data.CustomerElement | html %]" readonly="readonly" />
+                                <a href="#" id="RemoveCustomerTicket_[% Data.Count %]" class="RemoveButton CustomerTicketRemove">
+                                    <i class="fa fa-minus-square-o"></i>
+                                    <span class="InvisibleText">[% Translate("Remove Ticket Customer User") | html %]</span>
+                                </a>
+
+[% RenderBlockStart("CustomerErrorExplantion") %]
+                                <p class="Explanation Error">[% Translate("Please remove this entry and enter a new one with the correct value.") | html %]</p>
+[% RenderBlockEnd("CustomerErrorExplantion") %]
+
+                                <div id="CustomerTicketText_[% Data.Count %]ServerError" class="TooltipErrorMessage">
+[% RenderBlockStart("CustomerGenericServerErrorMsg") %]
+                                    <p>[% Translate("This field is required.") | html %]</p>
+[% RenderBlockEnd("CustomerGenericServerErrorMsg") %]
+[% RenderBlockStart("InvalidConfigServerErrorMsg") %]
+                                    <p>[% Translate("This email address is not allowed due to the system configuration.") | html %]</p>
+[% RenderBlockEnd("InvalidConfigServerErrorMsg") %]
+[% RenderBlockStart("InvalidMXServerErrorMsg") %]
+                                    <p>[% Translate("This email address failed MX check.") | html %]</p>
+[% RenderBlockEnd("InvalidMXServerErrorMsg") %]
+[% RenderBlockStart("InvalidDNSServerErrorMsg") %]
+                                    <p>[% Translate("DNS problem, please check your configuration and the error log.") | html %]</p>
+[% RenderBlockEnd("InvalidDNSServerErrorMsg") %]
+[% RenderBlockStart("InvalidSyntaxServerErrorMsg") %]
+                                    <p>[% Translate("The syntax of this email address is incorrect.") | html %]</p>
+[% RenderBlockEnd("InvalidSyntaxServerErrorMsg") %]
+[% RenderBlockStart("IsDuplicatedServerErrorMsg") %]
+                                    <p>[% Translate("This address already exists on the address list.") | html %]</p>
+[% RenderBlockEnd("IsDuplicatedServerErrorMsg") %]
+                                </div>
+                            </div>
+[% RenderBlockEnd("MultipleCustomer") %]
+
+                        </div>
+[% RenderBlockStart("MultipleCustomerCounter") %]
+                        <input name="CustomerTicketCounterFromCustomer" id="CustomerTicketCounterFromCustomer" type="hidden" value="[% Data.CustomerCounter | html %]"/>
+[% RenderBlockEnd("MultipleCustomerCounter") %]
+                    </div>
+                    <div class="Clear"></div>
+
+                    [% INCLUDE "CustomerCompany/TicketCustomerIDSelectionRequest.tt" Required = 0 Readonly = Config("Ticket::Frontend::AgentTicketPhone::CustomerIDReadOnly") %]
+
+[% RenderBlockEnd("OverviewFelderList") %]
+
+
+[% RenderBlockStart("ConfigItemClass") %]
+                    <label class="OFORKOverviewList" for="[% Data.Class | html %]" style="width:15%;font-size:12px;">[% Translate("Problem with ") | html %][% Data.Class | html %]:</label>
+                    <div class="Field">
+                        [% Data.ConfigItemStrg %]
+                    </div>
+                    <div class="Clear"></div>
+[% RenderBlockEnd("ConfigItemClass") %]
+
+[% RenderBlockStart("TicketType") %]
+                    <div>
+                        <input title="TypeID" type="hidden" id="TypeID" name="TypeID" value="[% Data.TypeID | html %]" />
+                        <div class="Clear"></div>
+                    </div>
+[% RenderBlockEnd("TicketType") %]
+
+                    <div id="CustomerCMDBItems"></div>
+
+[% RenderBlockStart("TicketService") %]
+                    <label class="OFORKOverviewList" for="ServiceID">[% Translate("Service") | html %]:</label>
+                    <div class="Field">
+                        [% Data.ServiceStrg %]
+                    </div>
+                    <div class="Clear"></div>
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+    $('#ServiceID').bind('change', function (Event) {
+        // make sure the ticket is not yet created on service change
+        $('input#Expand').val(1);
+        Core.Form.Validate.DisableValidation($(this).closest('form'));
+        $(this).closest('form').submit();
+    });
+//]]></script>
+                    [% END %]
+[% RenderBlockEnd("TicketService") %]
+
+[% RenderBlockStart("TicketServiceMandatory") %]
+                    <label for="ServiceID" class="Mandatory OFORKOverviewList"><span class="Marker">*</span> [% Translate("Service") | html %]:</label>
+                    <div class="Field">
+                        [% Data.ServiceStrg %]
+                        <div id="ServiceIDError" class="TooltipErrorMessage" ><p>[% Translate("This field is required.") | html %]</p></div>
+                        <div id="ServiceIDServerError" class="TooltipErrorMessage" ><p>[% Translate("This field is required.") | html %]</p></div>
+                    </div>
+                    <div class="Clear"></div>
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+    $('#ServiceID').bind('change', function (Event) {
+        // make sure the ticket is not yet created on service change
+        $('input#Expand').val(1);
+        Core.Form.Validate.DisableValidation($(this).closest('form'));
+        $(this).closest('form').submit();
+    });
+//]]></script>
+[% END %]
+[% RenderBlockEnd("TicketServiceMandatory") %]
+
+[% RenderBlockStart("TicketSLA") %]
+                     label class="OFORKOverviewList" for="SLAID" title="[% Translate("Service level agreement") | html %]">[% Translate("SLA") | html %]:</label>
+                    <div class="Field">
+                        [% Data.SLAStrg %]
+                    </div>
+                    <div class="Clear"></div>
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+    $('#SLAID').bind('change', function (Event) {
+        // make sure the ticket is not yet created on sla change
+        $('input#Expand').val(1);
+        Core.Form.Validate.DisableValidation($(this).closest('form'));
+        $(this).closest('form').submit();
+    });
+//]]></script>
+                    [% END %]
+[% RenderBlockEnd("TicketSLA") %]
+
+[% RenderBlockStart("TicketSLAMandatory") %]
+                    <label for="SLAID" title="[% Translate("Service level agreement") | html %]" class="Mandatory OFORKOverviewList"><span class="Marker">*</span> [% Translate("SLA") | html %]:</label>
+                    <div class="Field">
+                        [% Data.SLAStrg %]
+                        <div id="SLAIDError" class="TooltipErrorMessage" ><p>[% Translate("This field is required.") | html %]</p></div>
+                        <div id="SLAIDServerError" class="TooltipErrorMessage" ><p>[% Translate("This field is required.") | html %]</p></div>
+                    </div>
+                    <div class="Clear"></div>
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+    $('#SLAID').bind('change', function (Event) {
+        // make sure the ticket is not yet created on sla change
+        $('input#Expand').val(1);
+        $(this).closest('form').submit();
+    });
+//]]></script>
+[% END %]
+[% RenderBlockEnd("TicketSLAMandatory") %]
+
+                    <br />
+                    <hr class="OFORKTicketSLAMandatory" />
+                    <br />
+                    <div class="Clear"></div>
+
+                    <div id="NoBody" style="[% Data.NoBodydisplay | html %]">
+                        <br />
+
+                    </div>
+
+[% RenderBlockStart("ShowAttachment") %]
+                    <label for="Attachment" style="margin-left:3%;width:15%;">[% Translate("Attachments") | html %]:</label>
+                    <div class="Field">
+                            <div class="DnDUploadBox">
+[% INCLUDE "FormElements/AttachmentList.tt" %]
+                            </div>
+                    </div>
+                    <div class="Clear"></div>
+[% RenderBlockEnd("ShowAttachment") %]
+
+                    <div id="NoBodyAlt" style="[% Data.NoBodyAltdisplay | html %]">
+                        <input type="hidden" id="BodyAlt" name="BodyAlt" value="-" />
+                    </div>
+
+[% RenderBlockStart("Priority") %]
+                    <div>
+#                        <label for="PriorityID">[% Translate("Priority") | html %]:</label>
+#                        [% Data.PriorityStrg %]
+                        <input type="hidden" name="PriorityID" id="PriorityID" value="3"
+                        <div class="Clear"></div>
+                    </div>
+[% RenderBlockEnd("Priority") %]
+
+[% RenderBlockStart("DynamicField") %]
+                    <div class="Row Row_DynamicField_[% Data.Name | html %]">
+                        [% Data.Label %]
+                        <div class="Field">
+                            [% Data.Field %]
+                        </div>
+                        <div class="Clear"></div>
+                    </div>
+[% RenderBlockEnd("DynamicField") %]
+
+# example of how to use fixed dynamic field blocks for customizations
+# Note: Field1 and Field2 are the names of the fields and had to be replaced with the actual
+# field names
+#[% RenderBlockStart("DynamicField_Field1") %]
+#                <div class="Row Row_DynamicField_[% Data.Name | html %]">
+#                    [% Data.Label %]
+#                    <div class="Field">
+#                        [% Data.Field %]
+#                    </div>
+#                    <div class="Clear"></div>
+#                </div>
+#[% RenderBlockEnd("DynamicField_Field1") %]
+#[% RenderBlockStart("DynamicField_Field2") %]
+#                <div class="Row Row_DynamicField_[% Data.Name | html %]">
+#                    [% Data.Label %]
+#                    <div class="Field">
+#                        [% Data.Field %]
+#                    </div>
+#                    <div class="Clear"></div>
+#                </div>
+#[% RenderBlockEnd("DynamicField_Field2") %]
+                    <input type="hidden" name="BlockValues" id="BlockValues" value="[% Data.BlockValues | html %]">
+
+                <div id="BottomActionRow" class="ActionRow OFORKActionRow">
+                    <button id="submitRichText" accesskey="g" title="[% Translate("Submit") | html %] (g)" type="submit" value="[% Translate("Submit") | html %]" style="margin-left:95px;margin-top:2px;">[% Translate("Submit") | html %]</button>
+                </div>
+
+                </div>
+
+                <div id="FAQLinkIn" style="width:15%;float:left;"></div>
+                <div class="Clear"></div>
+
+                </fieldset>
+
+            </form>
+        </div>
+        </div>
+
+    </div>
+

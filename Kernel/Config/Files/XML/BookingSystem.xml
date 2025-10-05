@@ -1,0 +1,711 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ofork_config version="2.0" init="Framework">
+    <CVS>$Id: BookingSystem.xml,v 1.24 2016/11/20 19:57:26 ud Exp $</CVS>
+
+    <Setting Name="Frontend::Module###AdminBookingSystemRooms" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for the agent interface.</Description>
+        <Navigation>Frontend::Admin::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Group">
+                        <Array>
+                            <Item>admin</Item>
+                        </Array>
+                    </Item>
+                    <Item Key="Description" Translatable="1">This module is part of the admin area of OFORK.</Item>
+                    <Item Key="Title" Translatable="1">Booking system GUI</Item>
+                    <Item Key="NavBarName">Admin</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Loader::Module::AdminBookingSystemRooms###002-Request" Required="0" Valid="1">
+        <Description Translatable="1">Loader module registration for the agent interface.</Description>
+        <Navigation>Frontend::Admin::ModuleRegistration::Loader</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="CSS">
+                    <Array>
+                        <Item>Core.Agent.Admin.DynamicField.css</Item>
+                    </Array>
+                </Item>
+                <Item Key="JavaScript">
+                    <Array>
+                        <Item>Core.Agent.Admin.DynamicField.js</Item>
+                        <Item>Core.Agent.Admin.SysConfig.Entity.js</Item>
+                    </Array>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Navigation###AdminBookingSystemRooms###002-Request" Required="0" Valid="1">
+        <Description Translatable="1">Main menu item registration.</Description>
+        <Navigation>Frontend::Admin::ModuleRegistration::MainMenu</Navigation>
+        <Value>
+            <Array>
+                <DefaultItem ValueType="FrontendNavigation">
+                    <Hash>
+                    </Hash>
+                </DefaultItem>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::NavigationModule###AdminBookingSystemRooms" Required="0" Valid="1">
+        <Description Translatable="1">Admin area navigation for the agent interface.</Description>
+        <Navigation>Frontend::Admin::ModuleRegistration::AdminOverview</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Group">
+                    <Array>
+                        <Item>admin</Item>
+                    </Array>
+                </Item>
+                <Item Key="GroupRo">
+                    <Array>
+                    </Array>
+                </Item>
+                <Item Key="Module">Kernel::Output::HTML::NavBar::ModuleAdmin</Item>
+                <Item Key="Name" Translatable="1">Booking system room management</Item>
+                <Item Key="Block">BookingSystem</Item>
+                <Item Key="Description" Translatable="1">Create and manage booking system rooms.</Item>
+                <Item Key="IconBig">fa-align-left</Item>
+                <Item Key="IconSmall"></Item>
+            </Hash>
+        </Value>
+    </Setting>
+
+    <Setting Name="Frontend::Module###AdminRoomCategories" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for the agent interface.</Description>
+        <Navigation>Frontend::Admin::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Group">
+                        <Array>
+                            <Item>admin</Item>
+                        </Array>
+                    </Item>
+                    <Item Key="Description" Translatable="1">This module is part of the admin area of OFORK.</Item>
+                    <Item Key="Title" Translatable="1">Room categorys GUI</Item>
+                    <Item Key="NavBarName">Admin</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Loader::Module::AdminRoomCategories###002-Ticket" Required="0" Valid="1">
+        <Description Translatable="1">Loader module registration for the agent interface.</Description>
+        <Navigation>Frontend::Admin::ModuleRegistration::Loader</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="CSS">
+                    <Array>
+                        <Item>Core.Agent.Admin.DynamicField.css</Item>
+                    </Array>
+                </Item>
+                <Item Key="JavaScript">
+                    <Array>
+                        <Item>Core.Agent.Admin.DynamicField.js</Item>
+                        <Item>Core.Agent.Admin.SysConfig.Entity.js</Item>
+                    </Array>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Navigation###AdminRoomCategories###002-Room" Required="0" Valid="0">
+        <Description Translatable="1">Main menu item registration.</Description>
+        <Navigation>Frontend::Admin::ModuleRegistration::MainMenu</Navigation>
+        <Value>
+            <Array>
+                <DefaultItem ValueType="FrontendNavigation">
+                    <Hash>
+                    </Hash>
+                </DefaultItem>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::NavigationModule###AdminRoomCategories" Required="0" Valid="1">
+        <Description Translatable="1">Admin area navigation for the agent interface.</Description>
+        <Navigation>Frontend::Admin::ModuleRegistration::AdminOverview</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Group">
+                    <Array>
+                        <Item>admin</Item>
+                    </Array>
+                </Item>
+                <Item Key="GroupRo">
+                    <Array>
+                    </Array>
+                </Item>
+                <Item Key="Module">Kernel::Output::HTML::NavBar::ModuleAdmin</Item>
+                <Item Key="Name" Translatable="1">Room categorys</Item>
+                <Item Key="Block">BookingSystem</Item>
+                <Item Key="Description" Translatable="1">Create and manage Room categorys</Item>
+                <Item Key="IconBig">fa-align-left</Item>
+                <Item Key="IconSmall"></Item>
+            </Hash>
+        </Value>
+    </Setting>
+
+    <Setting Name="Frontend::Module###AdminRoomIcon" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for the agent interface.</Description>
+        <Navigation>Frontend::Admin::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Group">
+                        <Array>
+                            <Item>admin</Item>
+                        </Array>
+                    </Item>
+                    <Item Key="Description" Translatable="1">This module is part of the admin area of OFORK.</Item>
+                    <Item Key="Title" Translatable="1">Room Icon</Item>
+                    <Item Key="NavBarName">Admin</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Loader::Module::AdminRoomIcon###002-Ticket" Required="0" Valid="1">
+        <Description Translatable="1">Loader module registration for the agent interface.</Description>
+        <Navigation>Frontend::Admin::ModuleRegistration::Loader</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="JavaScript">
+                    <Array>
+                        <Item>Core.Agent.Admin.RoomIcon.js</Item>
+                    </Array>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Navigation###AdminRoomIcon###002-Ticket" Required="0" Valid="0">
+        <Description Translatable="1">Main menu item registration.</Description>
+        <Navigation>Frontend::Admin::ModuleRegistration::MainMenu</Navigation>
+        <Value>
+            <Array>
+                <DefaultItem ValueType="FrontendNavigation">
+                    <Hash>
+                    </Hash>
+                </DefaultItem>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::NavigationModule###AdminRoomIcon" Required="0" Valid="1">
+        <Description Translatable="1">Admin area navigation for the agent interface.</Description>
+        <Navigation>Frontend::Admin::ModuleRegistration::AdminOverview</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Group">
+                    <Array>
+                        <Item>admin</Item>
+                    </Array>
+                </Item>
+                <Item Key="GroupRo">
+                    <Array>
+                    </Array>
+                </Item>
+                <Item Key="Module">Kernel::Output::HTML::NavBar::ModuleAdmin</Item>
+                <Item Key="Name" Translatable="1">Room Icon</Item>
+                <Item Key="Block">BookingSystem</Item>
+                <Item Key="Description" Translatable="1">Create and manage Room Icon</Item>
+                <Item Key="IconBig">fa-paperclip</Item>
+                <Item Key="IconSmall"></Item>
+            </Hash>
+        </Value>
+    </Setting>
+
+    <Setting Name="Frontend::Module###AdminRoomEquipment" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for the agent interface.</Description>
+        <Navigation>Frontend::Admin::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Group">
+                        <Array>
+                            <Item>admin</Item>
+                        </Array>
+                    </Item>
+                    <Item Key="Description" Translatable="1">This module is part of the admin area of OFORK.</Item>
+                    <Item Key="Title" Translatable="1">Room equipment GUI</Item>
+                    <Item Key="NavBarName">Admin</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Loader::Module::AdminRoomEquipment###002-Ticket" Required="0" Valid="1">
+        <Description Translatable="1">Loader module registration for the agent interface.</Description>
+        <Navigation>Frontend::Admin::ModuleRegistration::Loader</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="CSS">
+                    <Array>
+                        <Item>Core.Agent.Admin.DynamicField.css</Item>
+                    </Array>
+                </Item>
+                <Item Key="JavaScript">
+                    <Array>
+                        <Item>Core.Agent.Admin.DynamicField.js</Item>
+                        <Item>Core.Agent.Admin.SysConfig.Entity.js</Item>
+                    </Array>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Navigation###AdminRoomEquipment###002-Room" Required="0" Valid="0">
+        <Description Translatable="1">Main menu item registration.</Description>
+        <Navigation>Frontend::Admin::ModuleRegistration::MainMenu</Navigation>
+        <Value>
+            <Array>
+                <DefaultItem ValueType="FrontendNavigation">
+                    <Hash>
+                    </Hash>
+                </DefaultItem>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::NavigationModule###AdminRoomEquipment" Required="0" Valid="1">
+        <Description Translatable="1">Admin area navigation for the agent interface.</Description>
+        <Navigation>Frontend::Admin::ModuleRegistration::AdminOverview</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="Group">
+                    <Array>
+                        <Item>admin</Item>
+                    </Array>
+                </Item>
+                <Item Key="GroupRo">
+                    <Array>
+                    </Array>
+                </Item>
+                <Item Key="Module">Kernel::Output::HTML::NavBar::ModuleAdmin</Item>
+                <Item Key="Name" Translatable="1">Room equipment</Item>
+                <Item Key="Block">BookingSystem</Item>
+                <Item Key="Description" Translatable="1">Create and manage room equipment</Item>
+                <Item Key="IconBig">fa-align-left</Item>
+                <Item Key="IconSmall"></Item>
+            </Hash>
+        </Value>
+    </Setting>
+
+    <Setting Name="CustomerFrontend::Module###CustomerRoomBooking" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for the customer interface.</Description>
+        <Navigation>Frontend::Customer::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="Group">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Description" Translatable="1">Room booking.</Item>
+                    <Item Key="NavBarName">RoomBooking</Item>
+                    <Item Key="Title" Translatable="1">Room booking</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Loader::Module::CustomerRoomBooking###003-Booking" Required="0" Valid="1">
+        <Description Translatable="1">Loader module registration for the customer interface.</Description>
+        <Navigation>Frontend::Customer::ModuleRegistration::Loader</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="JavaScript">
+                    <Array>
+                        <Item>Core.Customer.TicketMessage.js</Item>
+                    </Array>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="CustomerFrontend::Navigation###CustomerRoomBooking###003-Booking" Required="0" Valid="1">
+        <Description Translatable="1">Main menu item registration.</Description>
+        <Navigation>Frontend::Customer::ModuleRegistration::MainMenu</Navigation>
+        <Value>
+            <Array>
+                <DefaultItem ValueType="FrontendNavigation">
+                    <Hash>
+                    </Hash>
+                </DefaultItem>
+                <Item>
+                    <Hash>
+                        <Item Key="Group">
+                            <Array>
+                            </Array>
+                        </Item>
+                        <Item Key="GroupRo">
+                            <Array>
+                            </Array>
+                        </Item>
+                        <Item Key="Description" Translatable="1">Room booking.</Item>
+                        <Item Key="Name" Translatable="1">Room booking</Item>
+                        <Item Key="Link">Action=CustomerRoomBooking;Subaction=MyRooms;SortBy=PostCode;OrderBy=Up;Filter=All</Item>
+                        <Item Key="LinkOption"></Item>
+                        <Item Key="NavBar">RoomBooking</Item>
+                        <Item Key="Type">Menu</Item>
+                        <Item Key="Block"></Item>
+                        <Item Key="AccessKey">n</Item>
+                        <Item Key="Prio">800</Item>
+                        <Item Key="Image">seminar.png</Item>
+                    </Hash>
+                </Item>
+            </Array>
+        </Value>
+    </Setting>
+
+    <Setting Name="CustomerFrontend::Module###CustomerBookRoom" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for the customer interface.</Description>
+        <Navigation>Frontend::Customer::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="Group">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Description" Translatable="1">Create room booking.</Item>
+                    <Item Key="NavBarName">RoomBooking</Item>
+                    <Item Key="Title" Translatable="1">New room booking</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Loader::Module::CustomerBookRoom###002-Ticket" Required="0" Valid="1">
+        <Description Translatable="1">Loader module registration for the customer interface.</Description>
+        <Navigation>Frontend::Customer::ModuleRegistration::Loader</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="CSS">
+                    <Array>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/core/main.css</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/daygrid/main.css</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/timegrid/main.css</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/list/main.css</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/timeline/main.css</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/resource-timeline/main.css</Item>
+                        <Item>Core.Agent.Admin.SystemConfiguration.css</Item>
+                    </Array>
+                </Item>
+                <Item Key="JavaScript">
+                    <Array>
+                        <Item>Core.Customer.TicketMessage.js</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/core/main.js</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/daygrid/main.js</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/timegrid/main.js</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/list/main.js</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/core/locales-all.js</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/interaction/main.js</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/timeline/main.js</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/resource-common/main.js</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/resource-timeline/main.js</Item>
+                    </Array>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+
+    <Setting Name="CustomerFrontend::Module###CustomerBookingOverview" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for the customer interface.</Description>
+        <Navigation>Frontend::Customer::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="Group">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Description" Translatable="1">My bookings.</Item>
+                    <Item Key="NavBarName">RoomBooking</Item>
+                    <Item Key="Title" Translatable="1">My bookings</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Loader::Module::CustomerBookingOverview###003-Booking" Required="0" Valid="1">
+        <Description Translatable="1">Loader module registration for the customer interface.</Description>
+        <Navigation>Frontend::Customer::ModuleRegistration::Loader</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="CSS">
+                    <Array>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/core/main.css</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/daygrid/main.css</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/timegrid/main.css</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/list/main.css</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/timeline/main.css</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/resource-timeline/main.css</Item>
+                        <Item>Core.Agent.Admin.SystemConfiguration.css</Item>
+                    </Array>
+                </Item>
+                <Item Key="JavaScript">
+                    <Array>
+                        <Item>Core.Customer.TicketMessage.js</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/core/main.js</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/daygrid/main.js</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/timegrid/main.js</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/list/main.js</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/core/locales-all.js</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/interaction/main.js</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/timeline/main.js</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/resource-common/main.js</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/resource-timeline/main.js</Item>
+                    </Array>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="CustomerFrontend::Navigation###CustomerBookingOverview###003-Booking" Required="0" Valid="1">
+        <Description Translatable="1">Main menu item registration.</Description>
+        <Navigation>Frontend::Customer::ModuleRegistration::MainMenu</Navigation>
+        <Value>
+            <Array>
+                <DefaultItem ValueType="FrontendNavigation">
+                    <Hash>
+                    </Hash>
+                </DefaultItem>
+                <Item>
+                    <Hash>
+                        <Item Key="Group">
+                            <Array>
+                            </Array>
+                        </Item>
+                        <Item Key="GroupRo">
+                            <Array>
+                            </Array>
+                        </Item>
+                        <Item Key="Description" Translatable="1">My bookings.</Item>
+                        <Item Key="Name" Translatable="1">My bookings</Item>
+                        <Item Key="Link">Action=CustomerBookingOverview;Subaction=MyRooms;SortBy=FromSystemTime;OrderBy=Up;Filter=All</Item>
+                        <Item Key="LinkOption"></Item>
+                        <Item Key="NavBar">RoomBooking</Item>
+                        <Item Key="Type">Menu</Item>
+                        <Item Key="Block"></Item>
+                        <Item Key="AccessKey">n</Item>
+                        <Item Key="Prio">900</Item>
+                        <Item Key="Image">seminar.png</Item>
+                    </Hash>
+                </Item>
+            </Array>
+        </Value>
+    </Setting>
+
+    <Setting Name="Frontend::Module###AgentRoomBooking" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for the agent interface.</Description>
+        <Navigation>Frontend::Agent::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="Title" Translatable="1">Room bookings</Item>
+                    <Item Key="Group">
+                        <Array>
+                            <Item>RoomBooking</Item>
+                        </Array>
+                    </Item>
+                    <Item Key="GroupRo">
+                        <Array>
+                            <Item>RoomBooking</Item>
+                        </Array>
+                    </Item>
+                    <Item Key="Description" Translatable="1">Room bookings.</Item>
+                    <Item Key="NavBarName">RoomBooking</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Loader::Module::AgentRoomBooking###001-Framework" Required="0" Valid="1">
+        <Description Translatable="1">Loader module registration for the agent interface.</Description>
+        <Navigation>Frontend::Agent::ModuleRegistration::Loader</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="CSS">
+                    <Array>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/core/main.css</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/daygrid/main.css</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/timegrid/main.css</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/list/main.css</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/timeline/main.css</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/resource-timeline/main.css</Item>
+                    </Array>
+                </Item>
+                <Item Key="JavaScript">
+                    <Array>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/core/main.js</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/daygrid/main.js</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/timegrid/main.js</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/list/main.js</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/core/locales-all.js</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/interaction/main.js</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/timeline/main.js</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/resource-common/main.js</Item>
+                        <Item>thirdparty/fullcalendar-scheduler-4.0.2/resource-timeline/main.js</Item>
+                    </Array>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Navigation###AgentRoomBooking###001-Framework" Required="0" Valid="1">
+        <Description Translatable="1">Main menu item registration.</Description>
+        <Navigation>Frontend::Agent::ModuleRegistration::MainMenu</Navigation>
+        <Value>
+            <Array>
+                <DefaultItem ValueType="FrontendNavigation">
+                    <Hash>
+                    </Hash>
+                </DefaultItem>
+                <Item>
+                    <Hash>
+                        <Item Key="Group">
+                            <Array>
+                                <Item>RoomBooking</Item>
+                            </Array>
+                        </Item>
+                        <Item Key="GroupRo">
+                            <Array>
+                                <Item>RoomBooking</Item>
+                            </Array>
+                        </Item>
+                        <Item Key="Description" Translatable="1">Room bookings overview.</Item>
+                        <Item Key="Name" Translatable="1">Room bookings</Item>
+                        <Item Key="Link">Action=AgentRoomBooking;Subaction=AllRooms;SortBy=FromSystemTime;OrderBy=Up;Filter=Open</Item>
+                        <Item Key="LinkOption"></Item>
+                        <Item Key="NavBar">RoomBooking</Item>
+                        <Item Key="Type">Menu</Item>
+                        <Item Key="Block">ItemArea</Item>
+                        <Item Key="AccessKey"></Item>
+                        <Item Key="Prio">9500</Item>
+                    </Hash>
+                </Item>
+                <Item>
+                    <Hash>
+                        <Item Key="Group">
+                            <Array>
+                                <Item>RoomBooking</Item>
+                            </Array>
+                        </Item>
+                        <Item Key="GroupRo">
+                            <Array>
+                                <Item>RoomBooking</Item>
+                            </Array>
+                        </Item>
+                        <Item Key="Description" Translatable="1">Room bookings overview.</Item>
+                        <Item Key="Name" Translatable="1">Room bookings</Item>
+                        <Item Key="Link">Action=AgentRoomBooking;Subaction=AllRooms;SortBy=FromSystemTime;OrderBy=Up;Filter=Open</Item>
+                        <Item Key="LinkOption"></Item>
+                        <Item Key="NavBar">RoomBooking</Item>
+                        <Item Key="Type"></Item>
+                        <Item Key="Block"></Item>
+                        <Item Key="AccessKey"></Item>
+                        <Item Key="Prio">200</Item>
+                    </Hash>
+                </Item>
+            </Array>
+        </Value>
+    </Setting>
+
+    <Setting Name="Frontend::Module###AgentRoomBookingEvaluation" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for the agent interface.</Description>
+        <Navigation>Frontend::Agent::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="Group">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Description" Translatable="1">Room booking evaluation.</Item>
+                    <Item Key="Title" Translatable="1">Room booking evaluation</Item>
+                    <Item Key="NavBarName">RoomBooking</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Loader::Module::AgentRoomBookingEvaluation###002-Ticket" Required="0" Valid="1">
+        <Description Translatable="1">Loader module registration for the agent interface.</Description>
+        <Navigation>Frontend::Agent::ModuleRegistration::Loader</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="CSS">
+                    <Array>
+                        <Item>Core.AllocationList.css</Item>
+                    </Array>
+                </Item>
+                <Item Key="JavaScript">
+                    <Array>
+                        <Item>Core.UI.AllocationList.js</Item>
+                        <Item>Core.Agent.TableFilters.js</Item>
+                        <Item>Core.Agent.Overview.js</Item>
+                        <Item>Core.Agent.TicketSplit.js</Item>
+                    </Array>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Navigation###AgentRoomBookingEvaluation###002-Ticket" Required="0" Valid="1">
+        <Description Translatable="1">Main menu item registration.</Description>
+        <Navigation>Frontend::Agent::ModuleRegistration::MainMenu</Navigation>
+        <Value>
+            <Array>
+                <DefaultItem ValueType="FrontendNavigation">
+                    <Hash>
+                    </Hash>
+                </DefaultItem>
+                <Item>
+                    <Hash>
+                        <Item Key="Group">
+                            <Array>
+                                <Item>RoomBooking</Item>
+                            </Array>
+                        </Item>
+                        <Item Key="GroupRo">
+                            <Array>
+                                 <Item>RoomBooking</Item>
+                            </Array>
+                        </Item>
+                        <Item Key="Description" Translatable="1">Room booking evaluation.</Item>
+                        <Item Key="Name" Translatable="1">Room booking evaluation</Item>
+                        <Item Key="Link">Action=AgentRoomBookingEvaluation</Item>
+                        <Item Key="LinkOption"></Item>
+                        <Item Key="NavBar">RoomBooking</Item>
+                        <Item Key="Type"></Item>
+                        <Item Key="Block"></Item>
+                        <Item Key="AccessKey">v</Item>
+                        <Item Key="Prio">300</Item>
+                    </Hash>
+                </Item>
+            </Array>
+        </Value>
+    </Setting>
+
+</ofork_config>

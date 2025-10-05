@@ -1,0 +1,79 @@
+/**
+ * This file containts the CSS Styles for the header
+ * with it's toolbar, the userbar and the whole main navigation
+ *
+ * This software is part of the OFORK project, https://ofork.de/
+ *  Modified version of the work: Copyright (C) 2010-2024 OFORK, https://ofork.de/
+ *  based on the original work of:
+ *  Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+ *  --
+ * @project OTRS (http://www.otrs.org) <http://www.otrs.org> - Agent Frontend
+ * @copyright OTRS AG
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/**
+ * @package     Skin "Slim"
+ * @section     Header
+ */
+
+@media screen,projection,tv,handheld {
+
+/**
+ * @subsection  Header
+ */
+#Header {
+    height: 2px;
+    background-position: bottom;
+}
+
+#Logo {
+    opacity: 0.3;
+}
+
+/**
+ * @subsection  Toolbar
+ */
+#ToolBar {
+    top: 22px;
+    left: auto;
+    right: 14px;
+    z-index: 10;
+}
+
+#ToolBar li.UserAvatar {
+    margin-top: -6px;
+    float: right;
+}
+
+#ToolBar li.UserAvatar div {
+    right: -25px;
+    left: auto;
+}
+
+#ToolBar li.UserAvatar div:after {
+    left: auto;
+    right: 15px;
+}
+
+.RTL #ToolBar {
+    right: auto;
+    left: 14px;
+}
+
+/**
+ * @subsection  UserInfo
+ */
+#UserInfo {
+    top: 2px;
+}
+
+/**
+ * @subsection      Navigation Level-0
+ */
+
+#NavigationContainer {
+    top: 17px;
+}
+
+} /* end @media */

@@ -1,0 +1,336 @@
+# --
+# AdminProcessFields.tt - provides HTML form for customer message
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# --
+# $Id: AdminProcessFields.tt,v 1.2 2016/11/20 19:31:54 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+[% RenderBlockStart("SetFieldListsResult") %]
+
+<div id="SetFieldListsResult">
+
+    <fieldset class="TableLike">
+
+        <div id="FieldIsSet" style="margin-left:3%;margin-right:5px;padding:5px;margin-bottom:10px;float:left;width:350px;">
+[% RenderBlockStart("FieldIsSetStep") %]
+            <div style="border: 1px solid #d9f8ea;border-radius: 3px;padding:5px;margin:3px;float:left;width:250px;background-color: #eeeeee;">[% Data.FieldIsSetStep | html %]</div>
+            <div style="float:left;">
+                <button type="button" id="FieldIsSetStep[% Data.FieldIsSetStepValue %]" style="margin:4px;visibility:visible;border: 1px solid #656566;color: red;padding: 0px 7px 2px;line-height: 18px;vertical-align: middle;font-size: 18px;display: block;cursor: pointer;position: relative;border-radius: 3px;font-weight: bold;"><span>-</span></button>
+            </div>
+            <div class="Clear"></div>
+
+<script type="text/javascript">//<![CDATA[
+
+    $('#FieldIsSetStep[% Data.FieldIsSetStepValue %]').bind('click', function () {
+
+        var ProcessID     = $("#ID").val();
+        var ProcessStepID = $("#ProcessStepID").val();
+	    var SessionName = $('input#SessionName').val();
+	    var SessionID   = $('input#SessionID').val();
+	    var new_names   = SessionName + "=" + SessionID;
+
+        $.ajax({
+            type:     'Post',
+            url:      'index.pl?' + new_names,
+            data:
+            {
+                Action:         'AdminProcessFields',
+                Subaction:      'ProcessField',
+                FieldAction:    'Delete',
+                ProcessID:       ProcessID,
+                ProcessStepID:  ProcessStepID,
+                ProcessFieldID: '[% Data.FieldIsSetStepValue %]',
+            },
+            async: false,
+            dataType: 'html',
+            success: function(Response) {
+                $('#SetFieldListsResult').html(Response);
+            }
+        });
+
+    });
+
+//]]></script>
+
+[% RenderBlockEnd("FieldIsSetStep") %]                        
+
+[% RenderBlockStart("FieldIsSetStepRequired") %]
+            <div style="border: 1px solid #d9f8ea;border-radius: 3px;padding:5px;margin:3px;float:left;width:250px;background-color: #eeeeee;">[% Data.FieldIsSetStep | html %]</div>
+            <div style="float:left;">
+                <button type="button" id="FieldIsSetStep[% Data.FieldIsSetStepValue %]" style="margin:4px;visibility:visible;border: 1px solid #656566;color: red;padding: 0px 7px 2px;line-height: 18px;vertical-align: middle;font-size: 18px;display: block;cursor: pointer;position: relative;border-radius: 3px;font-weight: bold;"><span>-</span></button>
+            </div>
+            <div style="float: left;margin-top: 1px;margin-left: -12px;color: black;position: relative;font-size: 11px;">
+                <i class="fa fa-star"></i>
+            </div>
+            <div class="Clear"></div>
+
+<script type="text/javascript">//<![CDATA[
+
+    $('#FieldIsSetStep[% Data.FieldIsSetStepValue %]').bind('click', function () {
+
+        var ProcessID     = $("#ID").val();
+        var ProcessStepID = $("#ProcessStepID").val();
+	    var SessionName = $('input#SessionName').val();
+	    var SessionID   = $('input#SessionID').val();
+	    var new_names   = SessionName + "=" + SessionID;
+
+        $.ajax({
+            type:     'Post',
+            url:      'index.pl?' + new_names,
+            data:
+            {
+                Action:         'AdminProcessFields',
+                Subaction:      'ProcessField',
+                FieldAction:    'Delete',
+                ProcessID:       ProcessID,
+                ProcessStepID:  ProcessStepID,
+                ProcessFieldID: '[% Data.FieldIsSetStepValue %]',
+            },
+            async: false,
+            dataType: 'html',
+            success: function(Response) {
+                $('#SetFieldListsResult').html(Response);
+            }
+        });
+
+    });
+
+//]]></script>
+
+[% RenderBlockEnd("FieldIsSetStepRequired") %]  
+        </div>
+
+
+        <div id="FieldToSet" style="margin-left:3%;margin-right:5px;padding:5px;margin-bottom:10px;float:left;width:350px;">
+[% RenderBlockStart("FieldToSetStep") %]
+            <div style="border: 1px solid #d9f8ea;border-radius: 3px;padding:5px;margin:3px;float:left;width:250px;background-color: #eeeeee;">[% Data.FieldToSetStep | html %]</div>
+            <div style="float:left;">
+                <button type="button" title="Add" id="FieldToSetStep[% Data.FieldToSetStepValue %]" style="margin:4px;visibility:visible;border: 1px solid #656566;color: green;padding: 0px 7px 2px;line-height: 18px;vertical-align: middle;font-size: 18px;display: block;cursor: pointer;position: relative;border-radius: 3px;font-weight: bold;"><span>+</span></button>
+            </div>
+            <div style="float:left;">
+                <button type="button" title="Add as required" id="FieldToSetStepRequired[% Data.FieldToSetStepValue %]" style="margin:4px;visibility:visible;border: 1px solid #656566;color: green;padding: 0px 7px 2px;line-height: 18px;vertical-align: middle;font-size: 18px;display: block;cursor: pointer;position: relative;border-radius: 3px;font-weight: bold;"><span>+</span></button>
+            </div>
+            <div style="float: left;margin-top: 1px;margin-left: -12px;color: black;position: relative;font-size: 11px;">
+                <i class="fa fa-star"></i>
+            </div>
+            <div class="Clear"></div>
+
+<script type="text/javascript">//<![CDATA[
+
+    $('#FieldToSetStep[% Data.FieldToSetStepValue %]').bind('click', function () {
+
+        var ProcessID     = $("#ID").val();
+        var ProcessStepID = $("#ProcessStepID").val();
+	    var SessionName = $('input#SessionName').val();
+	    var SessionID   = $('input#SessionID').val();
+	    var new_names   = SessionName + "=" + SessionID;
+
+        $.ajax({
+            type:     'Post',
+            url:      'index.pl?' + new_names,
+            data:
+            {
+                Action:        'AdminProcessFields',
+                Subaction:     'ProcessField',
+                FieldAction:   'Add',
+                ProcessID:     ProcessID,
+                ProcessStepID: ProcessStepID,
+                Required:       '1',
+                FieldID:       '[% Data.FieldToSetStepValue %]',
+            },
+            async: false,
+            dataType: 'html',
+            success: function(Response) {
+                $('#SetFieldListsResult').html(Response);
+            }
+        });
+
+    });
+
+    $('#FieldToSetStepRequired[% Data.FieldToSetStepValue %]').bind('click', function () {
+
+        var ProcessID     = $("#ID").val();
+        var ProcessStepID = $("#ProcessStepID").val();
+	    var SessionName = $('input#SessionName').val();
+	    var SessionID   = $('input#SessionID').val();
+	    var new_names   = SessionName + "=" + SessionID;
+
+        $.ajax({
+            type:     'Post',
+            url:      'index.pl?' + new_names,
+            data:
+            {
+                Action:        'AdminProcessFields',
+                Subaction:     'ProcessField',
+                FieldAction:   'Add',
+                ProcessID:     ProcessID,
+                ProcessStepID: ProcessStepID,
+                Required:       '2',
+                FieldID:       '[% Data.FieldToSetStepValue %]',
+            },
+            async: false,
+            dataType: 'html',
+            success: function(Response) {
+                $('#SetFieldListsResult').html(Response);
+            }
+        });
+
+    });
+
+//]]></script>
+
+[% RenderBlockEnd("FieldToSetStep") %]
+        </div>
+
+    </fieldset>
+</div>
+[% RenderBlockEnd("SetFieldListsResult") %]
+
+
+[% RenderBlockStart("DynamicSetFieldListsResult") %]
+
+<div id="DynamicSetFieldListsResult">
+
+    <fieldset class="TableLike">
+
+        <div id="DynamicFieldIsSet" style="margin-left:3%;margin-right:5px;padding:5px;margin-bottom:10px;float:left;width:350px;">
+[% RenderBlockStart("DynamicFieldIsSetStep") %]
+            <div style="border: 1px solid #d9f8ea;border-radius: 3px;padding:5px;margin:3px;float:left;width:250px;background-color: #eeeeee;">[% Data.DynamicFieldIsSetStep | html %]</div>
+            <div style="float:left;">
+                <button type="button" id="DynamicFieldIsSetStep[% Data.DynamicFieldIsSetStepValue %]" style="margin:4px;visibility:visible;border: 1px solid #656566;color: red;padding: 0px 7px 2px;line-height: 18px;vertical-align: middle;font-size: 18px;display: block;cursor: pointer;position: relative;border-radius: 3px;font-weight: bold;"><span>-</span></button>
+            </div>
+
+[% RenderBlockStart("DynamicFieldIsSetStepRequired") %]
+            <div style="float: left;margin-top: 1px;margin-left: -12px;color: black;position: relative;font-size: 11px;">
+                <i class="fa fa-star"></i>
+            </div>
+[% RenderBlockEnd("DynamicFieldIsSetStepRequired") %]                        
+
+            <div class="Clear"></div>
+
+<script type="text/javascript">//<![CDATA[
+
+    $('#DynamicFieldIsSetStep[% Data.DynamicFieldIsSetStepValue %]').bind('click', function () {
+
+        var ProcessID     = $("#ID").val();
+        var ProcessStepID = $("#ProcessStepID").val();
+	    var SessionName = $('input#SessionName').val();
+	    var SessionID   = $('input#SessionID').val();
+	    var new_names   = SessionName + "=" + SessionID;
+
+        $.ajax({
+            type:     'Post',
+            url:      'index.pl?' + new_names,
+            data:
+            {
+                Action:        'AdminProcessFields',
+                Subaction:     'DynamicAdminProcessField',
+                FieldAction:   'DynamicDelete',
+                ProcessID:     ProcessID,
+                ProcessStepID: ProcessStepID,
+                DynamicFieldID: '[% Data.DynamicFieldIsSetStepValue %]',
+            },
+            async: false,
+            dataType: 'html',
+            success: function(Response) {
+                $('#DynamicSetFieldListsResult').html(Response);
+            }
+        });
+
+    });
+
+//]]></script>
+
+[% RenderBlockEnd("DynamicFieldIsSetStep") %]                        
+        </div>
+
+
+        <div id="DynamicFieldToSet" style="margin-left:3%;margin-right:5px;padding:5px;margin-bottom:10px;float:left;width:350px;">
+[% RenderBlockStart("DynamicFieldToSetStep") %]
+            <div style="border: 1px solid #d9f8ea;border-radius: 3px;padding:5px;margin:3px;float:left;width:250px;background-color: #eeeeee;">[% Data.DynamicFieldToSetStep | html %]</div>
+            <div style="float:left;">
+                <button type="button" title="Add" id="DynamicFieldToSetStep[% Data.DynamicFieldToSetStepValue %]" style="margin:4px;visibility:visible;border: 1px solid #656566;color: green;padding: 0px 7px 2px;line-height: 18px;vertical-align: middle;font-size: 18px;display: block;cursor: pointer;position: relative;border-radius: 3px;font-weight: bold;"><span>+</span></button>
+            </div>
+            <div style="float:left;">
+                <button type="button" title="Add as required" id="DynamicFieldToSetStepRequired[% Data.DynamicFieldToSetStepValue %]" style="margin:4px;visibility:visible;border: 1px solid #656566;color: green;padding: 0px 7px 2px;line-height: 18px;vertical-align: middle;font-size: 18px;display: block;cursor: pointer;position: relative;border-radius: 3px;font-weight: bold;"><span>+</span></button>
+            </div>
+            <div style="float: left;margin-top: 1px;margin-left: -12px;color: black;position: relative;font-size: 11px;">
+                <i class="fa fa-star"></i>
+            </div>
+            <div class="Clear"></div>
+
+<script type="text/javascript">//<![CDATA[
+
+    $('#DynamicFieldToSetStep[% Data.DynamicFieldToSetStepValue %]').bind('click', function () {
+
+        var ProcessID     = $("#ID").val();
+        var ProcessStepID = $("#ProcessStepID").val();
+	    var SessionName = $('input#SessionName').val();
+	    var SessionID   = $('input#SessionID').val();
+	    var new_names   = SessionName + "=" + SessionID;
+
+        $.ajax({
+            type:     'Post',
+            url:      'index.pl?' + new_names,
+            data:
+            {
+                Action:         'AdminProcessFields',
+                Subaction:      'DynamicAdminProcessField',
+                FieldAction:    'DynamicAdd',
+                ProcessID:      ProcessID,
+                ProcessStepID:  ProcessStepID,
+                Required:       '1',
+                DynamicFieldID: '[% Data.DynamicFieldToSetStepValue %]',
+            },
+            async: false,
+            dataType: 'html',
+            success: function(Response) {
+                $('#DynamicSetFieldListsResult').html(Response);
+            }
+        });
+
+    });
+
+    $('#DynamicFieldToSetStepRequired[% Data.DynamicFieldToSetStepValue %]').bind('click', function () {
+
+        var ProcessID     = $("#ID").val();
+        var ProcessStepID = $("#ProcessStepID").val();
+	    var SessionName = $('input#SessionName').val();
+	    var SessionID   = $('input#SessionID').val();
+	    var new_names   = SessionName + "=" + SessionID;
+
+        $.ajax({
+            type:     'Post',
+            url:      'index.pl?' + new_names,
+            data:
+            {
+                Action:         'AdminProcessFields',
+                Subaction:      'DynamicAdminProcessField',
+                FieldAction:    'DynamicAdd',
+                ProcessID:      ProcessID,
+                ProcessStepID:  ProcessStepID,
+                Required:       '2',
+                DynamicFieldID: '[% Data.DynamicFieldToSetStepValue %]',
+            },
+            async: false,
+            dataType: 'html',
+            success: function(Response) {
+                $('#DynamicSetFieldListsResult').html(Response);
+            }
+        });
+
+    });
+
+
+//]]></script>
+
+[% RenderBlockEnd("DynamicFieldToSetStep") %]
+        </div>
+
+    </fieldset>
+</div>
+[% RenderBlockEnd("DynamicSetFieldListsResult") %]

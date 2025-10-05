@@ -1,0 +1,739 @@
+# --
+# AdminRequestFields.tt - provides HTML form for AdminSLA
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# --
+# $Id: AdminRequestFields.tt,v 1.1 2016/09/20 13:40:37 ud Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+
+<div class="MainBox ARIARoleMain LayoutFixedSidebar SidebarFirst">
+    <h1 class="InvisibleText">[% Translate("Request Field Management") | html %]</h1>
+
+    [% BreadcrumbPath = [
+            {
+                Name => Translate('Request Field Management'),
+                Link => Env("Action"),
+            },
+        ]
+    %]
+
+    [% SWITCH Data.Action %]
+        [% CASE 'Add' %]
+            [% BreadcrumbPath.push({ Name => Translate("Add Group"),}) %]
+        [% CASE 'Change' %]
+            [% USE EditTitle = String(Translate("Edit Group")) %]
+            [% BreadcrumbPath.push({ Name => EditTitle.append( ': ', Data.Name ) }) %]
+    [% END %]
+
+    [% INCLUDE "Breadcrumb.tt" Path = BreadcrumbPath %]
+
+[% RenderBlockStart("Overview") %]
+<div class="MainBox ARIARoleMain LayoutFixedSidebar SidebarFirst">
+    <h1>[% Translate("Manage request fields") | html %]</h1>
+
+    <div class="SidebarColumn">
+
+[% RenderBlockStart("ActionList") %]
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>[% Translate("Actions") | html %]</h2>
+            </div>
+            <div class="Content">
+                <ul class="ActionList">
+
+[% RenderBlockStart("ActionOverview") %]
+                    <li>
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %]" class="CallForAction"><span>[% Translate("Go to overview") | html %]</span></a>
+                    </li>
+[% RenderBlockEnd("ActionOverview") %]
+
+[% RenderBlockStart("ActionAdd") %]
+                    <li>
+                        <a class="CallForAction Plus" href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=AntragTyp">
+                        <span>[% Translate("Add request field") | html %]</span>
+                        </a>
+                    </li>
+[% RenderBlockEnd("ActionAdd") %]
+
+                </ul>
+            </div>
+        </div>
+[% RenderBlockEnd("ActionList") %]
+
+    </div>
+
+    <div class="ContentColumn">
+        <div class="WidgetSimple">
+[% RenderBlockStart("OverviewList") %]
+            <div class="Header">
+                <h2>[% Translate("List") | html %]</h2>
+            </div>
+            <div class="Content">
+
+                <table class="DataTable">
+                    <thead>
+                        <tr>
+                            <th>[% Translate("Name") | html %]</th>
+                            <th>[% Translate("Labeling") | html %]</th>
+                            <th>[% Translate("Typ") | html %]</th>
+                            <th>[% Translate("Valid") | html %]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+[% RenderBlockStart("NoDataFoundMsg") %]
+                        <tr>
+                            <td colspan="4">
+                                [% Translate("No data found.") | html %]
+                            </td>
+                        </tr>
+[% RenderBlockEnd("NoDataFoundMsg") %]
+[% RenderBlockStart("OverviewListRow") %]
+                        <tr>
+                            <td><a class="AsBlock" href="[% Env("Baselink") %]Action=[% Env("Action") %];Subaction=AntragEdit;ID=[% Data.ID | uri %]">[% Data.Name | html %]</a></td>
+                            <td title="[% Data.Labeling | html %]">[% Data.Labeling | truncate(26) | html %]</td>
+                            <td>[% Translate(Data.Typ) | html %]</td>
+                            <td>[% Translate(Data.Valid) | html %]</td>
+                        </tr>
+[% RenderBlockEnd("OverviewListRow") %]
+                    </tbody>
+                </table>
+            </div>
+[% RenderBlockEnd("OverviewList") %]
+
+[% RenderBlockStart("AntragEdit") %]
+            <div class="Header">
+[% RenderBlockStart("HeaderAdd") %]
+                <h2>[% Translate("New request field") | html %]</h2>
+[% RenderBlockEnd("HeaderAdd") %]
+[% RenderBlockStart("HeaderEdit") %]
+                <h2>[% Translate("Edit request field") | html %]</h2>
+[% RenderBlockEnd("HeaderEdit") %]
+            </div>
+
+            <div class="Content">
+
+                <form action="[% Env("CGIHandle") %]" method="post" class="Validate">
+                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                    <input type="hidden" name="Subaction" value="AntragTyp"/>
+
+                    <fieldset class="TableLike">
+
+                        <label for="Typ">[% Translate("Typ") | html %]:</label>
+                        <div class="Field">
+                            [% Data.TypOptionStrg %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <div class="Field SpacingTop">
+                            <button class="Primary" type="submit" value="[% Translate("Submit") | html %]">[% Translate("Submit") | html %]</button>
+                            [% Translate("or") | html %]
+                            <a href="[% Env("Baselink") %]Action=[% Env("Action") %]">[% Translate("Cancel") | html %]</a>
+                        </div>
+                        <div class="Clear"></div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+
+[% RenderBlockStart("FeldText") %]
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>[% Translate("Text field") | html %]</h2>
+            </div>
+
+            <div class="Content">
+
+                <form action="[% Env("CGIHandle") %]" method="post" class="Validate">
+                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                    <input type="hidden" name="Subaction" value="AntragSave"/>
+                    <input type="hidden" name="ID" value="[% Data.ID | html %]"/>
+                    <input type="hidden" name="Typ" value="[% Data.Typ | html %]"/>
+
+                    <fieldset class="TableLike">
+
+                        <label class="Mandatory" for="Name"><span class="Marker">*</span> [% Translate("Name of database field") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="Name" id="Name" value="[% Data.Name | html %]" class="W50pc Validate_Required [% Data.NameInvalid | html %]" maxlength="200"/>
+                            <div id="NameError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                            <div id="NameServerError" class="TooltipErrorMessage"><p>[% Translate(Data.NameServerErrorMessage) | html %]</p></div>
+                            <br><span class="FieldExplanation">[% Translate("Must be clear and must only consist of letters and numbers.") | html %]</span>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label class="Mandatory" for="Labeling"><span class="Marker">*</span> [% Translate("Labeling") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="Labeling" id="Labeling" value="[% Data.Labeling | html %]" class="W50pc Validate_Required [% Data.LabelingInvalid | html %]" maxlength="200"/>
+                            <div id="LabelingError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                            <div id="LabelingServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                            <br><span class="FieldExplanation">[% Translate("This name will be shown in the request form as the labeling of the respective field.") | html %]</span>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="Defaultvalue">[% Translate("Default value") | html %]:</label>
+                        <div class="Field">
+                            <input type="text" name="Defaultvalue" id="Defaultvalue" value="[% Data.Defaultvalue | html %]" class="W50pc" maxlength="1000"/>
+                        </div>
+                        <div class="Clear"></div>
+
+                        <label for="ValidID">[% Translate("Valid") | html %]:</label>
+                        <div class="Field">
+                            [% Data.ValidOptionStrg %]
+                        </div>
+                        <div class="Clear"></div>
+
+                        <div class="Field SpacingTop">
+                            <button class="Primary" type="submit" value="[% Translate("Submit") | html %]">[% Translate("Submit") | html %]</button>
+                            [% Translate("or") | html %]
+                            <a href="[% Env("Baselink") %]Action=[% Env("Action") %]">[% Translate("Cancel") | html %]</a>
+                        </div>
+                        <div class="Clear"></div>
+                    </fieldset>
+                </form>
+            </div>
+[% RenderBlockEnd("FeldText") %]
+
+[% RenderBlockStart("FeldTextArea") %]
+            <div class="WidgetSimple">
+                <div class="Header">
+                    <h2>[% Translate("Text area field") | html %]</h2>
+                </div>
+
+                <div class="Content">
+
+                    <form action="[% Env("CGIHandle") %]" method="post" class="Validate">
+                        <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                        <input type="hidden" name="Subaction" value="AntragSave"/>
+                        <input type="hidden" name="ID" id="ID" value="[% Data.ID | html %]"/>
+                        <input type="hidden" name="Typ" id="Typ" value="[% Data.Typ | html %]"/>
+
+                        <fieldset class="TableLike">
+
+                            <label class="Mandatory" for="Name"><span class="Marker">*</span> [% Translate("Name of database field") | html %]:</label>
+                            <div class="Field">
+                                <input type="text" name="Name" id="Name" value="[% Data.Name | html %]" class="W50pc Validate_Required [% Data.NameInvalid | html %]" maxlength="200"/>
+                                <div id="NameError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                                <div id="NameServerError" class="TooltipErrorMessage"><p>[% Translate(Data.NameServerErrorMessage) | html %]</p></div>
+                                <br><span class="FieldExplanation">[% Translate("Must be clear and must only consist of letters and numbers.") | html %]</span>
+                            </div>
+                            <div class="Clear"></div>
+
+                            <label class="Mandatory" for="Labeling"><span class="Marker">*</span> [% Translate("Labeling") | html %]:</label>
+                            <div class="Field">
+                                <input type="text" name="Labeling" id="Labeling" value="[% Data.Labeling | html %]" class="W50pc Validate_Required [% Data.LabelingInvalid | html %]" maxlength="200"/>
+                                <div id="LabelingError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                                <div id="LabelingServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                                <br><span class="FieldExplanation">[% Translate("This name will be shown in the request form as the labeling of the respective field.") | html %]</span>
+                            </div>
+                            <div class="Clear"></div>
+
+                            <label for="Defaultvalue">[% Translate("Defaultvalue") | html %]:</label>
+                            <div class="Field">
+                                <textarea id="Defaultvalue" rows="[% Data.Rows | html %]" cols="[% Data.Cols | html %]" name="Defaultvalue">[% Data.Defaultvalue | html %]</textarea>
+                            </div>
+                            <div class="Clear"></div>
+
+                            <label class="Mandatory" for="Rows"><span class="Marker">*</span> [% Translate("Number of lines") | html %]:</label>
+                            <div class="Field">
+                                <input type="text" name="Rows" id="Rows" value="[% Data.Rows | html %]" class="W50pc Validate_Required [% Data.Rows | html %]" maxlength="2"/>
+                                <div id="RowsError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                                <div id="RowsServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                                <br><span class="FieldExplanation">[% Translate("Shows the number of lines for this field.") | html %]</span>
+                            </div>
+                            <div class="Clear"></div>
+
+                            <label class="Mandatory" for="Cols"><span class="Marker">*</span> [% Translate("Number of columns") | html %]:</label>
+                            <div class="Field">
+                                <input type="text" name="Cols" id="Cols" value="[% Data.Cols | html %]" class="W50pc Validate_Required [% Data.Cols | html %]" maxlength="2"/>
+                                <div id="ColsError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                                <div id="ColsServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                                <br><span class="FieldExplanation">[% Translate("Shows the width of this field in letters.") | html %]</span>
+                            </div>
+                            <div class="Clear"></div>
+
+                            <label for="ValidID">[% Translate("Valid") | html %]:</label>
+                            <div class="Field">
+                                [% Data.ValidOptionStrg %]
+                            </div>
+                            <div class="Clear"></div>
+
+                            <div class="Field SpacingTop">
+                                <button class="Primary" type="submit" value="[% Translate("Submit") | html %]">[% Translate("Submit") | html %]</button>
+                                [% Translate("or") | html %]
+                                <a href="[% Env("Baselink") %]Action=[% Env("Action") %]">[% Translate("Cancel") | html %]</a>
+                            </div>
+                            <div class="Clear"></div>
+                        </fieldset>
+                    </form>
+                </div>
+[% RenderBlockEnd("FeldTextArea") %]
+
+[% RenderBlockStart("FeldDropdown") %]
+                <div class="WidgetSimple">
+                    <div class="Header">
+                        <h2>[% Translate("Dropdown field") | html %]</h2>
+                    </div>
+
+                    <div class="Content">
+
+                        <form action="[% Env("CGIHandle") %]" method="post" class="Validate">
+                            <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                            <input type="hidden" name="Subaction" value="AntragSave"/>
+                            <input type="hidden" name="ID" id="ID" value="[% Data.ID | html %]"/>
+                            <input type="hidden" name="Typ" id="Typ" value="[% Data.Typ | html %]"/>
+                            <input type="hidden" name="SessionName" id="SessionName" value="[% Env("SessionName") | html %]"/>
+                            <input type="hidden" name="SessionID" id="SessionID" value="[% Env("SessionID") | html %]"/>
+
+                            <fieldset class="TableLike">
+
+                                <label class="Mandatory" for="Name"><span class="Marker">*</span> [% Translate("Name of database field") | html %]:</label>
+                                <div class="Field">
+                                    <input type="text" name="Name" id="Name" value="[% Data.Name | html %]" class="W50pc Validate_Required [% Data.NameInvalid | html %]" maxlength="200"/>
+                                    <div id="NameError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                                    <div id="NameServerError" class="TooltipErrorMessage"><p>[% Translate(Data.NameServerErrorMessage) | html %]</p></div>
+                                    <br><span class="FieldExplanation">[% Translate("Must be clear and must only consist of letters and numbers.") | html %]</span>
+                                </div>
+                                <div class="Clear"></div>
+
+                                <label class="Mandatory" for="Labeling"><span class="Marker">*</span> [% Translate("Labeling") | html %]:</label>
+                                <div class="Field">
+                                    <input type="text" name="Labeling" id="Labeling" value="[% Data.Labeling | html %]" class="W50pc Validate_Required [% Data.LabelingInvalid | html %]" maxlength="200"/>
+                                    <div id="LabelingError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                                    <div id="LabelingServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                                    <br><span class="FieldExplanation">[% Translate("This name will be shown in the request form as the labeling of the respective field.") | html %]</span>
+                                </div>
+                                <div class="Clear"></div>
+
+                                <label for="Wert">[% Translate("Add or delete value") | html %]:</label>
+                                <div class="Field" id="Wert">
+                                    <div id="WertListe" style="margin-left: 14%;">
+                                    </div>
+                                </div>
+                                <div class="Clear"></div>
+
+                                <label for="Defaultvalue">[% Translate("Default value") | html %]:</label>
+                                <div class="Field" id="Defaultvalue">&nbsp;
+                                </div>
+                                <div class="Clear"></div>
+
+                                <label for="LeerWert">[% Translate("Add empty value") | html %]:</label>
+                                <div class="Field">
+                                    [% Data.LeerWertOptionStrg %]
+                                </div>
+                                <div class="Clear"></div>
+
+                                <label for="ValidID">[% Translate("Valid") | html %]:</label>
+                                <div class="Field">
+                                    [% Data.ValidOptionStrg %]
+                                </div>
+                                <div class="Clear"></div>
+
+                                <div class="Field SpacingTop">
+                                    <div id="SendButtonCreate" style="display: none;">
+                                        <button class="Primary" type="submit" value="[% Translate("Next") | html %]">[% Translate("Next") | html %]</button>
+                                        [% Translate("or") | html %]
+                                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %]">[% Translate("Cancel") | html %]</a>
+                                    </div>
+                                    <div id="SendButton" style="display: none;">
+                                        <button class="Primary" type="submit" value="[% Translate("Submit") | html %]">[% Translate("Submit") | html %]</button>
+                                        [% Translate("or") | html %]
+                                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %]">[% Translate("Cancel") | html %]</a>
+                                    </div>
+                                </div>
+                                <div class="Clear"></div>
+                            </fieldset>
+                        </form>
+                    </div>
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+
+var IfID = $('input#ID').val();
+
+if ( IfID ) {
+    $('div#SendButton').fadeIn();
+    $('div#Wert').fadeIn();
+    $('div#Defaultvalue').fadeIn();
+    NeuesFeldWert();
+    DropDownList();
+}
+else {
+    $('div#SendButtonCreate').fadeIn();
+    $('div#SendButton').hide();
+}
+
+//bind click function to add button
+$('#AddValue').bind('click', function () {
+    NeuesFeldWert();
+    return false;
+});
+
+
+
+function NeuesFeldWert(){
+
+    var SessionName = $('input#SessionName').val();
+    var SessionID = $('input#SessionID').val();
+    var new_names = SessionName + "=" + SessionID;
+
+    $.ajax({
+        type: 'Get',
+        url:  'index.pl?' + new_names,
+        data:
+        {
+            Action:    'AdminRequestFieldsContent',
+            Subaction: 'Liste',
+            FeldID:    $('input#ID').val()
+        },
+        async: false,
+        dataType: 'html',
+        success: function(Response) {
+            $('#WertListe').html(Response);
+        }
+    });
+}
+
+function DropDownList(){
+
+    var SessionName = $('input#SessionName').val();
+    var SessionID = $('input#SessionID').val();
+    var new_names = SessionName + "=" + SessionID;
+
+    $.ajax({
+        type:     'Post',
+        url:  'index.pl?' + new_names,
+        data:
+        {
+            Action:    'AdminRequestFieldsContent',
+            Subaction: 'Dropdown',
+            FeldID:    $('input#ID').val()
+        },
+        async: false,
+        dataType: 'html',
+        success: function(Response) {
+            $('#Defaultvalue').html(Response);
+        }
+    });
+}
+
+//]]></script>
+[% END %]
+[% RenderBlockEnd("FeldDropdown") %]
+
+[% RenderBlockStart("MultiSelect") %]
+                    <div class="WidgetSimple">
+                        <div class="Header">
+                            <h2>[% Translate("Multiselect field") | html %]</h2>
+                        </div>
+
+                        <div class="Content">
+
+                            <form action="[% Env("CGIHandle") %]" method="post" class="Validate">
+                                <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                                <input type="hidden" name="Subaction" value="AntragSave"/>
+                                <input type="hidden" name="ID" id="ID" value="[% Data.ID | html %]"/>
+                                <input type="hidden" name="Typ" id="Typ" value="[% Data.Typ | html %]"/>
+                                <input type="hidden" name="SessionName" id="SessionName" value="[% Env("SessionName") | html %]"/>
+                                <input type="hidden" name="SessionID" id="SessionID" value="[% Env("SessionID") | html %]"/>
+
+                                <fieldset class="TableLike">
+
+                                    <label class="Mandatory" for="Name"><span class="Marker">*</span> [% Translate("Name of database field") | html %]:</label>
+                                    <div class="Field">
+                                        <input type="text" name="Name" id="Name" value="[% Data.Name | html %]" class="W50pc Validate_Required [% Data.NameInvalid | html %]" maxlength="200"/>
+                                        <div id="NameError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                                        <div id="NameServerError" class="TooltipErrorMessage"><p>[% Translate(Data.NameServerErrorMessage) | html %]</p></div>
+                                        <br><span class="FieldExplanation">[% Translate("Must be clear and must only consist of letters and numbers.") | html %]</span>
+                                    </div>
+                                    <div class="Clear"></div>
+
+                                    <label class="Mandatory" for="Labeling"><span class="Marker">*</span> [% Translate("Labeling") | html %]:</label>
+                                    <div class="Field">
+                                        <input type="text" name="Labeling" id="Labeling" value="[% Data.Labeling | html %]" class="W50pc Validate_Required [% Data.LabelingInvalid | html %]" maxlength="200"/>
+                                        <div id="LabelingError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                                        <div id="LabelingServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                                        <br><span class="FieldExplanation">[% Translate("This name will be shown in the request form as the labeling of the respective field.") | html %]</span>
+                                    </div>
+                                    <div class="Clear"></div>
+
+                                    <label for="Wert">[% Translate("Add or delete value") | html %]:</label>
+                                    <div class="Field" id="Wert" style="display: none;">
+                                        <div id="WertListe" style="margin-left: 14%;">
+                                        </div>
+                                    </div>
+                                    <div class="Clear"></div>
+
+                                    <label for="Defaultvalue">[% Translate("Default value") | html %]:</label>
+                                    <div class="Field" id="Defaultvalue" style="display: none;">
+                                    </div>
+                                    <div class="Clear"></div>
+
+                                    <label for="LeerWert">[% Translate("Add empty value") | html %]:</label>
+                                    <div class="Field">
+                                        [% Data.LeerWertOptionStrg %]
+                                    </div>
+                                    <div class="Clear"></div>
+
+                                    <label for="ValidID">[% Translate("Valid") | html %]:</label>
+                                    <div class="Field">
+                                        [% Data.ValidOptionStrg %]
+                                    </div>
+                                    <div class="Clear"></div>
+
+                                    <div class="Field SpacingTop">
+                                        <div id="SendButtonCreate" style="display: none;">
+                                            <button class="Primary" type="submit" value="[% Translate("Next") | html %]">[% Translate("Next") | html %]</button>
+                                            [% Translate("or") | html %]
+                                            <a href="[% Env("Baselink") %]Action=[% Env("Action") %]">[% Translate("Cancel") | html %]</a>
+                                        </div>
+                                        <div id="SendButton" style="display: none;">
+                                            <button class="Primary" type="submit" value="[% Translate("Submit") | html %]">[% Translate("Submit") | html %]</button>
+                                            [% Translate("or") | html %]
+                                            <a href="[% Env("Baselink") %]Action=[% Env("Action") %]">[% Translate("Cancel") | html %]</a>
+                                        </div>
+                                    </div>
+                                    <div class="Clear"></div>
+                                </fieldset>
+                            </form>
+                        </div>
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+
+var IfID = $('input#ID').val();
+
+if ( IfID ) {
+    $('div#SendButton').fadeIn();
+    $('div#Wert').fadeIn();
+    $('div#Defaultvalue').fadeIn();
+    NeuesFeldWert();
+    DropDownList();
+}
+else {
+    $('div#SendButtonCreate').fadeIn();
+    $('div#SendButton').hide();
+}
+
+//bind click function to add button
+$('#AddValue').bind('click', function () {
+    NeuesFeldWert();
+    return false;
+});
+
+function NeuesFeldWert(){
+
+    var SessionName = $('input#SessionName').val();
+    var SessionID = $('input#SessionID').val();
+    var new_names = SessionName + "=" + SessionID;
+
+    $.ajax({
+        type: 'Get',
+        url:  'index.pl?' + new_names,
+        data:
+        {
+            Action:    'AdminRequestFieldsContent',
+            Subaction: 'Liste',
+            FeldID:    $('input#ID').val()
+        },
+        async: false,
+        dataType: 'html',
+        success: function(Response) {
+            $('#WertListe').html(Response);
+        }
+    });
+}
+
+function DropDownList(){
+
+    var SessionName = $('input#SessionName').val();
+    var SessionID = $('input#SessionID').val();
+    var new_names = SessionName + "=" + SessionID;
+
+    $.ajax({
+        type:     'Post',
+        url:  'index.pl?' + new_names,
+        data:
+        {
+            Action:    'AdminRequestFieldsContent',
+            Subaction: 'Multiselect',
+            FeldID:    $('input#ID').val()
+        },
+        async: false,
+        dataType: 'html',
+        success: function(Response) {
+            $('#Defaultvalue').html(Response);
+        }
+    });
+}
+
+//]]></script>
+[% END %]
+[% RenderBlockEnd("MultiSelect") %]
+
+[% RenderBlockStart("FeldDate") %]
+                        <div class="WidgetSimple">
+                            <div class="Header">
+                                <h2>[% Translate("Datumsfeld") | html %]</h2>
+                            </div>
+
+                            <div class="Content">
+
+                                <form action="[% Env("CGIHandle") %]" method="post" class="Validate">
+                                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                                    <input type="hidden" name="Subaction" value="AntragSave"/>
+                                    <input type="hidden" name="ID" value="[% Data.ID | html %]"/>
+                                    <input type="hidden" name="Typ" value="[% Data.Typ | html %]"/>
+
+                                    <fieldset class="TableLike">
+
+                                        <label class="Mandatory" for="Name"><span class="Marker">*</span> [% Translate("Name of database field") | html %]:</label>
+                                        <div class="Field">
+                                            <input type="text" name="Name" id="Name" value="[% Data.Name | html %]" class="W50pc Validate_Required [% Data.NameInvalid | html %]" maxlength="200"/>
+                                            <div id="NameError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                                            <div id="NameServerError" class="TooltipErrorMessage"><p>[% Translate(Data.NameServerErrorMessage) | html %]</p></div>
+                                            <br><span class="FieldExplanation">[% Translate("Must be clear and must only consist of letters and numbers.") | html %]</span>
+                                        </div>
+                                        <div class="Clear"></div>
+
+                                        <label class="Mandatory" for="Labeling"><span class="Marker">*</span> [% Translate("Labeling") | html %]:</label>
+                                        <div class="Field">
+                                            <input type="text" name="Labeling" id="Labeling" value="[% Data.Labeling | html %]" class="W50pc Validate_Required [% Data.LabelingInvalid | html %]" maxlength="200"/>
+                                            <div id="LabelingError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                                            <div id="LabelingServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                                            <br><span class="FieldExplanation">[% Translate("This name will be shown in the request form as the labeling of the respective field.") | html %]</span>
+                                        </div>
+                                        <div class="Clear"></div>
+
+                                        <label for="ValidID">[% Translate("Valid") | html %]:</label>
+                                        <div class="Field">
+                                            [% Data.ValidOptionStrg %]
+                                        </div>
+                                        <div class="Clear"></div>
+
+                                        <div class="Field SpacingTop">
+                                            <button class="Primary" type="submit" value="[% Translate("Submit") | html %]">[% Translate("Submit") | html %]</button>
+                                            [% Translate("or") | html %]
+                                            <a href="[% Env("Baselink") %]Action=[% Env("Action") %]">[% Translate("Cancel") | html %]</a>
+                                        </div>
+                                        <div class="Clear"></div>
+                                    </fieldset>
+                                </form>
+                            </div>
+[% RenderBlockEnd("FeldDate") %]
+
+[% RenderBlockStart("FeldDateShort") %]
+                        <div class="WidgetSimple">
+                            <div class="Header">
+                                <h2>[% Translate("Datumsfeld") | html %]</h2>
+                            </div>
+
+                            <div class="Content">
+
+                                <form action="[% Env("CGIHandle") %]" method="post" class="Validate">
+                                    <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                                    <input type="hidden" name="Subaction" value="AntragSave"/>
+                                    <input type="hidden" name="ID" value="[% Data.ID | html %]"/>
+                                    <input type="hidden" name="Typ" value="[% Data.Typ | html %]"/>
+
+                                    <fieldset class="TableLike">
+
+                                        <label class="Mandatory" for="Name"><span class="Marker">*</span> [% Translate("Name of database field") | html %]:</label>
+                                        <div class="Field">
+                                            <input type="text" name="Name" id="Name" value="[% Data.Name | html %]" class="W50pc Validate_Required [% Data.NameInvalid | html %]" maxlength="200"/>
+                                            <div id="NameError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                                            <div id="NameServerError" class="TooltipErrorMessage"><p>[% Translate(Data.NameServerErrorMessage) | html %]</p></div>
+                                            <br><span class="FieldExplanation">[% Translate("Must be clear and must only consist of letters and numbers.") | html %]</span>
+                                        </div>
+                                        <div class="Clear"></div>
+
+                                        <label class="Mandatory" for="Labeling"><span class="Marker">*</span> [% Translate("Labeling") | html %]:</label>
+                                        <div class="Field">
+                                            <input type="text" name="Labeling" id="Labeling" value="[% Data.Labeling | html %]" class="W50pc Validate_Required [% Data.LabelingInvalid | html %]" maxlength="200"/>
+                                            <div id="LabelingError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                                            <div id="LabelingServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                                            <br><span class="FieldExplanation">[% Translate("This name will be shown in the request form as the labeling of the respective field.") | html %]</span>
+                                        </div>
+                                        <div class="Clear"></div>
+
+                                        <label for="ValidID">[% Translate("Valid") | html %]:</label>
+                                        <div class="Field">
+                                            [% Data.ValidOptionStrg %]
+                                        </div>
+                                        <div class="Clear"></div>
+
+                                        <div class="Field SpacingTop">
+                                            <button class="Primary" type="submit" value="[% Translate("Submit") | html %]">[% Translate("Submit") | html %]</button>
+                                            [% Translate("or") | html %]
+                                            <a href="[% Env("Baselink") %]Action=[% Env("Action") %]">[% Translate("Cancel") | html %]</a>
+                                        </div>
+                                        <div class="Clear"></div>
+                                    </fieldset>
+                                </form>
+                            </div>
+[% RenderBlockEnd("FeldDateShort") %]
+
+[% RenderBlockStart("Checkbox") %]
+                            <div class="WidgetSimple">
+                                <div class="Header">
+                                    <h2>[% Translate("Checkbox field") | html %]</h2>
+                                </div>
+
+                                <div class="Content">
+
+                                    <form action="[% Env("CGIHandle") %]" method="post" class="Validate">
+                                        <input type="hidden" name="Action" value="[% Env("Action") %]"/>
+                                        <input type="hidden" name="Subaction" value="AntragSave"/>
+                                        <input type="hidden" name="ID" value="[% Data.ID | html %]"/>
+                                        <input type="hidden" name="Typ" value="[% Data.Typ | html %]"/>
+
+                                        <fieldset class="TableLike">
+
+                                            <label class="Mandatory" for="Name"><span class="Marker">*</span> [% Translate("Name of database field") | html %]:</label>
+                                            <div class="Field">
+                                                <input type="text" name="Name" id="Name" value="[% Data.Name | html %]" class="W50pc Validate_Required [% Data.NameInvalid | html %]" maxlength="200"/>
+                                                <div id="NameError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                                                <div id="NameServerError" class="TooltipErrorMessage"><p>[% Translate(Data.NameServerErrorMessage) | html %]</p></div>
+                                                <br><span class="FieldExplanation">[% Translate("Must be clear and must only consist of letters and numbers.") | html %]</span>
+                                            </div>
+                                            <div class="Clear"></div>
+
+                                            <label class="Mandatory" for="Labeling"><span class="Marker">*</span> [% Translate("Labeling") | html %]:</label>
+                                            <div class="Field">
+                                                <input type="text" name="Labeling" id="Labeling" value="[% Data.Labeling | html %]" class="W50pc Validate_Required [% Data.LabelingInvalid | html %]" maxlength="200"/>
+                                                <div id="LabelingError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                                                <div id="LabelingServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
+                                                <br><span class="FieldExplanation">[% Translate("This name will be shown in the request form as the labeling of the respective field.") | html %]</span>
+                                            </div>
+                                            <div class="Clear"></div>
+
+                                            <label for="Defaultvalue">[% Translate("Default value'") | html %]:</label>
+                                            <div class="Field">
+                                                [% Data.DefaultvalueStrg %]
+                                            </div>
+                                            <div class="Clear"></div>
+
+                                            <label for="ValidID">[% Translate("Valid") | html %]:</label>
+                                            <div class="Field">
+                                                [% Data.ValidOptionStrg %]
+                                            </div>
+                                            <div class="Clear"></div>
+
+                                            <div class="Field SpacingTop">
+                                                <button class="Primary" type="submit" value="[% Translate("Submit") | html %]">[% Translate("Submit") | html %]</button>
+                                                [% Translate("or") | html %]
+                                                <a href="[% Env("Baselink") %]Action=[% Env("Action") %]">[% Translate("Cancel") | html %]</a>
+                                            </div>
+                                            <div class="Clear"></div>
+                                        </fieldset>
+                                    </form>
+                                </div>
+[% RenderBlockEnd("Checkbox") %]
+
+[% RenderBlockEnd("AntragEdit") %]
+                            </div>
+                        </div>
+                        <div class="Clear"></div>
+                    </div>
+[% RenderBlockEnd("Overview") %]
+

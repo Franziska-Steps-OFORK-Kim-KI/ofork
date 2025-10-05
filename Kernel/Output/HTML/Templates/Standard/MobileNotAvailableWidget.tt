@@ -1,0 +1,22 @@
+# --
+# Kernel/Output/HTML/Templates/Standard/MobileNotAvailableWidget.tt
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: MobileNotAvailableWidget.tt,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<div class="WidgetSimple MobileNotAvailableWidget">
+    <div class="Header Expanded">
+        <h2>[% Translate("Feature not Available") | html %]</h2>
+    </div>
+    <div class="Content">
+        <p>[% Translate("Sorry, but this feature of OFORK is currently not available for mobile devices. If you'd like to use it, you can either switch to desktop mode or use your regular desktop device.") | html %]</p>
+    </div>
+</div>

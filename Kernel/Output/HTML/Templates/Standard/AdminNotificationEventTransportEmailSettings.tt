@@ -1,0 +1,58 @@
+# --
+# Kernel/Output/HTML/Templates/Standard/AdminNotificationEventTransportEmailSettings.tt
+# Modified version of the work:
+# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# based on the original work of:
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# --
+# $Id: AdminNotificationEventTransportEmailSettings.tt,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<label for="RecipientEmail">[% Translate("Additional recipient email addresses") | html %]: </label>
+<div class="Field AdminEmailOFORK">
+    <input type="text" name="RecipientEmail" id="RecipientEmail" class="W50pc Validate_MaxLength [% Data.RecipientEmailServerError | html %]" value="[% Data.RecipientEmail | html %]" data-maxlength="200"/>
+    <div id="RecipientEmailError" class="TooltipErrorMessage"><p>[% Translate("This field must have less then 200 characters.") | html %]</p></div>
+    <div id="RecipientEmailServerError" class="TooltipErrorMessage"><p>[% Translate("This field must have less then 200 characters.") | html %]</p></div>
+    <p class="FieldExplanation">[% Translate("You can use OFORK-tags like <OFORK_TICKET_DynamicField_...> to insert values from the current ticket.") | html %]</p>
+</div>
+<div class="Clear"></div>
+
+<label for="IsVisibleForCustomer">[% Translate("Article visible for customer") | html %]: </label>
+<div class="Field AdminEmailOFORK">
+    <input type="checkbox" name="IsVisibleForCustomer" id="IsVisibleForCustomer" value="1" [% IF Data.Data.IsVisibleForCustomer %] checked="checked" [% END %]/>
+    <p class="FieldExplanation">[% Translate("An article will be created if the notification is sent to the customer or an additional email address.") | html %]</p>
+</div>
+<div class="Clear"></div>
+
+<label for="TransportEmailTemplate">[% Translate("Email template") | html %]: </label>
+<div class="Field AdminEmailOFORK">
+    [% Data.TransportEmailTemplateStrg %]
+    <p class="FieldExplanation">[% Translate("Use this template to generate the complete email (only for HTML emails).") | html %]</p>
+</div>
+<div class="Clear"></div>
+
+<label for="EmailSecuritySettings">[% Translate("Enable email security") | html %]: </label>
+<div class="Field AdminEmailOFORK">
+    <input type="checkbox" name="EmailSecuritySettings" id="EmailSecuritySettings" value="1" [% Data.EmailSecuritySettings %] />
+    <p class="FieldExplanation">[% Data.EmailSecurityInfo %]</p>
+</div>
+<div class="Clear"></div>
+<label for="EmailSigningCrypting">[% Translate("Email security level") | html %]: </label>
+<div class="Field AdminEmailOFORK">
+    [% Data.EmailSigningCrypting %]
+</div>
+<div class="Clear"></div>
+<label for="EmailMissingSigningKeys">[% Translate("If signing key/certificate is missing") | html %]: </label>
+<div class="Field AdminEmailOFORK">
+    [% Data.EmailMissingSigningKeys %]
+</div>
+<div class="Clear"></div>
+<label for="EmailMissingCryptingKeys">[% Translate("If encryption key/certificate is missing") | html %]: </label>
+<div class="Field AdminEmailOFORK">
+    [% Data.EmailMissingCryptingKeys %]
+</div>
+<div class="Clear"></div>
