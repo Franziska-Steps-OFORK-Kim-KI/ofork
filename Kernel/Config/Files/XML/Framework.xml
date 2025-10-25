@@ -51,7 +51,7 @@
         <Description Translatable="1">Defines the name of the application, shown in the web interface, tabs and title bar of the web browser.</Description>
         <Navigation>Core</Navigation>
         <Value>
-            <Item ValueType="String" ValueRegex="">OFORK 11</Item>
+            <Item ValueType="String" ValueRegex="">OFORK 12</Item>
         </Value>
     </Setting>
     <Setting Name="SystemID" Required="1" Valid="1" ConfigLevel="200">
@@ -2763,6 +2763,13 @@
             <Item ValueType="Checkbox">0</Item>
         </Value>
     </Setting>
+    <Setting Name="PDF::ImagePrint" Required="1" Valid="1">
+        <Description Translatable="1">Allows image print.</Description>
+        <Navigation>Core::PDF</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
     <Setting Name="PDF::LogoFile" Required="1" Valid="1">
         <Description Translatable="1">Specifies the path of the file for the logo in the page header (gif|jpg|png, 700 x 100 pixel).</Description>
         <Navigation>Core::PDF</Navigation>
@@ -4206,6 +4213,110 @@ via the Preferences button after logging in.
                         <Item Key="Block">ItemArea</Item>
                         <Item Key="AccessKey">d</Item>
                         <Item Key="Prio">50</Item>
+                    </Hash>
+                </Item>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Module###AgentKPI" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for the agent interface.</Description>
+        <Navigation>Frontend::Agent::ModuleRegistration</Navigation>
+        <Value>
+            <Item ValueType="FrontendRegistration">
+                <Hash>
+                    <Item Key="Group">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="GroupRo">
+                        <Array>
+                        </Array>
+                    </Item>
+                    <Item Key="Description">Agent KPI</Item>
+                    <Item Key="Title"></Item>
+                    <Item Key="NavBarName">KPI</Item>
+                </Hash>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Loader::Module::AgentKPI###001-Framework" Required="0" Valid="1">
+        <Description Translatable="1">Loader module registration for the agent interface.</Description>
+        <Navigation>Frontend::Agent::ModuleRegistration::Loader</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="CSS">
+                    <Array>
+                        <Item>Core.Agent.Dashboard.css</Item>
+                        <Item>thirdparty/jqplot-1.0.9/jquery.jqplot.min.css</Item>
+                    </Array>
+                </Item>
+                <Item Key="JavaScript">
+                    <Array>
+                        <Item>thirdparty/jqplot-1.0.9/jquery.jqplot.min.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.barRenderer.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.BezierCurveRenderer.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.blockRenderer.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.bubbleRenderer.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.canvasAxisLabelRenderer.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.canvasAxisTickRenderer.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.canvasOverlay.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.canvasTextRenderer.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.categoryAxisRenderer.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.ciParser.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.cursor.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.dateAxisRenderer.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.donutRenderer.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.dragable.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.enhancedLegendRenderer.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.enhancedPieLegendRenderer.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.funnelRenderer.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.highlighter.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.json2.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.logAxisRenderer.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.mekkoAxisRenderer.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.mekkoRenderer.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.meterGaugeRenderer.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.mobile.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.ohlcRenderer.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.pieRenderer.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.pointLabels.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.pyramidAxisRenderer.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.pyramidGridRenderer.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.pyramidRenderer.js</Item>
+                        <Item>thirdparty/jqplot-1.0.9/plugins/jqplot.trendline.js</Item>
+                    </Array>
+                </Item>
+            </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Navigation###AgentKPI###001-Framework" Required="0" Valid="1">
+        <Description Translatable="1">Main menu item registration.</Description>
+        <Navigation>Frontend::Agent::ModuleRegistration::MainMenu</Navigation>
+        <Value>
+            <Array>
+                <DefaultItem ValueType="FrontendNavigation">
+                    <Hash>
+                    </Hash>
+                </DefaultItem>
+                <Item>
+                    <Hash>
+                        <Item Key="Group">
+                            <Array>
+                            </Array>
+                        </Item>
+                        <Item Key="GroupRo">
+                            <Array>
+                            </Array>
+                        </Item>
+                        <Item Key="Description" Translatable="1">KPI overview.</Item>
+                        <Item Key="Name" Translatable="1">KPI</Item>
+                        <Item Key="Link">Action=AgentKPI</Item>
+                        <Item Key="LinkOption"></Item>
+                        <Item Key="NavBar">KPI</Item>
+                        <Item Key="Type">Menu</Item>
+                        <Item Key="Block">ItemArea</Item>
+                        <Item Key="AccessKey">d</Item>
+                        <Item Key="Prio">10</Item>
                     </Hash>
                 </Item>
             </Array>

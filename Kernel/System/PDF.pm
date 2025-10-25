@@ -1,7 +1,7 @@
 # --
 # Kernel/System/PDF.pm
 # Modified version of the work:
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de
 # based on the original work of:
 # Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
 # --
@@ -1284,6 +1284,26 @@ sub Image {
     }
     else {
         %Dim = $Self->_CurContentDimGet();
+    }
+
+    # get current position
+    my %Position = $Self->_CurPositionGet();
+
+    if ( !$Param{Recursion} && ( $Position{Y} - $Param{Height} / ( 300 / 72 ) ) <= $Dim{Bottom} ) {
+
+        my %Page = %{ $Param{PageData} };
+
+        $Self->PageNew(
+            %Page,
+            FooterRight => $Page{PageText} . ' ' . $Page{PageCount},
+        );
+
+        $Page{PageCount}++;
+
+        return $Self->Image(
+            %Param,
+            Recursion => 1,
+        );
     }
 
     $Param{Width}  = $Param{Width} /  ( 300 / 72 );

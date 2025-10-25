@@ -1,6 +1,6 @@
 # --
 # Kernel/System/SelfServiceCategories.pm - all SelfService function
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de
 # --
 # $Id: SelfServiceCategories.pm,v 1.4 2016/11/20 19:30:06 ud Exp $
 # --

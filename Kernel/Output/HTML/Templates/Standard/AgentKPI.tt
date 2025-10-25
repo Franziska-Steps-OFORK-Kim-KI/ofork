@@ -1,0 +1,400 @@
+# --
+# Kernel/Output/HTML/Templates/Standard/AgentKPI.tt
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de
+# --
+# $Id: AgentKPI.tt,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
+# ---
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+<style>
+.canvasjs-chart-canvas {
+    border-radius: 0px 0px 10px 10px;
+}
+</style>
+
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+
+$(document).ready(function(){
+
+  $("#show").click(function(){
+    $("#Filter").show(3000);
+  });
+
+  $("#hide").click(function(){
+    $("#Filter").hide(3000);
+  });
+});
+
+//]]></script>
+[% END %]
+<div id="Filter" style="height: 80%; width: 90%;background-color:#f2f2f2;position:fixed;top:100px;z-index:100;display:none;margin:10px;padding:20px;box-shadow: 10px 20px 15px silver;border-radius: 20px;border-color: #8d8d8e;border-width: 1px;border-style: solid;">
+<button id="hide" style="margin-left:25px;">[% Translate("Hide filters") | html %]</button>
+
+<div class="MainBox ARIARoleMain FormScreen">
+
+    <h1>[% Translate("KPI Filter") | html %]</h1>
+
+    <div class="LayoutFixedSidebar SidebarLast">
+
+    <div class="ContentColumn">
+    <form action="[% Env("CGIHandle") %]" method="post" enctype="multipart/form-data" name="compose" id="AgentKPI" class="Validate PreventMultipleSubmits">
+        <input type="hidden" name="Action" value="[% Env("Action") %]" />
+        <input type="hidden" name="Subaction" value="StoreNew" />
+        <input type="hidden" name="FormID" value="[% Data.FormID | html %]" />
+
+            <fieldset class="TableLike">
+
+                    <label>[% Translate("Do not use date fields") | html %]:</label>
+                    <div class="Field">
+                        <input type="checkbox" name="OhneDatum" id="OhneDatum" value="1"/>
+                    </div>
+                    <div class="Clear"></div>
+
+                    <label>[% Translate("From") | html %]:</label>
+                    <div class="Field" style="margin-bottom:7px;">
+                        [% Data.FromDateString %]
+                        <div id="FromDayServerError" class="TooltipErrorMessage"><p>[% Translate("Date invalid!") | html %]</p></div>
+                    </div>
+                    <div class="Clear"></div>
+
+                    <label>[% Translate("Until") | html %]:</label>
+                    <div class="Field" style="margin-bottom:7px;">
+                        [% Data.ToDateString %]
+                        <div id="ToDayServerError" class="TooltipErrorMessage"><p>[% Translate("Date invalid!") | html %]</p></div>
+                    </div>
+                    <div class="Clear"></div>
+
+                    <label for="StateID">[% Translate("State") | html %]:</label>
+                    <div class="Field">
+                        [% Data.StateStrg %]
+                    </div>
+                    <div class="Clear"></div>
+
+                    <label for="QueueID">[% Translate("Queue") | html %]:</label>
+                    <div class="Field">
+                        [% Data.QueueStrg %]
+                    </div>
+                    <div class="Clear"></div>
+
+                    <label>[% Translate("Start-Jahr erstellte/geschlossene Tickets pro Jahr") | html %]:</label>
+                    <div class="Field" style="margin-bottom:7px;">
+                        [% Data.FromDateErstString %]
+                    </div>
+                    <div class="Clear"></div>
+
+                    <div class="Field SpacingTop">
+                        <button class="Primary CallForAction" id="submitRichText" accesskey="g" title="[% Translate("Create") | html %] (g)" type="submit" value="[% Translate("Create") | html %]"><span><i class="fa fa-check-square-o"></i> [% Translate("Create") | html %]</span></button>
+                    </div>
+
+            </fieldset>
+
+    </form>
+    </div>
+
+    </div>
+    </div>
+
+
+
+</div>
+<div id="Trenner" style="height: 30px; width: 100%;background-color:#ffffff;padding:10px;">
+<button id="show">Filterauswahl einblenden</button>
+<a href="index.pl?Action=AgentKPI"><button id="reset" style="margin-left:25px;">[% Translate("Remove filter") | html %]</button></a>
+</div>
+
+<script src="[% Config("Frontend::WebPath") %]js/thirdparty/canvasjs/canvasjs.min.js"> </script>
+
+<div style="width: 100%;margin: 0px auto;">
+
+    <div id="stats1" style="float: left;width: 48%;margin-left:1.5%;box-shadow: 5px 10px 9px silver;border-radius: 0px 0px 10px 10px;text-align:center;">
+    <div style="font-size:14px;background-color:#c9c9c9;border-radius: 10px 10px 0px 0px;width:100%;padding-top:4px;padding-bottom:4px;">Über alle Zeiträume<br>&nbsp;</div>
+        <div id="Chart1" style="height: 350px; width: 100%;"></div>
+    </div>
+
+    <div id="stats2" style="float: left;width: 48%;margin-left:1.5%;box-shadow: 5px 10px 9px silver;border-radius: 0px 0px 10px 10px;text-align:center;">
+    <div style="font-size:14px;background-color:#c9c9c9;border-radius: 10px 10px 0px 0px;width:100%;padding-top:4px;padding-bottom:4px;">Nach Statusauswahl filterbar<br>Standard: alle Zeiträume und alle Status mit Tickets</div>
+        <div id="Chart2" style="height: 350px; width: 100%;"></div>
+    </div>
+    <div style="clear:left;"></div>
+
+</div>
+<div id="Trenner" style="height: 30px; width: 100%;background-color:#ffffff"></div>
+
+<div style="width: 100%;margin: 0px auto;">
+
+    <div id="stats3" style="float: left;width: 48%;margin-left:1.5%;box-shadow: 5px 10px 9px silver;border-radius: 0px 0px 10px 10px;text-align:center;">
+    <div style="font-size:14px;background-color:#c9c9c9;border-radius: 10px 10px 0px 0px;width:100%;padding-top:4px;padding-bottom:4px;">Nach Queueauswahl und Zeiträumen filterbar<br>Standard: alle Zeiträume und alle Queues mit Tickets</div>
+        <div id="Chart3" style="height: 350px; width: 100%;"></div>
+    </div>
+
+    <div id="stats4" style="float: left;width: 48%;margin-left:1.5%;box-shadow: 5px 10px 9px silver;border-radius: 0px 0px 10px 10px;text-align:center;">
+    <div style="font-size:14px;background-color:#c9c9c9;border-radius: 10px 10px 0px 0px;width:100%;padding-top:4px;padding-bottom:4px;">Nach Zeiträumen filterbar<br>Standard: aktuelles Jahr</div>
+        <div id="Chart4" style="height: 350px; width: 100%;"></div>
+    </div>
+    <div style="clear:left;"></div>
+
+</div>
+<div id="Trenner" style="height: 30px; width: 100%;background-color:#ffffff"></div>
+
+
+<div style="width: 100%;margin: 0px auto;">
+
+    <div id="stats5" style="float: left;width: 48%;margin-left:1.5%;box-shadow: 5px 10px 9px silver;border-radius: 0px 0px 10px 10px;text-align:center;">
+    <div style="font-size:14px;background-color:#c9c9c9;border-radius: 10px 10px 0px 0px;width:100%;padding-top:4px;padding-bottom:4px;">Nach Zeiträumen filterbar<br>Standard aktuelles Jahr</div>
+        <div id="Chart5" style="height: 350px; width: 100%;"></div>
+    </div>
+
+    <div id="stats6" style="float: left;width: 48%;margin-left:1.5%;box-shadow: 5px 10px 9px silver;border-radius: 0px 0px 10px 10px;text-align:center;">
+    <div style="font-size:14px;background-color:#c9c9c9;border-radius: 10px 10px 0px 0px;width:100%;padding-top:4px;padding-bottom:4px;">Nach Jahr filterbar<br>Standard: aktuelles Jahr</div>
+        <div id="Chart6" style="height: 350px; width: 100%;"></div>
+    </div>
+    <div style="clear:left;"></div>
+
+</div>
+<div id="Trenner" style="height: 30px; width: 100%;background-color:#ffffff"></div>
+
+<script type="text/javascript">//<![CDATA[
+
+window.onload = function() {
+
+var chart1 = new CanvasJS.Chart("Chart1", {
+	animationEnabled: true,
+	backgroundColor: "#f2f2f2",
+	interactivityEnabled: true,
+	title: {
+		text: "offene/geschlossene Tickets",
+		fontColor: "#0858d5",
+		fontSize: 16,
+		fontWeight: "normal",
+		fontFamily: "arial",
+	},
+	data: [{
+		type: "pie",
+		showInLegend: true,
+		explodeOnClick: true,
+		startAngle: 0,
+		yValueFormatString: "##0.00",
+		indexLabel: "{label} - {y}",
+		toolTipContent: "{label}: <strong>{y}</strong>",
+		dataPoints: [
+		{y: [% Data.openTickets %], label: "offene Tickets", name: "offene Tickets"},
+		{y: [% Data.closeTickets %], label: "geschlossene Tickets", name: "geschlossene Tickets"},
+		]
+	}]
+});
+chart1.render();
+
+
+var chart2 = new CanvasJS.Chart("Chart2", {
+	animationEnabled: true,
+	backgroundColor: "#f2f2f2",
+	title: {
+		text: "Tickets nach Status",
+		fontColor: "#0858d5",
+		fontSize: 16,
+		fontWeight: "normal",
+		fontFamily: "arial",
+	},
+	data: [{
+		type: "doughnut",
+		showInLegend: true,
+		explodeOnClick: true,
+		startAngle: 0,
+		yValueFormatString: "##0.00",
+		indexLabel: "{label} - {y}",
+		toolTipContent: "{label}: <strong>{y}</strong>",
+		dataPoints: [[% Data.States %]]
+	}]
+});
+chart2.render();
+
+
+var chart3 = new CanvasJS.Chart("Chart3", {
+	animationEnabled: true,
+	backgroundColor: "#f2f2f2",
+	title: {
+		text: "offene Tickets nach Queues",
+		fontColor: "#0858d5",
+		fontSize: 16,
+		fontWeight: "normal",
+		fontFamily: "arial",
+	},
+	data: [{
+		type: "doughnut",
+		showInLegend: true,
+		explodeOnClick: true,
+		startAngle: 0,
+		yValueFormatString: "##0.00",
+		indexLabel: "{label} - {y}",
+		toolTipContent: "{label}: <strong>{y}</strong>",
+		dataPoints: [[% Data.Queues %]]
+	}]
+});
+chart3.render();
+
+CanvasJS.addColorSet("schliesszeiten",
+[
+    "#bef66d",
+    "#6faf10",
+    "#f2eb3a",
+    "#f2a52c",
+    "#ed4b30",
+    "#d00824",
+    "#b0056e"             
+]);
+var chart4 = new CanvasJS.Chart("Chart4", {
+	animationEnabled: true,
+	backgroundColor: "#f2f2f2",
+	theme: "light1",
+    colorSet: "schliesszeiten",
+	title:{
+		text: "geschlossene Tickets nach Schliesszeit",
+		fontColor: "#0858d5",
+		fontSize: 13,
+		fontWeight: "normal",
+		fontFamily: "arial",
+	},
+  	axisY: {
+      includeZero: true
+    },
+	data: [{
+		type: "column",
+		indexLabel: "{y}",
+		indexLabelFontColor: "#5A5757",
+      	indexLabelFontSize: 13,
+		indexLabelPlacement: "outside",
+		dataPoints: [[% Data.CloseTime %]]
+	}]
+});
+chart4.render();
+
+
+CanvasJS.addColorSet("erstereaktionzeiten",
+[
+    "#91f9aa",
+    "#bef66d",
+    "#6faf10",
+    "#f2eb3a",
+    "#f2a52c",
+    "#ed4b30",
+    "#d00824",
+    "#b0056e"             
+]);
+var chart5 = new CanvasJS.Chart("Chart5", {
+	animationEnabled: true,
+	backgroundColor: "#f2f2f2",
+	theme: "light1",
+    colorSet: "erstereaktionzeiten",
+	title:{
+		text: "Zeiten erste Antwort an Kunden / offene Tickets",
+		fontColor: "#0858d5",
+		fontSize: 16,
+		fontWeight: "normal",
+		fontFamily: "arial",
+	},
+  	axisY: {
+      includeZero: true
+    },
+	data: [{
+		type: "column",
+		indexLabel: "{y}",
+		indexLabelFontColor: "#5A5757",
+      	indexLabelFontSize: 16,
+		indexLabelPlacement: "outside",
+		dataPoints: [[% Data.AnswerTime %]]
+	}]
+});
+chart5.render();
+
+
+
+var chart6 = new CanvasJS.Chart("Chart6", {
+	exportEnabled: false,
+	animationEnabled: true,
+	backgroundColor: "#f2f2f2",
+	title:{
+		text: "erstellte/geschlossene Tickets",
+		fontColor: "#0858d5",
+		fontSize: 16,
+		fontWeight: "normal",
+		fontFamily: "arial",
+	},
+	subtitles: [{
+		text: "auf erstellt oder geschlossen klicken um zu filtern",
+		fontColor: "#0858d5",
+		fontSize: 12,
+		fontWeight: "normal",
+		fontFamily: "arial",
+	}], 
+	axisX: {
+		title: "Tickets",
+        interval: 1,
+        intervalType: "month",
+        includeZero: true,
+	},
+	axisY: {
+		title: "erstellte - Tickets",
+		titleFontColor: "#4F81BC",
+		lineColor: "#4F81BC",
+		labelFontColor: "#4F81BC",
+		tickColor: "#4F81BC",
+		includeZero: true
+	},
+	axisY2: {
+		title: "geschlossene - Tickets",
+		titleFontColor: "#C0504E",
+		lineColor: "#C0504E",
+		labelFontColor: "#C0504E",
+		tickColor: "#C0504E",
+		includeZero: true
+	},
+	toolTip: {
+		shared: true
+	},
+	legend: {
+		cursor: "pointer",
+		itemclick: toggleDataSeries
+	},
+	data: [{
+		type: "spline",
+		name: "erstellt",
+		showInLegend: true,      
+      	indexLabelFontSize: 12,
+		yValueFormatString: "#.## Tickets",
+		dataPoints: [[% Data.OpenTicketsYear %]]
+	},
+	{
+		type: "spline",
+		name: "geschlossen.",
+		axisYType: "secondary",
+		connectNullData: true,
+		showInLegend: true,
+      	indexLabelFontSize: 12,
+		yValueFormatString: "#.## Tickets",
+		dataPoints: [[% Data.CloseTicketsYear %]]
+
+	}]
+});
+chart6.render();
+
+function toggleDataSeries(e) {
+	if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+		e.dataSeries.visible = false;
+	} else {
+		e.dataSeries.visible = true;
+	}
+	e.chart.render();
+}
+
+
+
+}
+
+//]]></script>
+
+
+

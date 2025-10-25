@@ -1,7 +1,7 @@
 # --
 # Kernel/Language/de_Seen.pm
 # Modified version of the work:
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de
 # Copyright (C) 2012 Znuny GmbH, https://znuny.com/
 # --
 # $Id: de_Seen.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $

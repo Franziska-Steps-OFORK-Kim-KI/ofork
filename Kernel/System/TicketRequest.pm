@@ -1,6 +1,6 @@
 # --
 # Kernel/System/TicketRequest.pm - all service function
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de
 # --
 # $Id: TicketRequest.pm,v 1.7 2016/09/13 19:17:01 ud Exp $
 # --

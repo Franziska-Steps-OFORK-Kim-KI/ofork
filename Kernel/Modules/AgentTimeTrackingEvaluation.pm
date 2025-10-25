@@ -1,6 +1,6 @@
 # --
 # Kernel/Modules/AgentTimeTrackingEvaluation.pm
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de/
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de/
 # --
 # $Id: AgentTimeTrackingEvaluation.pm,v 1.6 2019/08/21 08:41:59 ud Exp $
 # --

@@ -1,2 +1,2 @@
-Please see [the installation instructions](https://o-fork.de/doc/11/installation.html)
+Please see [the installation instructions](https://o-fork.de/Installation.html)
 in the online documentation.

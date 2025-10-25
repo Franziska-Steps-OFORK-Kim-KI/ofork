@@ -1,7 +1,7 @@
 # --
 # Kernel/Language/fr.pm
 # Modified version of the work:
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de
 # Copyright (C) 2002 Bernard Choppy <choppy at imaginet.fr>
 # Copyright (C) 2002 Nicolas Goralski <ngoralski at oceanet-technology.com>
 # Copyright (C) 2004 Igor Genibel <igor.genibel at eds-opensource.com>

@@ -1,6 +1,6 @@
 # --
 # Kernel/Modules/AgentChecklistSet.pm - to link objects
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de/
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de/
 # --
 # $Id: AgentChecklistSet.pm,v 1.1 2019/01/20 14:22:31 ud Exp $
 # --

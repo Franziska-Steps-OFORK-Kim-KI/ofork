@@ -1,7 +1,7 @@
 # --
 # Kernel/Language/en_GB.pm
 # Modified version of the work:
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de
 # Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
 # --
 # $Id: en_GB.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $

@@ -1,7 +1,7 @@
 # --
 # Kernel/Language/es_CO.pm
 # Modified version of the work:
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de
 # Copyright (C) 2013 John Edisson Ortiz Roman <jortiz@slabinfo.com.co>
 # --
 # $Id: es_CO.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $

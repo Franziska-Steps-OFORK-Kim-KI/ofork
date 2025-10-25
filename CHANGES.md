@@ -1,3 +1,7 @@
+#12.0.1 2025-08-30
+ - Neu Kim Ki
+ - KPI
+
 #11.0.4 2024-05-21
  - Behebung von Fehlern
 

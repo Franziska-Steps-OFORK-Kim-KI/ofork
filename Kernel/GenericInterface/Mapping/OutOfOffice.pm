@@ -1,6 +1,6 @@
 # --
 # Kernel/GenericInterface/Mapping/OutOfOffice.pm
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de
 # --
 # $Id: OutOfOffice.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
 # --

@@ -1,7 +1,7 @@
 # --
 # Kernel/System/Ticket/Article/Backend/MIMEBase/ArticleStorageDB.pm
 # Modified version of the work:
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de
 # based on the original work of:
 # Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
 # --
@@ -343,7 +343,7 @@ sub ArticleAttachmentIndexRaw {
     return if !$DBObject->Prepare(
         SQL => '
             SELECT filename, content_type, content_size, content_id, content_alternative,
-                disposition
+                disposition, content
             FROM article_data_mime_attachment
             WHERE article_id = ?
             ORDER BY filename, id',
@@ -381,6 +381,7 @@ sub ArticleAttachmentIndexRaw {
             ContentID          => $Row[3] || '',
             ContentAlternative => $Row[4] || '',
             Disposition        => $Disposition,
+            Content            => $Row[6],
         };
     }
 

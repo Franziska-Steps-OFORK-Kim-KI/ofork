@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de/
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you

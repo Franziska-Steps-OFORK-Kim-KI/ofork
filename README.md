@@ -13,7 +13,7 @@ accompanying [COPYING](COPYING) file for more details.
 
 Documentation
 =============
-You can find documentation [online](https://o-fork.de/Anleitungen.html).
+You can find documentation [online](https://o-fork.de).
 
 Software requirements
 =====================

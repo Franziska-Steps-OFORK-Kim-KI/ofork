@@ -1,6 +1,6 @@
 # --
 # Kernel/Modules/AgentProcessTicket.pm - to handle process tickets
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de
 # --
 # $Id: AgentProcessTicket.pm,v 1.74 2016/12/13 14:38:03 ud Exp $
 # --

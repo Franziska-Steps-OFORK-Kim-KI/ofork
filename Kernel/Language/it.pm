@@ -1,7 +1,7 @@
 # --
 # Kernel/Language/it.pm
 # Modified version of the work:
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de
 # Copyright (C) 2003,2008 Remo Catelotti <Remo.Catelotti at eutelia.it>
 # Copyright (C) 2003 Gabriele Santilli <gsantilli at omnibus.net>
 # Copyright (C) 2005,2009 Giordano Bianchi <giordano.bianchi at gmail.com>

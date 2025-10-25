@@ -1,6 +1,6 @@
 # --
 # Kernel/System/Contract.pm - all service function
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de
 # --
 # $Id: Contract.pm,v 1.22 2016/11/20 19:31:10 ud Exp $
 # --

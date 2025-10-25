@@ -1,6 +1,6 @@
 # --
 # Kernel/Modules/CustomerBookRoom.pm
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de
 # --
 # $Id: CustomerBookRoom.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $
 # --
@@ -626,7 +626,7 @@ sub Run {
         if ( $CheckToStartWeekDay == 6 ) {
              $CheckToStartWeekDayName = 'Sat';
         }
-        if ( $CheckToStartWeekDay == 7 ) {
+        if ( $CheckToStartWeekDay == 0 ) {
              $CheckToStartWeekDayName = 'Sun';
         }
 
@@ -649,7 +649,7 @@ sub Run {
         if ( $CheckToEndWeekDay == 6 ) {
              $CheckToEndWeekDayName = 'Sat';
         }
-        if ( $CheckToEndWeekDay == 7 ) {
+        if ( $CheckToEndWeekDay == 0 ) {
              $CheckToEndWeekDayName = 'Sun';
         }
 
@@ -1223,7 +1223,7 @@ sub Run {
         if ( $CheckToStartWeekDay == 6 ) {
              $CheckToStartWeekDayName = 'Sat';
         }
-        if ( $CheckToStartWeekDay == 7 ) {
+        if ( $CheckToStartWeekDay == 0 ) {
              $CheckToStartWeekDayName = 'Sun';
         }
 
@@ -1246,7 +1246,7 @@ sub Run {
         if ( $CheckToEndWeekDay == 6 ) {
              $CheckToEndWeekDayName = 'Sat';
         }
-        if ( $CheckToEndWeekDay == 7 ) {
+        if ( $CheckToEndWeekDay == 0 ) {
              $CheckToEndWeekDayName = 'Sun';
         }
 

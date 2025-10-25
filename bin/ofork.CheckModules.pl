@@ -2,7 +2,7 @@
 # --
 # bin/ofork.CheckModules.pl
 # Modified version of the work:
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de
 # based on the original work of:
 # Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
 # --
@@ -91,6 +91,7 @@ our %DistToInstType = (
     # apt-get
     debian => 'aptget',
     ubuntu => 'aptget',
+    linuxmint => 'aptget',
 
     # emerge
     # for reasons unknown, some environments return "gentoo" (incl. the quotes)
@@ -267,6 +268,27 @@ my @NeededModules = (
             emerge => 'dev-perl/DBD-mysql',
             zypper => 'perl-DBD-mysql',
             ports  => 'databases/p5-DBD-mysql',
+        },
+    },
+    {
+        Module    => 'Moo',
+        Required  => 1,
+        Comment   => 'Required for random number generator.',
+        InstTypes => {
+            aptget => 'libmoo-perl',
+            emerge => 'dev-perl/Moo',
+            zypper => 'perl-Moo',
+            ports  => 'devel/p5-Moo',
+        },
+    },
+    {
+        Module    => 'Try::Tiny',
+        Required  => 1,
+        InstTypes => {
+            aptget => 'libtry-tiny-perl',
+            emerge => 'dev-perl/Try-Tiny',
+            zypper => 'perl-Try-Tiny',
+            ports  => 'devel/p5-Try-Tiny',
         },
     },
     {

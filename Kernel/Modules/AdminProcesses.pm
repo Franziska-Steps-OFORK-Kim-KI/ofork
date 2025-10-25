@@ -1,6 +1,6 @@
 # --
 # Kernel/Modules/AdminProcesses.pm
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de
 # --
 # $Id: AdminProcesses.pm,v 1.1.1.1 2020/03/26 09:40:35 ud Exp $
 # --

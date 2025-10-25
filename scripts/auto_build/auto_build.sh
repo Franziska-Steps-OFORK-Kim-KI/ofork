@@ -2,7 +2,7 @@
 # --
 # auto_build.sh - build automatically OFORK tar, rpm and src-rpm
 # Modified version of the work:
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de
 # based on the original work of:
 # Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
 # --
@@ -23,7 +23,7 @@
 # --
 
 echo "auto_build.sh - build OFORK release files"
-echo "Copyright (C) 2010-2024 OFORK, https://o-fork.de/";
+echo "Copyright (C) 2010-2025 OFORK, https://o-fork.de/";
 
 PATH_TO_CVS_SRC=$1
 PRODUCT=OFORK

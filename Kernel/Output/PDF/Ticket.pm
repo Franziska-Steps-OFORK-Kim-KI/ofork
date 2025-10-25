@@ -1,7 +1,7 @@
 # --
 # Kernel/Output/PDF/Ticket.pm
 # Modified version of the work:
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de
 # based on the original work of:
 # Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
 # --
@@ -91,25 +91,42 @@ sub GeneratePDF {
         @MetaArticles = grep { $_->{ArticleID} == $Param{ArticleID} } @MetaArticles;
     }
 
+    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+    my $ShowImagePrint = $ConfigObject->Get('PDF::ImagePrint');
+
     # Get article content.
     my @ArticleBox;
+    my %Attachments = ();
     for my $MetaArticle (@MetaArticles) {
         my $ArticleBackendObject = $ArticleObject->BackendForArticle( %{$MetaArticle} );
         my %Article              = $ArticleBackendObject->ArticleGet(
             %{$MetaArticle},
             DynamicFields => 0,
         );
-        my %Attachments = $ArticleBackendObject->ArticleAttachmentIndex(
-            %{$MetaArticle},
-            ExcludePlainText => 1,
-            ExcludeHTMLBody  => 1,
-            ExcludeInline    => 1,
-        );
+
+        if ( $ShowImagePrint && $ShowImagePrint >= 1 ) {
+
+            %Attachments = $ArticleBackendObject->ArticleAttachmentIndex(
+                %{$MetaArticle},
+                ExcludePlainText => 1,
+                ExcludeHTMLBody  => 1,
+                ExcludeInline    => 0,
+            );
+        }
+        else {
+
+            %Attachments = $ArticleBackendObject->ArticleAttachmentIndex(
+                %{$MetaArticle},
+                ExcludePlainText => 1,
+                ExcludeHTMLBody  => 1,
+                ExcludeInline    => 1,
+            );
+        }
+
         $Article{Atms} = \%Attachments;
         push @ArticleBox, \%Article;
     }
 
-    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
     my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
     my $LinkObject   = $Kernel::OM->Get('Kernel::System::LinkObject');
 
@@ -1017,10 +1034,27 @@ sub _PDFOutputArticles {
             %AtmIndex = %{ $Article{Atms} };
         }
         my $Attachments;
+        my @SetFileName    = '';
+        my $ChangeFileName = '';
         for my $FileID ( sort keys %AtmIndex ) {
             my %File = %{ $AtmIndex{$FileID} };
             my $Filesize = $LayoutObject->HumanReadableDataSize( Size => $File{FilesizeRaw} );
             $Attachments .= $File{Filename} . ' (' . $Filesize . ")\n";
+
+            $ChangeFileName = $File{Filename};
+
+            my @FilenameSplit = split( /\./, $ChangeFileName );
+            if ( $FilenameSplit[1] eq "jpeg" ) {
+                $ChangeFileName = $FilenameSplit[0] . '.jpg';
+        }
+
+            my $MainObject   = $Kernel::OM->Get('Kernel::System::Main');
+            my $FileLocation = $MainObject->FileWrite(
+                Location => $ConfigObject->Get('Home') . '/var/tmp/' . $ChangeFileName,
+                Content  => \$File{Content},
+            );
+
+            push @SetFileName, $ChangeFileName;
         }
 
         # Show total accounted time if feature is active.
@@ -1221,6 +1255,42 @@ sub _PDFOutputArticles {
                     FooterRight => $Page{PageText} . ' ' . $Page{PageCount},
                 );
                 $Page{PageCount}++;
+            }
+        }
+
+        my $ShowImagePrint = $ConfigObject->Get('PDF::ImagePrint');
+        if ( $ShowImagePrint && $ShowImagePrint >= 1 ) {
+
+            my $Y = -4;
+            use Image::Size;
+            for my $FileNameSet (@SetFileName) {
+
+                if ( $FileNameSet && $FileNameSet ne '' ) {
+
+                    my $GetFileLocation = $ConfigObject->Get('Home') . '/var/tmp/' . $FileNameSet;
+
+                    # set new position
+                    $PDFObject->PositionSet(
+                        Move => 'relativ',
+                        Y    => -4,
+                    );
+
+                    $Y = -4;
+
+                    my ( $Width, $Height ) = imgsize("$GetFileLocation");
+                    my $K = 1;
+
+                    my $Ret = $PDFObject->Image(
+                        File     => $GetFileLocation,
+                        Width    => $Width * $K,
+                        Height   => $Height * $K,
+                        PageData => \%Page,
+                    );
+
+                    if ( $Ret > 1 ) {
+                        $Page{PageCount} += $Ret - 1;
+                    }
+                }
             }
         }
 

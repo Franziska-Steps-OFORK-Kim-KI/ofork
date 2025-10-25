@@ -1,6 +1,6 @@
 # --
 # Kernel/Modules/CustomerRequest.pm - to handle customer messages
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de
 # --
 # $Id: CustomerRequest.pm,v 1.21 2016/11/20 19:35:56 ud Exp $
 # --

@@ -1,6 +1,6 @@
 # --
 # Kernel/Modules/AdminRequestFieldsContent.pm
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de
 # --
 # $Id: AdminRequestFieldsContent.pm,v 1.4 2016/09/20 12:33:58 ud Exp $
 # --

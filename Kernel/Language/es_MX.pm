@@ -1,7 +1,7 @@
 # --
 # Kernel/Language/es_MX.pm
 # Modified version of the work:
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de
 # Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
 # --
 # $Id: es_MX.pm,v 1.1.1.1 2018/07/16 14:49:06 ud Exp $

@@ -1,7 +1,7 @@
 # --
 # Kernel/Modules/AgentTicketPrint.pm
 # Modified version of the work:
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de
 # based on the original work of:
 # Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
 # --
@@ -108,6 +108,79 @@ sub Run {
         ArticleNumber => $ParamObject->GetParam( Param => 'ArticleNumber' ),
         Interface     => 'Agent',
     );
+
+    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+    my $ShowImagePrint = $ConfigObject->Get('PDF::ImagePrint');
+
+    if ( $ShowImagePrint && $ShowImagePrint >= 1 ) {
+
+        # Get appropriate interface flag.
+        my %Interface;
+        $Interface{Agent} = 1;
+
+        # Get article list.
+        my $ArticleObject = $Kernel::OM->Get('Kernel::System::Ticket::Article');
+        my @MetaArticles  = $ArticleObject->ArticleList(
+            TicketID => $Ticket{TicketID},
+            UserID   => $Self->{UserID},
+            %{ $Interface{IsVisibleForCustomer} },
+        );
+
+        # Check if only one article should be printed in agent interface.
+        if ( $ParamObject->GetParam( Param => 'ArticleID' ) ) {
+            @MetaArticles = grep { $_->{ArticleID} == $ParamObject->GetParam( Param => 'ArticleID' ) }
+                @MetaArticles;
+        }
+
+        # Get article content.
+        my @ArticleBox;
+        for my $MetaArticle (@MetaArticles) {
+            my $ArticleBackendObject = $ArticleObject->BackendForArticle( %{$MetaArticle} );
+            my %Article              = $ArticleBackendObject->ArticleGet(
+                %{$MetaArticle},
+                DynamicFields => 0,
+            );
+            my %Attachments = $ArticleBackendObject->ArticleAttachmentIndex(
+                %{$MetaArticle},
+                ExcludePlainText => 1,
+                ExcludeHTMLBody  => 1,
+                ExcludeInline    => 0,
+            );
+            $Article{Atms} = \%Attachments;
+            push @ArticleBox, \%Article;
+        }
+
+        my $MainObject   = $Kernel::OM->Get('Kernel::System::Main');
+
+        my @ArticleData = @ArticleBox;
+        for my $ArticleTmp (@ArticleData) {
+
+            my %Article = %{$ArticleTmp};
+
+            # Get attachment string.
+            my %AtmIndex = ();
+            if ( $Article{Atms} ) {
+                %AtmIndex = %{ $Article{Atms} };
+            }
+            for my $FileID ( sort keys %AtmIndex ) {
+                my %File = %{ $AtmIndex{$FileID} };
+
+                my @FilenameSplit = split( /\./, $File{Filename} );
+                if ( $FilenameSplit[1] eq "jpeg" ) {
+                    $File{Filename} = $FilenameSplit[0] . '.jpg';
+                }
+
+                if ( $File{Filename} && $File{Filename} ne '' ) {
+
+                    my $GetFileLocation = $ConfigObject->Get('Home') . '/var/tmp/' . $File{Filename};
+
+                    my $Success = $MainObject->FileDelete(
+                        Location => $GetFileLocation,
+                    );
+                }
+            }
+        }
+    }
 
     return $LayoutObject->Attachment(
         Filename    => $Filename,

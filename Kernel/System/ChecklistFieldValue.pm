@@ -1,6 +1,6 @@
 # --
 # Kernel/System/ChecklistFieldValue.pm - all service function
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de
 # --
 # $Id: ChecklistFieldValue.pm,v 1.5 2016/11/20 19:30:55 ud Exp $
 # --

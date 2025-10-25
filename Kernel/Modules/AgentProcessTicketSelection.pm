@@ -1,6 +1,6 @@
 # --
 # Kernel/Modules/AgentProcessTicketSelection.pm - to handle process ticket selection
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de
 # --
 # $Id: AgentProcessTicketSelection.pm,v 1.21 2016/11/20 19:35:56 ud Exp $
 # --

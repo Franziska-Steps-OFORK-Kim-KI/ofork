@@ -1,7 +1,7 @@
 # --
 # Kernel/Config/Defaults.pm
 # Modified version of the work:
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de
 # based on the original work of:
 # Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
 # --
@@ -109,7 +109,7 @@ sub LoadDefaults {
 
     # ProductName
     # (Application name displayed in frontend.)
-    $Self->{ProductName} = 'OFORK 11';
+    $Self->{ProductName} = 'OFORK 12';
 
     # --------------------------------------------------- #
     # database settings                                   #

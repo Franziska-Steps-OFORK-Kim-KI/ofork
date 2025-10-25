@@ -1,6 +1,6 @@
 # --
 # Kernel/Modules/AdminGetProcessSteps.pm - to handle customer messages
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de
 # --
 # $Id: AdminGetProcessSteps.pm,v 1.21 2016/12/13 14:37:23 ud Exp $
 # --

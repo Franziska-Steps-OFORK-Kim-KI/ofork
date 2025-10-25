@@ -1,6 +1,6 @@
 # --
 # Kernel/System/TimeTrackingArticle.pm - the time tracking lib
-# Copyright (C) 2010-2024 OFORK, https://o-fork.de/
+# Copyright (C) 2010-2025 OFORK, https://o-fork.de/
 # --
 # $Id: TimeTrackingArticle.pm,v 1.3 2019/08/21 10:06:06 ud Exp $
 # --
