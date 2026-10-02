@@ -42,6 +42,42 @@ sub Run {
     my $CheckItemObject = Kernel::System::CheckItem->new( %{$Self} );
 
     # ------------------------------------------------------------ #
+    # check the mailbox of a system address for Exchange Online OAuth2 (AJAX)
+    # ------------------------------------------------------------ #
+    if ( $Self->{Subaction} eq 'OAuth2Check' ) {
+
+        $LayoutObject->ChallengeTokenCheck();
+
+        my $ID   = $ParamObject->GetParam( Param => 'ID' ) || '';
+        my %Data = $ID ? $SystemAddressObject->SystemAddressGet( ID => $ID ) : ();
+
+        my %Result = %Data
+            ? $Kernel::OM->Get('Kernel::System::OAuth2::MicrosoftMailboxCheck')->MailboxCheck( Address => $Data{Name} )
+            : ( Successful => 0, Checks => [ { Name => 'Address', Successful => 0, Message => 'System address not found.' } ] );
+
+        my $LanguageObject = $LayoutObject->{LanguageObject};
+        my @Checks         = map {
+            {
+                Name       => $_->{Name},
+                Successful => $_->{Successful} ? 1 : 0,
+                Message    => $LanguageObject->Translate( $_->{Message}, @{ $_->{MessageData} || [] } ),
+            }
+        } @{ $Result{Checks} || [] };
+
+        return $LayoutObject->Attachment(
+            ContentType => 'application/json; charset=' . $LayoutObject->{Charset},
+            Content     => $LayoutObject->JSONEncode(
+                Data => {
+                    Successful => $Result{Successful} ? 1 : 0,
+                    Checks     => \@Checks,
+                },
+            ),
+            Type    => 'inline',
+            NoCache => 1,
+        );
+    }
+
+    # ------------------------------------------------------------ #
     # change
     # ------------------------------------------------------------ #
     if ( $Self->{Subaction} eq 'Change' ) {
@@ -285,7 +321,10 @@ sub _Edit {
 
     $LayoutObject->Block(
         Name => 'Overview',
-        Data => \%Param,
+        Data => {
+            %Param,
+            OAuth2Active => $Self->_OAuth2Active(),
+        },
     );
 
     $LayoutObject->Block( Name => 'ActionList' );
@@ -353,9 +392,14 @@ sub _Overview {
     my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
     my $Output       = '';
 
+    my $OAuth2Active = $Self->_OAuth2Active();
+
     $LayoutObject->Block(
         Name => 'Overview',
-        Data => \%Param,
+        Data => {
+            %Param,
+            OAuth2Active => $OAuth2Active,
+        },
     );
 
     $LayoutObject->Block( Name => 'ActionList' );
@@ -364,8 +408,14 @@ sub _Overview {
 
     $LayoutObject->Block(
         Name => 'OverviewResult',
-        Data => \%Param,
+        Data => {
+            %Param,
+            ColSpan => $OAuth2Active ? 7 : 6,
+        },
     );
+    if ($OAuth2Active) {
+        $LayoutObject->Block( Name => 'OverviewResultOAuth2Header' );
+    }
 
     my $SystemAddressObject = $Kernel::OM->Get('Kernel::System::SystemAddress');
     my %List                = $SystemAddressObject->SystemAddressList(
@@ -389,8 +439,22 @@ sub _Overview {
                 %Data,
             },
         );
+        if ($OAuth2Active) {
+            $LayoutObject->Block(
+                Name => 'OverviewResultRowOAuth2',
+                Data => \%Data,
+            );
+        }
     }
     return 1;
+}
+
+sub _OAuth2Active {
+    my ( $Self, %Param ) = @_;
+
+    my $SendmailModule = $Kernel::OM->Get('Kernel::Config')->Get('SendmailModule') // '';
+
+    return $SendmailModule eq 'Kernel::System::Email::SMTPTLSOAuth2' ? 1 : 0;
 }
 
 1;

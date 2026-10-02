@@ -82,6 +82,11 @@
                 <p class="FieldExplanation">
                     [% Translate("Outgoing email can be configured via the Sendmail* settings in %s.",
                     '<a href="?Action=AdminSystemConfigurationGroup;RootNavigation=Core::Email">' _ Translate("System Configuration") _ '</a>') %]
+                </p>
+                <p class="FieldExplanation">
+                    [% Translate("Exchange Online with OAuth2: choose the type IMAPSOAuth2 or POP3SOAuth2 and set the Entra app in %s. For sending, set SendmailModule to SMTPTLSOAuth2.",
+                    '<a href="?Action=AdminSystemConfigurationGroup;RootNavigation=Core::Email::OAuth2">' _ Translate("System Configuration") _ '</a>') %]
+                </p>
             </div>
         </div>
     </div>
@@ -181,6 +186,7 @@
                         </div>
                         <div class="Clear"></div>
 
+                        <div class="Row Row_Password">
                         <label class="Mandatory" for="PasswordAdd"><span class="Marker">*</span> [% Translate("Password") | html %]:</label>
                         <div class="Field">
                             <input type="password" class="W50pc Validate_Required [% Data.PasswordAddInvalid | html %]" name="Password" id="PasswordAdd" value="" maxlength="200" autocomplete="off" />
@@ -192,6 +198,18 @@
                             </div>
                         </div>
                         <div class="Clear"></div>
+                        </div>
+
+                        <div class="Row Row_OAuth2 Hidden">
+                        <label>[% Translate("Authentication") | html %]:</label>
+                        <div class="Field">
+                            <p class="FieldExplanation">
+                                [% Translate("OAuth2 (Exchange Online): no password is needed. The Entra app from %s is used.", '<a href="' _ Env("Baselink") _ 'Action=AdminSystemConfigurationGroup;RootNavigation=Core::Email::OAuth2">' _ Translate("System Configuration") _ ' &gt; Core::Email::OAuth2</a>') %]
+                                [% Translate("Use the address of the mailbox as login and outlook.office365.com as host. The mailbox needs FullAccess for the Exchange service principal of the app (Add-MailboxPermission).") | html %]
+                            </p>
+                        </div>
+                        <div class="Clear"></div>
+                        </div>
 
                         <label class="Mandatory" for="HostAdd"><span class="Marker">*</span> [% Translate("Host") | html %]:</label>
                         <div class="Field">
@@ -301,6 +319,7 @@
                         </div>
                         <div class="Clear"></div>
 
+                        <div class="Row Row_Password">
                         <label class="Mandatory" for="PasswordEdit"><span class="Marker">*</span> [% Translate("Password") | html %]:</label>
                         <div class="Field">
                             <input type="password" class="W50pc Validate_Required [% Data.PasswordEditInvalid | html %]" name="Password" id="PasswordEdit" value="[% IF Data.Password %]ofork-dummy-password-placeholder[% END %]" maxlength="200" autocomplete="off" />
@@ -312,6 +331,18 @@
                             </div>
                         </div>
                         <div class="Clear"></div>
+                        </div>
+
+                        <div class="Row Row_OAuth2 Hidden">
+                        <label>[% Translate("Authentication") | html %]:</label>
+                        <div class="Field">
+                            <p class="FieldExplanation">
+                                [% Translate("OAuth2 (Exchange Online): no password is needed. The Entra app from %s is used.", '<a href="' _ Env("Baselink") _ 'Action=AdminSystemConfigurationGroup;RootNavigation=Core::Email::OAuth2">' _ Translate("System Configuration") _ ' &gt; Core::Email::OAuth2</a>') %]
+                                [% Translate("Use the address of the mailbox as login and outlook.office365.com as host. The mailbox needs FullAccess for the Exchange service principal of the app (Add-MailboxPermission).") | html %]
+                            </p>
+                        </div>
+                        <div class="Clear"></div>
+                        </div>
 
                         <label class="Mandatory" for="HostEdit"><span class="Marker">*</span> [% Translate("Host") | html %]:</label>
                         <div class="Field">

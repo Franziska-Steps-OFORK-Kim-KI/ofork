@@ -167,35 +167,20 @@ sub Check {
         SMTP => $SMTP,
     );
 
-    # use smtp auth if configured
-    if ( $Self->{User} && $Self->{Password} ) {
+    my %AuthResult = $Self->_Authenticate(
+        SMTP                   => $SMTP,
+        CommunicationLogObject => $CommunicationLogObject,
+        From                   => $Param{From},
+        RequireFrom            => $Param{RequireFrom},
+    );
+    if ( !$AuthResult{Success} ) {
 
-        $CommunicationLogObject->ObjectLog(
-            ObjectLogType => 'Connection',
-            Priority      => 'Debug',
-            Key           => 'Kernel::System::Email::SMTP',
-            Value         => "Using SMTP authentication with user '$Self->{User}' and (hidden) password.",
+        $SMTP->( 'quit', );
+
+        return $ReturnError->(
+            ErrorMessage => $AuthResult{ErrorMessage},
+            Code         => $AuthResult{Code},
         );
-
-        if ( !$SMTP->( 'auth', $Self->{User}, $Self->{Password} ) ) {
-
-            my $Code  = $SMTP->( 'code', );
-            my $Error = $Code . ', ' . $SMTP->( 'message', );
-
-            $SMTP->( 'quit', );
-
-            $CommunicationLogObject->ObjectLog(
-                ObjectLogType => 'Connection',
-                Priority      => 'Error',
-                Key           => 'Kernel::System::Email::SMTP',
-                Value         => "SMTP authentication failed (SMTP code: $Code, ErrorMessage: $Error).",
-            );
-
-            return $ReturnError->(
-                ErrorMessage => "SMTP authentication failed: $Error!",
-                Code         => $Code,
-            );
-        }
     }
 
     return $ReturnSuccess->(
@@ -235,7 +220,10 @@ sub Send {
     }
 
     # connect to smtp server
-    my %Result = $Self->Check(%Param);
+    my %Result = $Self->Check(
+        %Param,
+        RequireFrom => 1,
+    );
 
     if ( !$Result{Success} ) {
         return $Self->_SendError( %Param, %Result, );
@@ -395,6 +383,44 @@ sub Send {
     );
 }
 
+sub _Authenticate {
+    my ( $Self, %Param ) = @_;
+
+    my $SMTP                   = $Param{SMTP};
+    my $CommunicationLogObject = $Param{CommunicationLogObject};
+
+    # use smtp auth if configured
+    return ( Success => 1 ) if !$Self->{User} || !$Self->{Password};
+
+    $CommunicationLogObject->ObjectLog(
+        ObjectLogType => 'Connection',
+        Priority      => 'Debug',
+        Key           => 'Kernel::System::Email::SMTP',
+        Value         => "Using SMTP authentication with user '$Self->{User}' and (hidden) password.",
+    );
+
+    if ( !$SMTP->( 'auth', $Self->{User}, $Self->{Password} ) ) {
+
+        my $Code  = $SMTP->( 'code', );
+        my $Error = $Code . ', ' . $SMTP->( 'message', );
+
+        $CommunicationLogObject->ObjectLog(
+            ObjectLogType => 'Connection',
+            Priority      => 'Error',
+            Key           => 'Kernel::System::Email::SMTP',
+            Value         => "SMTP authentication failed (SMTP code: $Code, ErrorMessage: $Error).",
+        );
+
+        return (
+            Success      => 0,
+            ErrorMessage => "SMTP authentication failed: $Error!",
+            Code         => $Code,
+        );
+    }
+
+    return ( Success => 1 );
+}
+
 sub _Connect {
     my ( $Self, %Param ) = @_;
 
@@ -481,12 +507,18 @@ sub _GetSMTPSafeWrapper {
             return 1;
         } || do {
             my $Error = $@;
+
+            # never log the parameters of authentication related calls (password, XOAUTH2 token)
+            my $LoggedParams = ( $Operation eq 'auth' || $Operation eq 'command' )
+                ? '[hidden]'
+                : join( ',', @LocalParams );
+
             $Kernel::OM->Get('Kernel::System::Log')->Log(
                 Priority => 'error',
                 Message  => sprintf(
                     "Error while executing 'SMTP->%s(%s)': %s",
                     $Operation,
-                    join( ',', @LocalParams ),
+                    $LoggedParams,
                     $Error,
                 ),
             );

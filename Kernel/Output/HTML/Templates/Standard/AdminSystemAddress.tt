@@ -78,6 +78,27 @@
                 </p>
             </div>
         </div>
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2>[% Translate("Exchange Online (OAuth2)") | html %]</h2>
+            </div>
+            <div class="Content">
+[% IF Data.OAuth2Active %]
+                <p class="FieldExplanation">
+                    [% Translate("Outgoing mail is sent with OAuth2 (SendmailModule SMTPTLSOAuth2). Every address here sends as its own Exchange Online mailbox: it must be a mailbox with FullAccess for the Entra app and SMTP AUTH enabled. \"Check mailbox\" in the list verifies this without sending a mail.") | html %]
+                </p>
+[% ELSE %]
+                <p class="FieldExplanation">
+                    [% Translate("To send through Exchange Online with OAuth2, set SendmailModule to SMTPTLSOAuth2. Then every address here sends as its own Exchange Online mailbox.") | html %]
+                </p>
+[% END %]
+                <p class="FieldExplanation">
+                    [% Translate("Settings: %s and %s.",
+                        '<a href="' _ Env("Baselink") _ 'Action=AdminSystemConfigurationGroup;RootNavigation=Core::Email::OAuth2">Core::Email::OAuth2</a>',
+                        '<a href="' _ Env("Baselink") _ 'Action=AdminSystemConfiguration;Subaction=View;Setting=SendmailModule">SendmailModule</a>') %]
+                </p>
+            </div>
+        </div>
     </div>
 
     <div class="ContentColumn">
@@ -97,6 +118,9 @@
                             <th>[% Translate("Validity") | html %]</th>
                             <th>[% Translate("Changed") | html %]</th>
                             <th>[% Translate("Created") | html %]</th>
+[% RenderBlockStart("OverviewResultOAuth2Header") %]
+                            <th>[% Translate("Exchange Online (OAuth2)") | html %]</th>
+[% RenderBlockEnd("OverviewResultOAuth2Header") %]
                         </tr>
                     </thead>
                     <tbody>
@@ -115,10 +139,16 @@
                             <td>[% Translate(Data.Valid) | html %]</td>
                             <td>[% Data.ChangeTime | Localize("TimeShort") %]</td>
                             <td>[% Data.CreateTime | Localize("TimeShort") %]</td>
+[% RenderBlockStart("OverviewResultRowOAuth2") %]
+                            <td class="OAuth2Check">
+                                <button type="button" class="CallForAction OAuth2CheckButton" data-id="[% Data.ID | html %]"><span>[% Translate("Check mailbox") | html %]</span></button>
+                                <div class="OAuth2CheckResult FieldExplanation"></div>
+                            </td>
+[% RenderBlockEnd("OverviewResultRowOAuth2") %]
                         </tr>
 [% RenderBlockEnd("OverviewResultRow") %]
                         <tr class="FilterMessage Hidden">
-                            <td colspan="6">[% Translate("No matches found.") | html %]</td>
+                            <td colspan="[% Data.ColSpan | html %]">[% Translate("No matches found.") | html %]</td>
                         </tr>
                     </tbody>
                 </table>

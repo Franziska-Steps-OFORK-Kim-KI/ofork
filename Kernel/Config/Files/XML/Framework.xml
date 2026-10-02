@@ -615,7 +615,7 @@
         </Value>
     </Setting>
     <Setting Name="SendmailModule" Required="1" Valid="1" ConfigLevel="200">
-        <Description Translatable="1">Defines the module to send emails. "Sendmail" directly uses the sendmail binary of your operating system. Any of the "SMTP" mechanisms use a specified (external) mailserver. "DoNotSendEmail" doesn't send emails and it is useful for test systems.</Description>
+        <Description Translatable="1">Defines the module to send emails. "Sendmail" directly uses the sendmail binary of your operating system. Any of the "SMTP" mechanisms use a specified (external) mailserver. "SMTPTLSOAuth2" sends through Exchange Online with OAuth2 (Modern Authentication): the Entra app is set in "OAuth2::Microsoft::TenantID", "OAuth2::Microsoft::ClientID" and "OAuth2::Microsoft::ClientSecret" (group Core::Email::OAuth2), every mail authenticates as its sender mailbox, and "SendmailModule::AuthUser" and "SendmailModule::AuthPassword" are not used. "DoNotSendEmail" doesn't send emails and it is useful for test systems.</Description>
         <Navigation>Core::Email</Navigation>
         <Value>
             <Item ValueType="PerlModule" ValueFilter="Kernel/System/Email/*.pm">Kernel::System::Email::Sendmail</Item>
@@ -629,31 +629,52 @@
         </Value>
     </Setting>
     <Setting Name="SendmailModule::Host" Required="1" Valid="1" ConfigLevel="200">
-        <Description Translatable="1">If any of the "SMTP" mechanisms was selected as SendmailModule, the mailhost that sends out the mails must be specified.</Description>
+        <Description Translatable="1">If any of the "SMTP" mechanisms was selected as SendmailModule, the mailhost that sends out the mails must be specified. For "SMTPTLSOAuth2" (Exchange Online) use smtp.office365.com.</Description>
         <Navigation>Core::Email</Navigation>
         <Value>
             <Item ValueType="String" ValueRegex="">mail.example.com</Item>
         </Value>
     </Setting>
     <Setting Name="SendmailModule::Port" Required="0" Valid="0" ConfigLevel="200">
-        <Description Translatable="1">If any of the "SMTP" mechanisms was selected as SendmailModule, the port where your mailserver is listening for incoming connections must be specified.</Description>
+        <Description Translatable="1">If any of the "SMTP" mechanisms was selected as SendmailModule, the port where your mailserver is listening for incoming connections must be specified. For "SMTPTLSOAuth2" (Exchange Online) use 587.</Description>
         <Navigation>Core::Email</Navigation>
         <Value>
             <Item ValueType="String" ValueRegex="^[0-9]{1,6}$">25</Item>
         </Value>
     </Setting>
     <Setting Name="SendmailModule::AuthUser" Required="0" Valid="0" ConfigLevel="200">
-        <Description Translatable="1">If any of the "SMTP" mechanisms was selected as SendmailModule, and authentication to the mail server is needed, an username must be specified.</Description>
+        <Description Translatable="1">If any of the "SMTP" mechanisms was selected as SendmailModule, and authentication to the mail server is needed, an username must be specified. Not used by "SMTPTLSOAuth2", which authenticates with the Entra app from "OAuth2::Microsoft::TenantID", "OAuth2::Microsoft::ClientID" and "OAuth2::Microsoft::ClientSecret".</Description>
         <Navigation>Core::Email</Navigation>
         <Value>
             <Item ValueType="String" ValueRegex="">MailserverLogin</Item>
         </Value>
     </Setting>
     <Setting Name="SendmailModule::AuthPassword" Required="0" Valid="0" ConfigLevel="200">
-        <Description Translatable="1">If any of the "SMTP" mechanisms was selected as SendmailModule, and authentication to the mail server is needed, a password must be specified.</Description>
+        <Description Translatable="1">If any of the "SMTP" mechanisms was selected as SendmailModule, and authentication to the mail server is needed, a password must be specified. Not used by "SMTPTLSOAuth2", which authenticates with the Entra app from "OAuth2::Microsoft::TenantID", "OAuth2::Microsoft::ClientID" and "OAuth2::Microsoft::ClientSecret".</Description>
         <Navigation>Core::Email</Navigation>
         <Value>
             <Item ValueType="Password">MailserverPassword</Item>
+        </Value>
+    </Setting>
+    <Setting Name="OAuth2::Microsoft::TenantID" Required="0" Valid="1" ConfigLevel="200">
+        <Description Translatable="1">Tenant ID (or primary domain) of the Microsoft Entra tenant for Exchange Online with OAuth2 (client credentials, Modern Authentication). Used together with "OAuth2::Microsoft::ClientID" and "OAuth2::Microsoft::ClientSecret" by the mail account types "IMAPSOAuth2" and "POP3SOAuth2" (Admin &gt; PostMaster Mail Accounts) and by the sendmail module "SMTPTLSOAuth2" (setting "SendmailModule"). Every mailbox used for fetching or as sender must have FullAccess for the Exchange service principal of the app, see doc/OAuth2-ExchangeOnline.md.</Description>
+        <Navigation>Core::Email::OAuth2</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex=""></Item>
+        </Value>
+    </Setting>
+    <Setting Name="OAuth2::Microsoft::ClientID" Required="0" Valid="1" ConfigLevel="200">
+        <Description Translatable="1">Application (client) ID of the Microsoft Entra app registration for Exchange Online with OAuth2. See "OAuth2::Microsoft::TenantID" for where it is used.</Description>
+        <Navigation>Core::Email::OAuth2</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex=""></Item>
+        </Value>
+    </Setting>
+    <Setting Name="OAuth2::Microsoft::ClientSecret" Required="0" Valid="1" ConfigLevel="200">
+        <Description Translatable="1">Client secret (the value, not the secret ID) of the Microsoft Entra app registration for Exchange Online with OAuth2. See "OAuth2::Microsoft::TenantID" for where it is used.</Description>
+        <Navigation>Core::Email::OAuth2</Navigation>
+        <Value>
+            <Item ValueType="Password"></Item>
         </Value>
     </Setting>
     <Setting Name="SendmailBcc" Required="0" Valid="1" ConfigLevel="200">
@@ -664,14 +685,14 @@
         </Value>
     </Setting>
     <Setting Name="SendmailEnvelopeFrom" Required="0" Valid="0" ConfigLevel="200">
-        <Description Translatable="1">If set, this address is used as envelope sender in outgoing messages (not notifications - see below). If no address is specified, the envelope sender is equal to queue e-mail address.</Description>
+        <Description Translatable="1">If set, this address is used as envelope sender in outgoing messages (not notifications - see below). If no address is specified, the envelope sender is equal to queue e-mail address. Leave it empty with "SMTPTLSOAuth2" (Exchange Online): every mail would then authenticate as this one mailbox, and Exchange Online rejects mails whose sender is another address.</Description>
         <Navigation>Core::Email</Navigation>
         <Value>
             <Item ValueType="String" ValueRegex=""></Item>
         </Value>
     </Setting>
     <Setting Name="SendmailNotificationEnvelopeFrom" Required="0" Valid="0" ConfigLevel="200">
-        <Description Translatable="1">If set, this address is used as envelope sender header in outgoing notifications. If no address is specified, the envelope sender header is empty (unless SendmailNotificationEnvelopeFrom::FallbackToEmailFrom is set).</Description>
+        <Description Translatable="1">If set, this address is used as envelope sender header in outgoing notifications. If no address is specified, the envelope sender header is empty (unless SendmailNotificationEnvelopeFrom::FallbackToEmailFrom is set). With "SMTPTLSOAuth2" (Exchange Online) the address must be a mailbox released for the Entra app; if it is empty, the From address of the notification is used to authenticate.</Description>
         <Navigation>Core::Email</Navigation>
         <Value>
             <Item ValueType="String" ValueRegex=""></Item>
@@ -3010,7 +3031,7 @@
         </Value>
     </Setting>
     <Setting Name="NotificationSenderEmail" Required="1" Valid="1">
-        <Description Translatable="1">Specifies the email address that should be used by the application when sending notifications. The email address is used to build the complete display name for the notification master (i.e. "OFORK Notifications" ofork@your.example.com). You can use the OFORK_CONFIG_FQDN variable as set in your configuation, or choose another email address.</Description>
+        <Description Translatable="1">Specifies the email address that should be used by the application when sending notifications. The email address is used to build the complete display name for the notification master (i.e. "OFORK Notifications" ofork@your.example.com). You can use the OFORK_CONFIG_FQDN variable as set in your configuation, or choose another email address. With "SMTPTLSOAuth2" (Exchange Online) this address must be a mailbox the Entra app has FullAccess to.</Description>
         <Navigation>Core::Email</Navigation>
         <Value>
             <Item ValueType="String" ValueRegex="">ofork@&lt;OFORK_CONFIG_FQDN&gt;</Item>

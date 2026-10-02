@@ -140,8 +140,9 @@ sub Run {
 
         my %Errors;
 
-        # check needed data
-        for my $Needed (qw(Login Password Host)) {
+        # check needed data, OAuth2 backends don't use a password
+        my @Needed = ( $GetParam{TypeAdd} // '' ) =~ m{ OAuth2 \z }xms ? qw(Login Host) : qw(Login Password Host);
+        for my $Needed (@Needed) {
             if ( !$GetParam{$Needed} ) {
                 $Errors{ $Needed . 'AddInvalid' } = 'ServerError';
             }
@@ -221,8 +222,9 @@ sub Run {
 
         my %Errors;
 
-        # check needed data
-        for my $Needed (qw(Login Password Host)) {
+        # check needed data, OAuth2 backends don't use a password
+        my @Needed = ( $GetParam{Type} // '' ) =~ m{ OAuth2 \z }xms ? qw(Login Host) : qw(Login Password Host);
+        for my $Needed (@Needed) {
             if ( !$GetParam{$Needed} ) {
                 $Errors{ $Needed . 'EditInvalid' } = 'ServerError';
             }
@@ -236,13 +238,25 @@ sub Run {
             $Errors{TrustedInvalid} = 'ServerError' if ( $GetParam{Trusted} != 0 );
         }
 
+        # replace the dummy password placeholder with the stored password
+        if ( !%Errors && ( $GetParam{Password} // '' ) eq 'ofork-dummy-password-placeholder' ) {
+            my %OriginalData = $MailAccount->MailAccountGet(%GetParam);
+            $GetParam{Password} = $OriginalData{Password};
+
+            # the stored placeholder of an OAuth2 account is not a real password,
+            # so it must not be kept when the account is switched to another type
+            if (
+                ( $GetParam{Password} // '' ) eq 'oauth2-not-used'
+                && $GetParam{Type} !~ m{ OAuth2 \z }xms
+                )
+            {
+                $GetParam{Password} = '';
+                $Errors{PasswordEditInvalid} = 'ServerError';
+            }
+        }
+
         # if no errors occurred
         if ( !%Errors ) {
-
-            if ( $GetParam{Password} eq 'ofork-dummy-password-placeholder' ) {
-                my %OriginalData = $MailAccount->MailAccountGet(%GetParam);
-                $GetParam{Password} = $OriginalData{Password};
-            }
 
             # update mail account
             my $Update = $MailAccount->MailAccountUpdate(

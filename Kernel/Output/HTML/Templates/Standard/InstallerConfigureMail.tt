@@ -61,6 +61,7 @@
                     </div>
                     <div class="Clear"></div>
 
+                    <div class="Row_SMTPAuth">
                     <label for="SMTPAuth">[% Translate("SMTP authentication") | html %]:</label>
                     <div class="Field">
                         <input type="checkbox" id="SMTPAuth" name="SMTPAuth">
@@ -69,6 +70,7 @@
                         </p>
                     </div>
                     <div class="Clear"></div>
+                    </div>
                 </fieldset>
 
                 <fieldset class="TableLike Hidden InstallerConfigureEmailOFORK" id="InfoSMTPAuth">
@@ -86,6 +88,45 @@
                         <input type="password" id="SMTPAuthPassword" name="SMTPAuthPassword" value="[% Data.SMTPAuthPassword | html %]" disabled="disabled" class="W33pc" autocomplete="off">
                         <p class="FieldExplanation">
                             [% Translate("Password for SMTP auth.") | html %]
+                        </p>
+                    </div>
+                    <div class="Clear"></div>
+                </fieldset>
+
+                <fieldset class="TableLike Hidden InstallerConfigureEmailOFORK" id="InfoOAuth2">
+                    <h4>
+                        [% Translate("Exchange Online (OAuth2)") | html %]
+                    </h4>
+                    <div class="Clear"></div>
+
+                    <p class="FieldExplanation">
+                        [% Translate("Used by the outbound mail type \"Exchange Online (OAuth2)\" and the inbound mail types IMAPSOAuth2 and POP3SOAuth2. Stored in the system configuration (group Core::Email::OAuth2). The Entra app needs the application permissions IMAP.AccessAsApp, POP.AccessAsApp (only for POP3) and SMTP.SendAsApp, and every mailbox needs FullAccess for its Exchange service principal.") | html %]
+                    </p>
+                    <div class="Clear"></div>
+
+                    <label for="OAuth2TenantID">[% Translate("Tenant ID") | html %]:</label>
+                    <div class="Field">
+                        <input type="text" id="OAuth2TenantID" name="OAuth2TenantID" value="" class="W33pc" autocomplete="off">
+                        <p class="FieldExplanation">
+                            [% Translate("Directory (tenant) ID of the Microsoft Entra tenant.") | html %]
+                        </p>
+                    </div>
+                    <div class="Clear"></div>
+
+                    <label for="OAuth2ClientID">[% Translate("Client ID") | html %]:</label>
+                    <div class="Field">
+                        <input type="text" id="OAuth2ClientID" name="OAuth2ClientID" value="" class="W33pc" autocomplete="off">
+                        <p class="FieldExplanation">
+                            [% Translate("Application (client) ID of the Entra app registration.") | html %]
+                        </p>
+                    </div>
+                    <div class="Clear"></div>
+
+                    <label for="OAuth2ClientSecret">[% Translate("Client secret") | html %]:</label>
+                    <div class="Field">
+                        <input type="password" id="OAuth2ClientSecret" name="OAuth2ClientSecret" value="" class="W33pc" autocomplete="off">
+                        <p class="FieldExplanation">
+                            [% Translate("Value of the client secret of the Entra app registration.") | html %]
                         </p>
                     </div>
                     <div class="Clear"></div>
@@ -124,6 +165,7 @@
                     </div>
                     <div class="Clear"></div>
 
+                    <div class="Row_InboundPassword">
                     <label for="InboundPassword">[% Translate("Inbound mail password") | html %]:</label>
                     <div class="Field">
                         <input type="password" id="InboundPassword" name="InboundPassword" value="[% Data.InboundPassword | html %]" class="W33pc" autocomplete="off">
@@ -132,6 +174,7 @@
                         </p>
                     </div>
                     <div class="Clear"></div>
+                    </div>
                 </fieldset>
 
                 <fieldset class="TableLike Hidden ErrorMsg InstallerConfigureEmailOFORK">

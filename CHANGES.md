@@ -1,3 +1,7 @@
+#12.0.4 (unreleased)
+ - Neu: OAuth2 (Client Credentials) für Exchange Online: Mailabruf (IMAPSOAuth2) und Versand (SMTPTLSOAuth2)
+ - Neu: OAuth2 auch für POP3 (POP3SOAuth2) und im Web-Installer; Hinweise und Querverweise in Systemkonfiguration und Mailkonto-Maske
+
 #12.0.3 2026-06-24
  - Bugfixing
 

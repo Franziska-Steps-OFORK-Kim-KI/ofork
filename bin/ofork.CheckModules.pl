@@ -407,8 +407,8 @@ my @NeededModules = (
     },
     {
         Module    => 'Mail::IMAPClient',
-        VersionRequired => '3.22',
-        Comment   => 'Required for IMAP TLS connections.',
+        VersionRequired => '3.33',
+        Comment   => 'Required for IMAP TLS connections and OAuth2 (IMAPSOAuth2).',
         Required  => 0,
         InstTypes => {
             aptget => 'libmail-imapclient-perl',

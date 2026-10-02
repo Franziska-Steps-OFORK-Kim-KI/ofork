@@ -80,12 +80,33 @@ Core.Agent.Admin = Core.Agent.Admin || {};
     TargetNS.Init = function () {
 
         // Show IMAP Folder selection only for IMAP backends
+        // and hide the password for OAuth2 backends
         $('select#TypeAdd, select#Type').on('change', function(){
             if (/IMAP/.test($(this).val())) {
                 $('.Row_IMAPFolder').show();
             }
             else {
                 $('.Row_IMAPFolder').hide();
+            }
+
+            var IsOAuth2  = /OAuth2$/.test($(this).val()),
+                WasOAuth2 = $(this).data('was-oauth2');
+
+            $(this).data('was-oauth2', IsOAuth2);
+
+            if (IsOAuth2) {
+                $('.Row_Password').hide();
+                $('.Row_OAuth2').show();
+                $('.Row_Password input').removeClass('Validate_Required');
+            }
+            else {
+                // switching from OAuth2 to a password type: the password is empty and must be entered
+                if (WasOAuth2) {
+                    $('.Row_Password input').val('');
+                }
+                $('.Row_OAuth2').hide();
+                $('.Row_Password').show();
+                $('.Row_Password input').addClass('Validate_Required');
             }
         }).trigger('change');
 

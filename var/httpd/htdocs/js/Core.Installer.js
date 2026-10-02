@@ -76,9 +76,53 @@ Core.Installer = (function (TargetNS) {
             $('#InfoSMTP, #InfoSMTPAuth').hide().find('input[name=SMTPAuth]').prop('checked', false);
         }
 
+        // Exchange Online with OAuth2 authenticates with the Entra app, not with SMTP auth
+        if (value === "smtptlsoauth2") {
+            $('#SMTPAuth').prop('checked', false);
+            TargetNS.CheckSMTPAuth($('#SMTPAuth'));
+            $('.Row_SMTPAuth').hide();
+            if (!$('#SMTPHost').val()) {
+                $('#SMTPHost').val('smtp.office365.com');
+            }
+        }
+        else {
+            $('.Row_SMTPAuth').show();
+        }
+        TargetNS.ToggleOAuth2();
+
         // Change default port
         $('#OutboundMailDefaultPorts').val($('#OutboundMailType').val());
         $('#SMTPPort').val($('#OutboundMailDefaultPorts :selected').text());
+    };
+
+    /**
+     * @name ToggleOAuth2
+     * @memberof Core.Installer
+     * @function
+     * @description
+     *      Shows the Exchange Online OAuth2 fields if the outbound or the inbound mail type uses OAuth2
+     *      and hides the inbound password for OAuth2 inbound types.
+     */
+    TargetNS.ToggleOAuth2 = function () {
+        var InboundOAuth2  = /OAuth2$/.test($('#InboundMailType').val() || ''),
+            OutboundOAuth2 = $('#OutboundMailType').val() === "smtptlsoauth2";
+
+        if (InboundOAuth2 || OutboundOAuth2) {
+            $('#InfoOAuth2').show();
+        }
+        else {
+            $('#InfoOAuth2').hide();
+        }
+
+        if (InboundOAuth2) {
+            $('.Row_InboundPassword').hide().find('input').val('');
+            if (!$('#InboundHost').val()) {
+                $('#InboundHost').val('outlook.office365.com');
+            }
+        }
+        else {
+            $('.Row_InboundPassword').show();
+        }
     };
 
     /**
@@ -213,6 +257,9 @@ Core.Installer = (function (TargetNS) {
         });
         $('#OutboundMailType').on('change', function () {
             TargetNS.SelectOutboundMailType($(this));
+        });
+        $('#InboundMailType').on('change', function () {
+            TargetNS.ToggleOAuth2();
         });
         $('#OutboundMailType').trigger('change');
      }

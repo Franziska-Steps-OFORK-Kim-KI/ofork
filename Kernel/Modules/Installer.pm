@@ -868,6 +868,8 @@ sub Run {
                 smtp     => 'SMTP',
                 smtps    => 'SMTPS',
                 smtptls  => 'SMTPTLS',
+
+                smtptlsoauth2 => $LayoutObject->{LanguageObject}->Translate('Exchange Online (OAuth2)'),
             },
             Name  => 'OutboundMailType',
             Class => 'Modernize',
@@ -879,6 +881,8 @@ sub Run {
                 smtp     => '25',
                 smtps    => '465',
                 smtptls  => '587',
+
+                smtptlsoauth2 => '587',
             },
             Name => 'OutboundMailDefaultPorts',
         );
@@ -1323,11 +1327,53 @@ sub CheckMailConfiguration {
 
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
 
+    # Exchange Online with OAuth2 (outbound SMTPTLSOAuth2, inbound IMAPSOAuth2 or POP3SOAuth2)
+    # uses the Entra app from the settings OAuth2::Microsoft::* instead of passwords.
+    my $InboundMailType = $ParamObject->GetParam( Param => 'InboundMailType' ) // '';
+    my $OutboundOAuth2  = ( $OutboundMailType // '' ) eq 'smtptlsoauth2';
+    my $InboundOAuth2   = $InboundMailType =~ m{ OAuth2 \z }xms;
+
+    my %OAuth2Settings;
+    if ( $OutboundOAuth2 || $InboundOAuth2 ) {
+        my %OAuth2Params = (
+            OAuth2TenantID     => 'OAuth2::Microsoft::TenantID',
+            OAuth2ClientID     => 'OAuth2::Microsoft::ClientID',
+            OAuth2ClientSecret => 'OAuth2::Microsoft::ClientSecret',
+        );
+        for my $Param ( sort keys %OAuth2Params ) {
+            my $Value = $ParamObject->GetParam( Param => $Param );
+            if ( !$Value ) {
+                return (
+                    Successful => 0,
+                    Message    => "Missing parameter: $Param!"
+                );
+            }
+            $OAuth2Settings{ $OAuth2Params{$Param} } = $Value;
+            $ConfigObject->Set(
+                Key   => $OAuth2Params{$Param},
+                Value => $Value,
+            );
+        }
+    }
+
+    my %OutboundModules = (
+        smtp          => 'SMTP',
+        smtps         => 'SMTPS',
+        smtptls       => 'SMTPTLS',
+        smtptlsoauth2 => 'SMTPTLSOAuth2',
+    );
+
     # If chosen config option is SMTP, set some Config params.
     if ( $OutboundMailType && $OutboundMailType ne 'sendmail' ) {
+        if ( !$OutboundModules{$OutboundMailType} ) {
+            return (
+                Successful => 0,
+                Message    => 'Invalid outbound mail type!'
+            );
+        }
         $ConfigObject->Set(
             Key   => 'SendmailModule',
-            Value => 'Kernel::System::Email::' . uc($OutboundMailType),
+            Value => 'Kernel::System::Email::' . $OutboundModules{$OutboundMailType},
         );
         $ConfigObject->Set(
             Key   => 'SendmailModule::Host',
@@ -1418,6 +1464,13 @@ sub CheckMailConfiguration {
                 );
             }
         }
+
+        if ($OutboundOAuth2) {
+            $Self->_OAuth2SettingsSave(
+                Settings          => \%OAuth2Settings,
+                ExclusiveLockGUID => $ExclusiveLockGUID,
+            );
+        }
     }
 
     # If sendmail check was successful, write data into config.
@@ -1443,7 +1496,9 @@ sub CheckMailConfiguration {
     # Check inbound mail config.
     my $MailAccount = $Kernel::OM->Get('Kernel::System::MailAccount');
 
-    for (qw(InboundUser InboundPassword InboundHost)) {
+    # OAuth2 backends don't use a password
+    my @InboundNeeded = $InboundOAuth2 ? qw(InboundUser InboundHost) : qw(InboundUser InboundPassword InboundHost);
+    for (@InboundNeeded) {
         if ( !$ParamObject->GetParam( Param => $_ ) ) {
             return (
                 Successful => 0,
@@ -1454,10 +1509,8 @@ sub CheckMailConfiguration {
 
     my $InboundUser = $ParamObject->GetParam( Param => 'InboundUser' );
     my $InboundPassword =
-        $ParamObject->GetParam( Param => 'InboundPassword' );
+        $InboundOAuth2 ? 'oauth2-not-used' : $ParamObject->GetParam( Param => 'InboundPassword' );
     my $InboundHost = $ParamObject->GetParam( Param => 'InboundHost' );
-    my $InboundMailType =
-        $ParamObject->GetParam( Param => 'InboundMailType' );
 
     %Result = $MailAccount->MailAccountCheck(
         Login    => $InboundUser,
@@ -1488,9 +1541,34 @@ sub CheckMailConfiguration {
                 Message    => 'Error while adding mail account!'
             );
         }
+
+        if ($InboundOAuth2) {
+            $Self->_OAuth2SettingsSave(
+                Settings          => \%OAuth2Settings,
+                ExclusiveLockGUID => $ExclusiveLockGUID,
+            );
+        }
     }
 
     return %Result;
+}
+
+sub _OAuth2SettingsSave {
+    my ( $Self, %Param ) = @_;
+
+    my $SysConfigObject = $Kernel::OM->Get('Kernel::System::SysConfig');
+
+    for my $SettingName ( sort keys %{ $Param{Settings} } ) {
+        $SysConfigObject->SettingUpdate(
+            Name              => $SettingName,
+            IsValid           => 1,
+            EffectiveValue    => $Param{Settings}->{$SettingName},
+            ExclusiveLockGUID => $Param{ExclusiveLockGUID},
+            UserID            => 1,
+        );
+    }
+
+    return 1;
 }
 
 sub _CheckConfig {

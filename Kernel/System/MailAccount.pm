@@ -66,6 +66,7 @@ adds a new mail account
         Password      => 'SomePassword',
         Host          => 'pop3.example.com',
         Type          => 'POP3',
+        # Password is optional for OAuth2 types like 'IMAPSOAuth2'
         IMAPFolder    => 'Some Folder', # optional, only valid for IMAP-type accounts
         ValidID       => 1,
         Trusted       => 0,
@@ -78,6 +79,12 @@ adds a new mail account
 
 sub MailAccountAdd {
     my ( $Self, %Param ) = @_;
+
+    # OAuth2 backends don't use a password, but the column is NOT NULL;
+    # an old password is not kept when an account is switched to OAuth2
+    if ( ( $Param{Type} // '' ) =~ m{ OAuth2 \z }xms ) {
+        $Param{Password} = 'oauth2-not-used';
+    }
 
     # check needed stuff
     for (qw(Login Password Host ValidID Trusted DispatchingBy QueueID UserID)) {
@@ -349,6 +356,12 @@ update a new mail account
 
 sub MailAccountUpdate {
     my ( $Self, %Param ) = @_;
+
+    # OAuth2 backends don't use a password, but the column is NOT NULL;
+    # an old password is not kept when an account is switched to OAuth2
+    if ( ( $Param{Type} // '' ) =~ m{ OAuth2 \z }xms ) {
+        $Param{Password} = 'oauth2-not-used';
+    }
 
     # check needed stuff
     for (qw(ID Login Password Host Type ValidID Trusted DispatchingBy QueueID UserID)) {
