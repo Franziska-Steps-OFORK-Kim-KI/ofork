@@ -5778,15 +5778,15 @@ CREATE TABLE request_categories_icon (
     name VARCHAR2 (250) NOT NULL,
     content_type VARCHAR2 (250) NOT NULL,
     content CLOB NOT NULL,
-    filename VARCHAR2 (250) NOT NULL,
-    comments VARCHAR2 (250) NOT NULL,
-    valid_id NUMBER (5, 0) NOT NULL,
+    filename VARCHAR2 (250) NULL,
+    comments  VARCHAR2 (250) NULL,
+    valid_id NUMBER (5, 0) NULL,
     create_time DATE NOT NULL,
     create_by NUMBER (12, 0) NOT NULL,
     change_time DATE NOT NULL,
     change_by NUMBER (12, 0) NOT NULL
 );
-ALTER TABLE request_categories_icon ADD CONSTRAINT PK_request PRIMARY KEY (id);
+ALTER TABLE request_categories_icon ADD CONSTRAINT PK_request_categories_icon PRIMARY KEY (id);
 BEGIN
     EXECUTE IMMEDIATE 'DROP SEQUENCE SE_request_categories_icon';
 EXCEPTION
@@ -5812,7 +5812,7 @@ END;
 --
 ;
 CREATE OR REPLACE TRIGGER SE_request_categories_icon_t
-BEFORE INSERT ON request
+BEFORE INSERT ON request_categories_icon
 FOR EACH ROW
 BEGIN
     IF :new.id IS NULL THEN
@@ -6041,7 +6041,7 @@ CREATE TABLE request_form (
     request_id NUMBER (12, 0) NOT NULL,
     feld_id NUMBER (12, 0) NULL,
     requiredfield NUMBER (5, 0) NULL,
-    orders NUMBER (12, 0) NOT NULL
+    orders NUMBER (12, 0) NOT NULL,
     move_over VARCHAR2 (3800) NULL,
     tool_tip NUMBER (5, 0) NULL,
     headline VARCHAR2 (1000) NULL,
@@ -7008,9 +7008,8 @@ CREATE TABLE t_process_transition (
     type_id NUMBER (12, 0) NULL,
     state_id NUMBER (12, 0) NULL,
     queue_id NUMBER (12, 0) NULL,
+    service_id NUMBER (12, 0) NULL,
     sla_id NUMBER (12, 0) NULL,
-    step_no NUMBER (12, 0) NULL,
-    step_no NUMBER (12, 0) NULL,
     create_time DATE NOT NULL,
     create_by NUMBER (12, 0) NOT NULL,
     change_time DATE NOT NULL,
@@ -7043,7 +7042,7 @@ END;
 --
 ;
 CREATE OR REPLACE TRIGGER SE_t_process_transition_t
-BEFORE INSERT ON request
+BEFORE INSERT ON t_process_transition
 FOR EACH ROW
 BEGIN
     IF :new.id IS NULL THEN
@@ -7069,7 +7068,7 @@ CREATE TABLE t_process_step (
     to_id_from_two NUMBER (12, 0) NULL,
     step_no_to NUMBER (12, 0) NULL,
     process_color VARCHAR2 (250) NOT NULL,
-    description VARCHAR2 (5000) NULL,
+    description CLOB NULL,
     group_id NUMBER (12, 0) NOT NULL,
     stepart_id NUMBER (12, 0) NOT NULL,
     step_end NUMBER (5, 0) NULL,
@@ -7077,9 +7076,9 @@ CREATE TABLE t_process_step (
     without_conditions_end NUMBER (5, 0) NULL,
     not_approved NUMBER (5, 0) NULL,
     approver_id NUMBER (12, 0) NULL,
-    approver_email VARCHAR2 (5000) NULL,
+    approver_email CLOB NULL,
     valid_id NUMBER (5, 0) NOT NULL,
-    create_time DATEE NOT NULL,
+    create_time DATE NOT NULL,
     create_by NUMBER (12, 0) NOT NULL,
     change_time DATE NOT NULL,
     change_by NUMBER (12, 0) NOT NULL,
@@ -7090,7 +7089,7 @@ CREATE TABLE t_process_step (
     setarticle_id NUMBER (5, 0) NOT NULL,
     parallel_step NUMBER (12, 0) NULL,
     set_parallel NUMBER (12, 0) NULL,
-    notify_agent VARCHAR (250) NULL
+    notify_agent VARCHAR2 (250) NULL
 );
 ALTER TABLE t_process_step ADD CONSTRAINT PK_t_process_step PRIMARY KEY (id);
 BEGIN
@@ -7118,7 +7117,7 @@ END;
 --
 ;
 CREATE OR REPLACE TRIGGER SE_t_process_step_t
-BEFORE INSERT ON request
+BEFORE INSERT ON t_process_step
 FOR EACH ROW
 BEGIN
     IF :new.id IS NULL THEN
@@ -7183,7 +7182,7 @@ END;
 CREATE TABLE t_process_list (
     id NUMBER (12, 0) NOT NULL,
     name VARCHAR2 (250) NOT NULL,
-    description VARCHAR2 (5000) NOT NULL,
+    description CLOB NOT NULL,
     queue_id NUMBER (12, 0) NOT NULL,
     valid_id NUMBER (5, 0) NOT NULL,
     create_time DATE NOT NULL,
@@ -7220,7 +7219,7 @@ END;
 --
 ;
 CREATE OR REPLACE TRIGGER SE_t_process_list_t
-BEFORE INSERT ON request
+BEFORE INSERT ON t_process_list
 FOR EACH ROW
 BEGIN
     IF :new.id IS NULL THEN
@@ -7239,8 +7238,8 @@ CREATE TABLE t_process_fields_value (
     id NUMBER (12, 0) NOT NULL,
     ticket_id NUMBER (12, 0) NOT NULL,
     process_id NUMBER (12, 0) NOT NULL,
-    process_step NUMBER (12, 0) NOT NULL,
-    report VARCHAR2 (5000) NOT NULL,
+    process_step_id NUMBER (12, 0) NOT NULL,
+    report CLOB NOT NULL,
     title VARCHAR2 (250) NULL,
     type_id NUMBER (12, 0) NULL,
     queue_id NUMBER (12, 0) NULL,
@@ -7279,7 +7278,7 @@ END;
 --
 ;
 CREATE OR REPLACE TRIGGER SE_t_process_fields_value_t
-BEFORE INSERT ON request
+BEFORE INSERT ON t_process_fields_value
 FOR EACH ROW
 BEGIN
     IF :new.id IS NULL THEN
@@ -7307,16 +7306,16 @@ CREATE TABLE t_process_fields (
     change_by NUMBER (12, 0) NOT NULL,
     ticket_id NUMBER (12, 0) NOT NULL
 );
-ALTER TABLE t_process_fields_value ADD CONSTRAINT PK_t_process_fields_value PRIMARY KEY (id);
+ALTER TABLE t_process_fields ADD CONSTRAINT PK_t_process_fields PRIMARY KEY (id);
 BEGIN
-    EXECUTE IMMEDIATE 'DROP SEQUENCE SE_t_process_fields_value';
+    EXECUTE IMMEDIATE 'DROP SEQUENCE SE_t_process_fields';
 EXCEPTION
     WHEN OTHERS THEN NULL;
 END;
 /
 --
 ;
-CREATE SEQUENCE SE_t_process_fields_value
+CREATE SEQUENCE SE_t_process_fields
 INCREMENT BY 1
 START WITH 1
 NOMAXVALUE
@@ -7325,19 +7324,19 @@ CACHE 20
 ORDER
 ;
 BEGIN
-    EXECUTE IMMEDIATE 'DROP TRIGGER SE_t_process_fields_value_t';
+    EXECUTE IMMEDIATE 'DROP TRIGGER SE_t_process_fields_t';
 EXCEPTION
     WHEN OTHERS THEN NULL;
 END;
 /
 --
 ;
-CREATE OR REPLACE TRIGGER SE_t_process_fields_value_t
-BEFORE INSERT ON request
+CREATE OR REPLACE TRIGGER SE_t_process_fields_t
+BEFORE INSERT ON t_process_fields
 FOR EACH ROW
 BEGIN
     IF :new.id IS NULL THEN
-        SELECT SE_t_process_fields_value.nextval
+        SELECT SE_t_process_fields.nextval
         INTO :new.id
         FROM DUAL;
     END IF;
@@ -7353,7 +7352,7 @@ CREATE TABLE t_process_d_conditions (
     process_id NUMBER (12, 0) NOT NULL,
     processstep_id NUMBER (12, 0) NOT NULL,
     dynamicfield_id NUMBER (12, 0) NOT NULL,
-    dynamicfield_value VARCHAR2 (5000) NOT NULL,
+    dynamicfield_value VARCHAR2 (250) NOT NULL,
     ticket_id NUMBER (12, 0) NOT NULL,
     create_time DATE NOT NULL,
     create_by NUMBER (12, 0) NOT NULL,
@@ -7386,7 +7385,7 @@ END;
 --
 ;
 CREATE OR REPLACE TRIGGER SE_t_process_d_conditions_t
-BEFORE INSERT ON request
+BEFORE INSERT ON t_process_d_conditions
 FOR EACH ROW
 BEGIN
     IF :new.id IS NULL THEN
@@ -7464,25 +7463,25 @@ END;
 CREATE TABLE t_dynamicprocess_fields_value (
     id NUMBER (12, 0) NOT NULL,
     process_id NUMBER (12, 0) NOT NULL,
-    processstep_id NUMBER (12, 0) NOT NULL,
+    process_step_id NUMBER (12, 0) NOT NULL,
     ticket_id NUMBER (12, 0) NOT NULL,
     dynamicfield_id NUMBER (12, 0) NOT NULL,
-    field_value VARCHAR2 (5000) NOT NULL,
+    field_value CLOB NOT NULL,
     create_time DATE NOT NULL,
     create_by NUMBER (12, 0) NOT NULL,
     change_time DATE NOT NULL,
     change_by NUMBER (12, 0) NOT NULL
 );
-ALTER TABLE t_dynamicprocess_fields_value ADD CONSTRAINT PK_t_dynamicprocess_fields_value PRIMARY KEY (id);
+ALTER TABLE t_dynamicprocess_fields_value ADD CONSTRAINT PK_t_dynamicprocess_fields_vf4 PRIMARY KEY (id);
 BEGIN
-    EXECUTE IMMEDIATE 'DROP SEQUENCE SE_t_dynamicprocess_fields_value';
+    EXECUTE IMMEDIATE 'DROP SEQUENCE SE_t_dynamicprocess_fields17';
 EXCEPTION
     WHEN OTHERS THEN NULL;
 END;
 /
 --
 ;
-CREATE SEQUENCE SE_t_dynamicprocess_fields_value
+CREATE SEQUENCE SE_t_dynamicprocess_fields17
 INCREMENT BY 1
 START WITH 1
 NOMAXVALUE
@@ -7491,19 +7490,19 @@ CACHE 20
 ORDER
 ;
 BEGIN
-    EXECUTE IMMEDIATE 'DROP TRIGGER SE_t_dynamicprocess_fields_value_t';
+    EXECUTE IMMEDIATE 'DROP TRIGGER SE_t_dynamicprocess_fields17_t';
 EXCEPTION
     WHEN OTHERS THEN NULL;
 END;
 /
 --
 ;
-CREATE OR REPLACE TRIGGER SE_t_dynamicprocess_fields_value_t
-BEFORE INSERT ON request
+CREATE OR REPLACE TRIGGER SE_t_dynamicprocess_fields17_t
+BEFORE INSERT ON t_dynamicprocess_fields_value
 FOR EACH ROW
 BEGIN
     IF :new.id IS NULL THEN
-        SELECT SE_t_dynamicprocess_fields_value.nextval
+        SELECT SE_t_dynamicprocess_fields17.nextval
         INTO :new.id
         FROM DUAL;
     END IF;
@@ -7576,9 +7575,8 @@ CREATE TABLE process_transition (
     type_id NUMBER (12, 0) NULL,
     state_id NUMBER (12, 0) NULL,
     queue_id NUMBER (12, 0) NULL,
+    service_id NUMBER (12, 0) NULL,
     sla_id NUMBER (12, 0) NULL,
-    step_no NUMBER (12, 0) NULL,
-    step_no NUMBER (12, 0) NULL,
     create_time DATE NOT NULL,
     create_by NUMBER (12, 0) NOT NULL,
     change_time DATE NOT NULL,
@@ -7610,7 +7608,7 @@ END;
 --
 ;
 CREATE OR REPLACE TRIGGER SE_process_transition_t
-BEFORE INSERT ON request
+BEFORE INSERT ON process_transition
 FOR EACH ROW
 BEGIN
     IF :new.id IS NULL THEN
@@ -7636,7 +7634,7 @@ CREATE TABLE process_step (
     to_id_from_two NUMBER (12, 0) NULL,
     step_no_to NUMBER (12, 0) NULL,
     process_color VARCHAR2 (250) NOT NULL,
-    description VARCHAR2 (5000) NULL,
+    description CLOB NULL,
     group_id NUMBER (12, 0) NOT NULL,
     stepart_id NUMBER (12, 0) NOT NULL,
     step_end NUMBER (5, 0) NULL,
@@ -7644,9 +7642,9 @@ CREATE TABLE process_step (
     without_conditions_end NUMBER (5, 0) NULL,
     not_approved NUMBER (5, 0) NULL,
     approver_id NUMBER (12, 0) NULL,
-    approver_email VARCHAR2 (5000) NULL,
+    approver_email CLOB NULL,
     valid_id NUMBER (5, 0) NOT NULL,
-    create_time DATEE NOT NULL,
+    create_time DATE NOT NULL,
     create_by NUMBER (12, 0) NOT NULL,
     change_time DATE NOT NULL,
     change_by NUMBER (12, 0) NOT NULL,
@@ -7655,7 +7653,7 @@ CREATE TABLE process_step (
     parallel_step NUMBER (12, 0) NULL,
     set_parallel NUMBER (12, 0) NULL,
     parallel_se NUMBER (12, 0) NULL,
-    notify_agent VARCHAR (250) NULL
+    notify_agent VARCHAR2 (250) NULL
 );
 ALTER TABLE process_step ADD CONSTRAINT PK_process_step PRIMARY KEY (id);
 BEGIN
@@ -7683,7 +7681,7 @@ END;
 --
 ;
 CREATE OR REPLACE TRIGGER SE_process_step_t
-BEFORE INSERT ON request
+BEFORE INSERT ON process_step
 FOR EACH ROW
 BEGIN
     IF :new.id IS NULL THEN
@@ -7701,7 +7699,7 @@ END;
 CREATE TABLE process_list (
     id NUMBER (12, 0) NOT NULL,
     name VARCHAR2 (250) NOT NULL,
-    description VARCHAR2 (5000) NOT NULL,
+    description CLOB NOT NULL,
     queue_id NUMBER (12, 0) NOT NULL,
     valid_id NUMBER (5, 0) NOT NULL,
     create_time DATE NOT NULL,
@@ -7736,7 +7734,7 @@ END;
 --
 ;
 CREATE OR REPLACE TRIGGER SE_process_list_t
-BEFORE INSERT ON request
+BEFORE INSERT ON process_list
 FOR EACH ROW
 BEGIN
     IF :new.id IS NULL THEN
@@ -7763,16 +7761,16 @@ CREATE TABLE process_fields (
     change_time DATE NOT NULL,
     change_by NUMBER (12, 0) NOT NULL
 );
-ALTER TABLE process_fields_value ADD CONSTRAINT PK_process_fields_value PRIMARY KEY (id);
+ALTER TABLE process_fields ADD CONSTRAINT PK_process_fields PRIMARY KEY (id);
 BEGIN
-    EXECUTE IMMEDIATE 'DROP SEQUENCE SE_process_fields_value';
+    EXECUTE IMMEDIATE 'DROP SEQUENCE SE_process_fields';
 EXCEPTION
     WHEN OTHERS THEN NULL;
 END;
 /
 --
 ;
-CREATE SEQUENCE SE_process_fields_value
+CREATE SEQUENCE SE_process_fields
 INCREMENT BY 1
 START WITH 1
 NOMAXVALUE
@@ -7781,19 +7779,19 @@ CACHE 20
 ORDER
 ;
 BEGIN
-    EXECUTE IMMEDIATE 'DROP TRIGGER SE_process_fields_value_t';
+    EXECUTE IMMEDIATE 'DROP TRIGGER SE_process_fields_t';
 EXCEPTION
     WHEN OTHERS THEN NULL;
 END;
 /
 --
 ;
-CREATE OR REPLACE TRIGGER SE_process_fields_value_t
-BEFORE INSERT ON request
+CREATE OR REPLACE TRIGGER SE_process_fields_t
+BEFORE INSERT ON process_fields
 FOR EACH ROW
 BEGIN
     IF :new.id IS NULL THEN
-        SELECT SE_process_fields_value.nextval
+        SELECT SE_process_fields.nextval
         INTO :new.id
         FROM DUAL;
     END IF;
@@ -7809,7 +7807,7 @@ CREATE TABLE process_d_conditions (
     process_id NUMBER (12, 0) NOT NULL,
     processstep_id NUMBER (12, 0) NOT NULL,
     dynamicfield_id NUMBER (12, 0) NOT NULL,
-    dynamicfield_value VARCHAR2 (5000) NOT NULL,
+    dynamicfield_value VARCHAR2 (250) NOT NULL,
     create_time DATE NOT NULL,
     create_by NUMBER (12, 0) NOT NULL,
     change_time DATE NOT NULL,
@@ -7841,7 +7839,7 @@ END;
 --
 ;
 CREATE OR REPLACE TRIGGER SE_process_d_conditions_t
-BEFORE INSERT ON request
+BEFORE INSERT ON process_d_conditions
 FOR EACH ROW
 BEGIN
     IF :new.id IS NULL THEN
@@ -8176,11 +8174,11 @@ END;
 -- ----------------------------------------------------------
 CREATE TABLE contractdevice (
     id NUMBER (12, 0) NOT NULL,
-    contract_id NUMBER (12, 0) NOT NULL
+    contract_id NUMBER (12, 0) NOT NULL,
     device_name VARCHAR2 (250) NOT NULL,
-    device_number NUMBER (12, 0) NULL
-    ticket_create NUMBER (12, 0) NULL
-    queue_id NUMBER (12, 0) NULL
+    device_number NUMBER (12, 0) NULL,
+    ticket_create NUMBER (12, 0) NULL,
+    queue_id NUMBER (12, 0) NULL,
     notification DATE NULL,
     create_time DATE NOT NULL,
     create_by NUMBER (12, 0) NOT NULL,
@@ -8230,17 +8228,17 @@ END;
 -- ----------------------------------------------------------
 CREATE TABLE contract (
     id NUMBER (12, 0) NOT NULL,
-    cp_id NUMBER (12, 0) NULL
+    cp_id NUMBER (12, 0) NULL,
     customer_id VARCHAR2 (250) NULL,
     customeruser_id VARCHAR2 (250) NULL,
     direction VARCHAR2 (250) NOT NULL,
-    contracttype_id NUMBER (12, 0) NOT NULL
+    contracttype_id NUMBER (12, 0) NOT NULL,
     contractnumber VARCHAR2 (250) NOT NULL,
-    description VARCHAR2 (20000) NULL,
+    description CLOB NULL,
     contractstart DATE NULL,
     contractend DATE NULL,
-    service_id NUMBER (12, 0) NULL
-    sla_id NUMBER (12, 0) NULL
+    service_id NUMBER (12, 0) NULL,
+    sla_id NUMBER (12, 0) NULL,
     price VARCHAR2 (250) NULL,
     paymentmethod VARCHAR2 (250) NULL,
     noticeperiod VARCHAR2 (250) NULL,
@@ -8248,7 +8246,7 @@ CREATE TABLE contract (
     memory VARCHAR2 (250) NULL,
     memory_time DATE NULL,
     notification DATE NULL,
-    queue_id NUMBER (12, 0) NULL
+    queue_id NUMBER (12, 0) NULL,
     valid_id NUMBER (5, 0) NOT NULL,
     create_time DATE NOT NULL,
     create_by NUMBER (12, 0) NOT NULL,
@@ -8298,7 +8296,7 @@ END;
 -- ----------------------------------------------------------
 CREATE TABLE handover (
     id NUMBER (12, 0) NOT NULL,
-    contract_id NUMBER (12, 0) NOT NULL
+    contract_id NUMBER (12, 0) NOT NULL,
     handover VARCHAR2 (250) NOT NULL,
     handoverdate DATE NOT NULL,
     create_time DATE NOT NULL,
@@ -8352,24 +8350,24 @@ CREATE TABLE selfservice_categories_icon (
     name VARCHAR2 (250) NOT NULL,
     content_type VARCHAR2 (250) NOT NULL,
     content CLOB NOT NULL,
-    filename VARCHAR2 (250) NOT NULL,
-    comments VARCHAR2 (250) NOT NULL,
-    valid_id NUMBER (5, 0) NOT NULL,
+    filename VARCHAR2 (250) NULL,
+    comments  VARCHAR2 (250) NULL,
+    valid_id NUMBER (5, 0) NULL,
     create_time DATE NOT NULL,
     create_by NUMBER (12, 0) NOT NULL,
     change_time DATE NOT NULL,
     change_by NUMBER (12, 0) NOT NULL
 );
-ALTER TABLE selfservice_categories_icon ADD CONSTRAINT PK_request PRIMARY KEY (id);
+ALTER TABLE selfservice_categories_icon ADD CONSTRAINT PK_selfservice_categories_icon PRIMARY KEY (id);
 BEGIN
-    EXECUTE IMMEDIATE 'DROP SEQUENCE SE_selfservice_categories_icon';
+    EXECUTE IMMEDIATE 'DROP SEQUENCE SE_selfservice_categories_7d';
 EXCEPTION
     WHEN OTHERS THEN NULL;
 END;
 /
 --
 ;
-CREATE SEQUENCE SE_selfservice_categories_icon
+CREATE SEQUENCE SE_selfservice_categories_7d
 INCREMENT BY 1
 START WITH 1
 NOMAXVALUE
@@ -8378,19 +8376,19 @@ CACHE 20
 ORDER
 ;
 BEGIN
-    EXECUTE IMMEDIATE 'DROP TRIGGER SE_selfservice_categories_icon_t';
+    EXECUTE IMMEDIATE 'DROP TRIGGER SE_selfservice_categories_7d_t';
 EXCEPTION
     WHEN OTHERS THEN NULL;
 END;
 /
 --
 ;
-CREATE OR REPLACE TRIGGER SE_selfservice_categories_icon_t
-BEFORE INSERT ON request
+CREATE OR REPLACE TRIGGER SE_selfservice_categories_7d_t
+BEFORE INSERT ON selfservice_categories_icon
 FOR EACH ROW
 BEGIN
     IF :new.id IS NULL THEN
-        SELECT SE_selfservice_categories_icon.nextval
+        SELECT SE_selfservice_categories_7d.nextval
         INTO :new.id
         FROM DUAL;
     END IF;

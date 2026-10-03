@@ -282,6 +282,17 @@ my @NeededModules = (
         },
     },
     {
+        Module    => 'Types::Standard',
+        Required  => 1,
+        Comment   => 'Required for random number generator (Crypt::Random::Source in Kernel/cpan-lib).',
+        InstTypes => {
+            aptget => 'libtype-tiny-perl',
+            emerge => 'dev-perl/Type-Tiny',
+            zypper => 'perl-Type-Tiny',
+            ports  => 'devel/p5-Type-Tiny',
+        },
+    },
+    {
         Module    => 'Try::Tiny',
         Required  => 1,
         InstTypes => {

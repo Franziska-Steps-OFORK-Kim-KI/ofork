@@ -3122,7 +3122,7 @@ CREATE TABLE request (
     name VARCHAR (1000) NOT NULL,
     comment VARCHAR (1000) NOT NULL,
     queue_id INTEGER NOT NULL,
-    type_id INTEGER NULL,
+    type_id INTEGER NOT NULL,
     image_id INTEGER NULL,
     show_configitem INTEGER NULL,
     ticket_owner INTEGER NULL,
@@ -3134,9 +3134,9 @@ CREATE TABLE request (
     show_attachment INTEGER NULL,
     request_group INTEGER NULL,
     process_id INTEGER NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3149,9 +3149,9 @@ CREATE TABLE requestcategories (
     comments VARCHAR (1000) NOT NULL,
     image_id INTEGER NULL,
     valid_id SMALLINT NOT NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3163,12 +3163,12 @@ CREATE TABLE request_categories_icon (
     name VARCHAR (250) NOT NULL,
     content_type VARCHAR (250) NOT NULL,
     content TEXT NOT NULL,
-    filename VARCHAR (250) NOT NULL,
-    comments VARCHAR (250) NOT NULL,
-    valid_id SMALLINT NOT NULL
-    create_time DATETIME NOT NULL,
+    filename VARCHAR (250) NULL,
+    comments  VARCHAR (250) NULL,
+    valid_id SMALLINT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3179,9 +3179,9 @@ CREATE TABLE requestcategories_request (
     id serial NOT NULL,
     template_id INTEGER NOT NULL,
     requestcategories_id INTEGER NOT NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3194,13 +3194,13 @@ CREATE TABLE request_fields (
     name VARCHAR (1000) NOT NULL,
     label VARCHAR (1000) NOT NULL,
     defaultvalue VARCHAR (1000) NULL,
-    feld_rows SMALLINT  NULL,
-    feld_cols SMALLINT  NULL,
-    leer_wert SMALLINT  NULL,
-    valid_id SMALLINT NOT NULL
-    create_time DATETIME NOT NULL,
+    feld_rows SMALLINT NULL,
+    feld_cols SMALLINT NULL,
+    leer_wert SMALLINT NULL,
+    valid_id SMALLINT NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3212,9 +3212,9 @@ CREATE TABLE request_fields_value (
     feld_id INTEGER NOT NULL,
     inhalt VARCHAR (1000) NOT NULL,
     schluessel VARCHAR (1000) NOT NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3225,14 +3225,14 @@ CREATE TABLE request_form (
     id serial NOT NULL,
     request_id INTEGER NOT NULL,
     feld_id INTEGER NULL,
-    requiredfield SMALLINT NULL
+    requiredfield SMALLINT NULL,
     orders INTEGER NOT NULL,
-    move_over TEXT NULL,
-    tool_tip SMALLINT NULL
+    move_over VARCHAR (3800) NULL,
+    tool_tip SMALLINT NULL,
     headline VARCHAR (1000) NULL,
-    beschreibung TEXT NULL,
-    valid_id SMALLINT NULL
-    create_time DATETIME NOT NULL,
+    beschreibung VARCHAR (3800) NULL,
+    valid_id SMALLINT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3247,11 +3247,11 @@ CREATE TABLE request_form_block (
     feld_id INTEGER NULL,
     requiredfield SMALLINT NULL,
     orders INTEGER NOT NULL,
-    move_over TEXT NULL,
+    move_over VARCHAR (3800) NULL,
     headline VARCHAR (1000) NULL,
-    beschreibung TEXT NULL,
-    valid_id SMALLINT NULL
-    create_time DATETIME NOT NULL,
+    beschreibung VARCHAR (3800) NULL,
+    valid_id SMALLINT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3262,9 +3262,9 @@ CREATE TABLE ticket_id_request (
     id serial NOT NULL,
     ticket_id INTEGER NOT NULL,
     request_id INTEGER NOT NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3276,11 +3276,11 @@ CREATE TABLE ticket_request (
     ticket_id INTEGER NOT NULL,
     antrag_id INTEGER NOT NULL,
     feld_key VARCHAR (1000) NOT NULL,
-    feld_value TEXT NULL,
+    feld_value VARCHAR (3800) NULL,
     feld_beschriftung VARCHAR (1000) NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3290,11 +3290,11 @@ CREATE TABLE ticket_request (
 CREATE TABLE request_groups (
     id serial NOT NULL,
     name VARCHAR (250) NOT NULL,
-    comments VARCHAR (250) NULL,
+    comments  VARCHAR (250) NULL,
     valid_id SMALLINT NOT NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3305,23 +3305,23 @@ CREATE TABLE request_group_customer_user (
     user_id VARCHAR (250) NOT NULL,
     group_id INTEGER NOT NULL,
     permission_key VARCHAR (250) NOT NULL,
-    permission_value SMALLINT NOT NULL
-    create_time DATETIME NOT NULL,
+    permission_value SMALLINT NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL
 );
 -- ----------------------------------------------------------
 -- create table roomcategories
 -- ----------------------------------------------------------
 CREATE TABLE roomcategories (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     name VARCHAR (2000) NOT NULL,
     valid_id SMALLINT NOT NULL,
-    comments VARCHAR (2000) NULL,
-    create_time DATETIME NOT NULL,
+    comments  VARCHAR (2000) NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3329,8 +3329,9 @@ CREATE TABLE roomcategories (
 -- create table rooms
 -- ----------------------------------------------------------
 CREATE TABLE rooms (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     categories_id INTEGER NOT NULL,
+    categories VARCHAR (250) NOT NULL,
     room VARCHAR (250) NOT NULL,
     building VARCHAR (250) NULL,
     floor VARCHAR (250) NULL,
@@ -3350,12 +3351,12 @@ CREATE TABLE rooms (
     queue_device INTEGER NULL,
     queue_catering INTEGER NULL,
     valid_id SMALLINT NOT NULL,
-    comment VARCHAR (250) NULL,
+    comment  VARCHAR (250) NULL,
     image_id INTEGER NULL,
-    room_color VARCHAR (250) NULL,
-    create_time DATETIME NOT NULL,
+    room_color  VARCHAR (250) NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3363,24 +3364,24 @@ CREATE TABLE rooms (
 -- create table room_booking
 -- ----------------------------------------------------------
 CREATE TABLE room_booking (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     room_id INTEGER NOT NULL,
     participant VARCHAR (250) NOT NULL,
     subject VARCHAR (250) NOT NULL,
-    body VARCHAR (3000) NOT NULL,
-    from_time DATETIME NOT NULL,
-    to_time DATETIME NOT NULL,
-    toend_time DATETIME NOT NULL,
+    body VARCHAR NULL,
+    from_time timestamp(0) NOT NULL,
+    to_time timestamp(0) NOT NULL,
+    toend_time timestamp(0) NOT NULL,
     email_list VARCHAR (2000) NULL,
     equipment_order VARCHAR (2000) NULL,
-    cal_uid VARCHAR (250) NOT NULL,
+    cal_uid VARCHAR (2000) NOT NULL,
     sequence SMALLINT NOT NULL,
     qb_tid INTEGER NULL,
     qd_tid INTEGER NULL,
     qc_tid INTEGER NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by VARCHAR (250) NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by VARCHAR (250) NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3388,19 +3389,20 @@ CREATE TABLE room_booking (
 -- create table room_equipments
 -- ----------------------------------------------------------
 CREATE TABLE room_equipments (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     name VARCHAR (250) NOT NULL,
     quantity VARCHAR (250) NULL,
     equipment_type SMALLINT NULL,
     price VARCHAR (250) NULL,
-    currency SMALLINT NULL,
+    price_for SMALLINT NULL,
+    currency VARCHAR (250) NULL,
     model VARCHAR (250) NULL,
-    bookable SMALLINT NULL,
+    bookable SMALLINT NOT NULL,
     comments VARCHAR (250) NULL,
     valid_id SMALLINT NOT NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3412,12 +3414,12 @@ CREATE TABLE room_icon (
     name VARCHAR (250) NOT NULL,
     content_type VARCHAR (250) NOT NULL,
     content TEXT NOT NULL,
-    filename VARCHAR (250) NOT NULL,
-    comments VARCHAR (250) NOT NULL,
-    valid_id SMALLINT NOT NULL
-    create_time DATETIME NOT NULL,
+    filename VARCHAR (250) NULL,
+    comments VARCHAR (250) NULL,
+    valid_id SMALLINT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3425,7 +3427,7 @@ CREATE TABLE room_icon (
 -- create table checklist
 -- ----------------------------------------------------------
 CREATE TABLE checklist (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     name VARCHAR (250) NOT NULL,
     queue_id INTEGER NULL,
     type_id INTEGER NULL,
@@ -3436,9 +3438,9 @@ CREATE TABLE checklist (
     set_article SMALLINT NOT NULL,
     valid_id SMALLINT NOT NULL,
     comment VARCHAR (250) NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3446,14 +3448,14 @@ CREATE TABLE checklist (
 -- create table checklist_field
 -- ----------------------------------------------------------
 CREATE TABLE checklist_field (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     checklist_id INTEGER NOT NULL,
     task VARCHAR (250) NOT NULL,
     fieldorder INTEGER NOT NULL,
     field_type VARCHAR (250) NOT NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3462,16 +3464,16 @@ CREATE TABLE checklist_field (
 -- create table checklist_field_value
 -- ----------------------------------------------------------
 CREATE TABLE checklist_field_value (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     checklist_id INTEGER NOT NULL,
     ticket_id INTEGER NOT NULL,
     task VARCHAR (250) NOT NULL,
     field_type VARCHAR (250) NOT NULL,
     fieldorder INTEGER NOT NULL,
     if_set SMALLINT NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3480,14 +3482,14 @@ CREATE TABLE checklist_field_value (
 --  create table calendar_team
 -- ----------------------------------------------------------
 CREATE TABLE calendar_team (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     name VARCHAR (250) NOT NULL,
     group_id INTEGER NOT NULL,
     valid_id SMALLINT NOT NULL,
-    comments VARCHAR (250)  NULL,
-    create_time DATETIME NOT NULL,
+    comments VARCHAR (250) NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3496,12 +3498,12 @@ CREATE TABLE calendar_team (
 --  create table calendar_team_user
 -- ----------------------------------------------------------
 CREATE TABLE calendar_team_user (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     team_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3510,12 +3512,12 @@ CREATE TABLE calendar_team_user (
 --  create table tracking_category
 -- ----------------------------------------------------------
 CREATE TABLE tracking_category (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     name VARCHAR (250) NOT NULL,
     valid_id SMALLINT NOT NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3524,19 +3526,19 @@ CREATE TABLE tracking_category (
 --  create table time_tracking_article
 -- ----------------------------------------------------------
 CREATE TABLE time_tracking_article (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     customer_id VARCHAR (250) NULL,
     ticket_id INTEGER NOT NULL,
     time_tracking_id SMALLINT NOT NULL,
     time_tracking_time VARCHAR (250) NOT NULL,
     subject VARCHAR (250) NOT NULL,
     seen INTEGER NULL,
+    content_type VARCHAR (250) NULL,
     content TEXT NULL,
     filename VARCHAR (250) NULL,
-    comments VARCHAR (250) NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3545,7 +3547,7 @@ CREATE TABLE time_tracking_article (
 --  create table t_process_transition
 -- ----------------------------------------------------------
 CREATE TABLE t_process_transition (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     process_id INTEGER NOT NULL,
     processstep_id INTEGER NOT NULL,
     processstep_no INTEGER NOT NULL,
@@ -3553,12 +3555,11 @@ CREATE TABLE t_process_transition (
     type_id INTEGER NULL,
     state_id INTEGER NULL,
     queue_id INTEGER NULL,
+    service_id INTEGER NULL,
     sla_id INTEGER NULL,
-    step_no INTEGER NULL,
-    step_no INTEGER NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     ticket_id INTEGER NOT NULL,
     PRIMARY KEY(id)
@@ -3568,7 +3569,7 @@ CREATE TABLE t_process_transition (
 --  create table t_process_step
 -- ----------------------------------------------------------
 CREATE TABLE t_process_step (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     name VARCHAR (250) NOT NULL,
     process_id INTEGER NOT NULL,
     process_step INTEGER NOT NULL,
@@ -3588,9 +3589,9 @@ CREATE TABLE t_process_step (
     approver_id INTEGER NULL,
     approver_email VARCHAR (5000) NULL,
     valid_id SMALLINT NOT NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     with_conditions SMALLINT NULL,
     ticket_id INTEGER NOT NULL,
@@ -3607,7 +3608,7 @@ CREATE TABLE t_process_step (
 --  create table t_process_merge
 -- ----------------------------------------------------------
 CREATE TABLE t_process_merge (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     old_id INTEGER NOT NULL,
     new_id INTEGER NOT NULL,
     ticket_id INTEGER NOT NULL,
@@ -3618,14 +3619,14 @@ CREATE TABLE t_process_merge (
 --  create table t_process_list
 -- ----------------------------------------------------------
 CREATE TABLE t_process_list (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     name VARCHAR (250) NOT NULL,
-    description TEXT NOT NULL,
+    description VARCHAR (5000) NOT NULL,
     queue_id INTEGER NOT NULL,
     valid_id SMALLINT NOT NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     ticket_id INTEGER NOT NULL,
     ready SMALLINT NULL,
@@ -3637,11 +3638,11 @@ CREATE TABLE t_process_list (
 --  create table t_process_fields_value
 -- ----------------------------------------------------------
 CREATE TABLE t_process_fields_value (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     ticket_id INTEGER NOT NULL,
     process_id INTEGER NOT NULL,
-    process_step INTEGER NOT NULL,
-    report TEXT NOT NULL,
+    process_step_id INTEGER NOT NULL,
+    report VARCHAR (5000) NOT NULL,
     title VARCHAR (250) NULL,
     type_id INTEGER NULL,
     queue_id INTEGER NULL,
@@ -3649,9 +3650,9 @@ CREATE TABLE t_process_fields_value (
     from_customer VARCHAR (250) NULL,
     user_id INTEGER NULL,
     approval SMALLINT NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3660,15 +3661,15 @@ CREATE TABLE t_process_fields_value (
 --  create table t_process_fields
 -- ----------------------------------------------------------
 CREATE TABLE t_process_fields (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     process_id INTEGER NOT NULL,
     processstep_id INTEGER NOT NULL,
     field_id INTEGER NOT NULL,
     required SMALLINT NOT NULL,
     sequence INTEGER NOT NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     ticket_id INTEGER NOT NULL,
     PRIMARY KEY(id)
@@ -3678,15 +3679,15 @@ CREATE TABLE t_process_fields (
 --  create table t_process_d_conditions
 -- ----------------------------------------------------------
 CREATE TABLE t_process_d_conditions (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     process_id INTEGER NOT NULL,
     processstep_id INTEGER NOT NULL,
     dynamicfield_id INTEGER NOT NULL,
-    dynamicfield_value VARCHAR (5000) NOT NULL,
+    dynamicfield_value VARCHAR (250) NOT NULL,
     ticket_id INTEGER NOT NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3695,7 +3696,7 @@ CREATE TABLE t_process_d_conditions (
 --  create table t_process_conditions
 -- ----------------------------------------------------------
 CREATE TABLE t_process_conditions (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     process_id INTEGER NOT NULL,
     processstep_id INTEGER NOT NULL,
     processstep_no INTEGER NOT NULL,
@@ -3705,11 +3706,11 @@ CREATE TABLE t_process_conditions (
     state INTEGER NULL,
     service INTEGER NULL,
     sla INTEGER NULL,
-    from_customer VARCHAR (250) NULL,
+    customer_user VARCHAR (250) NULL,
     owner VARCHAR (250) NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     ticket_id INTEGER NOT NULL,
     PRIMARY KEY(id)
@@ -3719,15 +3720,15 @@ CREATE TABLE t_process_conditions (
 --  create table t_dynamicprocess_fields_value
 -- ----------------------------------------------------------
 CREATE TABLE t_dynamicprocess_fields_value (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     process_id INTEGER NOT NULL,
-    processstep_id INTEGER NOT NULL,
+    process_step_id INTEGER NOT NULL,
     ticket_id INTEGER NOT NULL,
     dynamicfield_id INTEGER NOT NULL,
     field_value VARCHAR (5000) NOT NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3736,14 +3737,14 @@ CREATE TABLE t_dynamicprocess_fields_value (
 --  create table t_dynamicprocess_fields
 -- ----------------------------------------------------------
 CREATE TABLE t_dynamicprocess_fields (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     process_id INTEGER NOT NULL,
     processstep_id INTEGER NOT NULL,
     dynamicfield_id INTEGER NOT NULL,
-    required SMALLINT NULL,
-    create_time DATETIME NOT NULL,
+    required SMALLINT NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     ticket_id INTEGER NOT NULL,
     PRIMARY KEY(id)
@@ -3753,7 +3754,7 @@ CREATE TABLE t_dynamicprocess_fields (
 --  create table process_transition
 -- ----------------------------------------------------------
 CREATE TABLE process_transition (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     process_id INTEGER NOT NULL,
     processstep_id INTEGER NOT NULL,
     processstep_no INTEGER NOT NULL,
@@ -3761,12 +3762,11 @@ CREATE TABLE process_transition (
     type_id INTEGER NULL,
     state_id INTEGER NULL,
     queue_id INTEGER NULL,
+    service_id INTEGER NULL,
     sla_id INTEGER NULL,
-    step_no INTEGER NULL,
-    step_no INTEGER NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3775,7 +3775,7 @@ CREATE TABLE process_transition (
 --  create table process_step
 -- ----------------------------------------------------------
 CREATE TABLE process_step (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     name VARCHAR (250) NOT NULL,
     process_id INTEGER NOT NULL,
     process_step INTEGER NOT NULL,
@@ -3795,9 +3795,9 @@ CREATE TABLE process_step (
     approver_id INTEGER NULL,
     approver_email VARCHAR (5000) NULL,
     valid_id SMALLINT NOT NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     with_conditions SMALLINT NULL,
     setarticle_id SMALLINT NOT NULL,
@@ -3812,14 +3812,14 @@ CREATE TABLE process_step (
 --  create table process_list
 -- ----------------------------------------------------------
 CREATE TABLE process_list (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     name VARCHAR (250) NOT NULL,
-    description TEXT NOT NULL,
+    description VARCHAR (5000) NOT NULL,
     queue_id INTEGER NOT NULL,
     valid_id SMALLINT NOT NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     setarticle_id SMALLINT NOT NULL,
     PRIMARY KEY(id)
@@ -3829,15 +3829,15 @@ CREATE TABLE process_list (
 --  create table process_fields
 -- ----------------------------------------------------------
 CREATE TABLE process_fields (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     process_id INTEGER NOT NULL,
     processstep_id INTEGER NOT NULL,
     field_id INTEGER NOT NULL,
     required SMALLINT NOT NULL,
     sequence INTEGER NOT NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3846,14 +3846,14 @@ CREATE TABLE process_fields (
 --  create table process_d_conditions
 -- ----------------------------------------------------------
 CREATE TABLE process_d_conditions (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     process_id INTEGER NOT NULL,
     processstep_id INTEGER NOT NULL,
     dynamicfield_id INTEGER NOT NULL,
-    dynamicfield_value VARCHAR (5000) NOT NULL,
-    create_time DATETIME NOT NULL,
+    dynamicfield_value VARCHAR (250) NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3862,7 +3862,7 @@ CREATE TABLE process_d_conditions (
 --  create table process_conditions
 -- ----------------------------------------------------------
 CREATE TABLE process_conditions (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     process_id INTEGER NOT NULL,
     processstep_id INTEGER NOT NULL,
     processstep_no INTEGER NOT NULL,
@@ -3872,11 +3872,11 @@ CREATE TABLE process_conditions (
     state INTEGER NULL,
     service INTEGER NULL,
     sla INTEGER NULL,
-    from_customer VARCHAR (250) NULL,
+    customer_user VARCHAR (250) NULL,
     owner VARCHAR (250) NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3885,14 +3885,14 @@ CREATE TABLE process_conditions (
 --  create table dynamicprocess_fields
 -- ----------------------------------------------------------
 CREATE TABLE dynamicprocess_fields (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     process_id INTEGER NOT NULL,
     processstep_id INTEGER NOT NULL,
     dynamicfield_id INTEGER NOT NULL,
     required SMALLINT NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3901,10 +3901,10 @@ CREATE TABLE dynamicprocess_fields (
 --  create table signature_user
 -- ----------------------------------------------------------
 CREATE TABLE signature_user (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    id serial NOT NULL,
     user_login INTEGER NOT NULL,
     signature_id INTEGER NOT NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -3989,7 +3989,7 @@ CREATE TABLE contract (
     direction VARCHAR (250) NOT NULL,
     contracttype_id INTEGER NOT NULL,
     contractnumber VARCHAR (250) NOT NULL,
-    description VARCHAR (20000) NULL,
+    description VARCHAR NULL,
     contractstart timestamp(0) NULL,
     contractend timestamp(0) NULL,
     service_id INTEGER NULL,
@@ -4034,9 +4034,9 @@ CREATE TABLE selfservicecategories (
     comments VARCHAR (1000) NOT NULL,
     image_id INTEGER NULL,
     valid_id SMALLINT NOT NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -4048,12 +4048,12 @@ CREATE TABLE selfservice_categories_icon (
     name VARCHAR (250) NOT NULL,
     content_type VARCHAR (250) NOT NULL,
     content TEXT NOT NULL,
-    filename VARCHAR (250) NOT NULL,
-    comments VARCHAR (250) NOT NULL,
-    valid_id SMALLINT NOT NULL
-    create_time DATETIME NOT NULL,
+    filename VARCHAR (250) NULL,
+    comments  VARCHAR (250) NULL,
+    valid_id SMALLINT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -4064,9 +4064,9 @@ CREATE TABLE selfservicecat_selfservice (
     id serial NOT NULL,
     template_id INTEGER NOT NULL,
     selfservicecategories_id INTEGER NOT NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );
@@ -4079,12 +4079,12 @@ CREATE TABLE selfservice (
     categories VARCHAR (250) NOT NULL,
     headline VARCHAR (250) NOT NULL,
     schlagwoerter VARCHAR (1500) NULL,
-    service_text VARCHAR (100000) NULL,
+    service_text VARCHAR NULL,
     color VARCHAR (250) NULL,
     valid_id SMALLINT NOT NULL,
-    create_time DATETIME NOT NULL,
+    create_time timestamp(0) NOT NULL,
     create_by INTEGER NOT NULL,
-    change_time DATETIME NOT NULL,
+    change_time timestamp(0) NOT NULL,
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id)
 );

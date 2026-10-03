@@ -211,7 +211,7 @@ sub ProcessTransitionList {
 
     # get all Equipment data from database
     return if !$DBObject->Prepare(
-        SQL => 'SELECT id, processstep_id, FROM t_process_transition WHERE process_id = ? AND processstep_id = ? AND processstep_no = ?',
+        SQL => 'SELECT id, processstep_id FROM t_process_transition WHERE process_id = ? AND processstep_id = ? AND processstep_no = ?',
         Bind => [ \$Param{ProcessID}, \$Param{ProcessStepID}, \$Param{ProcessStepNo}, ],
     );
 
